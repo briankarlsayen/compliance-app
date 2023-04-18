@@ -379,7 +379,7 @@ function CenteredTabs() {
   ];
 
   return (
-    <>
+    <div>
       <Paper className={classes.root}>
         <Tabs
           value={value}
@@ -418,6 +418,6 @@ function CenteredTabs() {
           <Typography>Settings</Typography>
         </TabPanel>
       </Paper>
-    </>
+    </div>
   );
 }
