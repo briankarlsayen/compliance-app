@@ -155,7 +155,7 @@ const oneplaceTheme = createTheme({
     //             color: 'white',
     //         }
     //     }
-    // }
+    // },
   },
 });
 
