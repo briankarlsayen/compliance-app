@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Theme,
   ThemeProvider,
@@ -6,26 +6,27 @@ import {
   createTheme,
   makeStyles,
   withStyles,
-} from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import grey from "@material-ui/core/colors/grey";
-import Button from "@material-ui/core/Button";
-import AddIcon from "@material-ui/icons/Add";
-import lightGreen from "@material-ui/core/colors/lightGreen";
-import StarIcon from "@material-ui/icons/Star";
-import StarOutlineIcon from "@material-ui/icons/StarOutline";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import red from "@material-ui/core/colors/red";
-import blue from "@material-ui/core/colors/blue";
+} from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import Typography from '@material-ui/core/Typography';
+import Box from '@material-ui/core/Box';
+import grey from '@material-ui/core/colors/grey';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import lightGreen from '@material-ui/core/colors/lightGreen';
+import StarIcon from '@material-ui/icons/Star';
+import StarOutlineIcon from '@material-ui/icons/StarOutline';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import red from '@material-ui/core/colors/red';
+import blue from '@material-ui/core/colors/blue';
+import { Menu, MenuItem, TablePagination } from '@material-ui/core';
 
 export default function CheckLists() {
   return <CenteredTabs />;
@@ -34,13 +35,13 @@ export default function CheckLists() {
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
-    marginTop: "1rem",
+    marginTop: '1rem',
   },
   tabs: {
     background: grey[100],
   },
   tab: {
-    margin: "2rem",
+    margin: '2rem',
   },
 });
 
@@ -50,12 +51,18 @@ interface TabPanelProps {
   value: any;
 }
 
+interface IChecklist {
+  name: string;
+  schedule: any;
+  actions: any;
+}
+
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
   return (
     <div
-      role="tabpanel"
+      role='tabpanel'
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
       aria-labelledby={`simple-tab-${index}`}
@@ -73,7 +80,7 @@ function TabPanel(props: TabPanelProps) {
 function a11yProps(index: any) {
   return {
     id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
   };
 }
 
@@ -89,39 +96,39 @@ function ChecklistTemplates() {
   return (
     <div
       style={{
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "space-between",
-        marginTop: "3rem",
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+        marginTop: '3rem',
       }}
     >
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <Typography style={{ fontWeight: "bold" }}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Typography style={{ fontWeight: 'bold' }}>
           Checklist Templates
         </Typography>
         <Typography>&nbsp;/ Health & Safety</Typography>
       </div>
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'flex-end',
         }}
       >
-        <Typography variant="caption">
+        <Typography variant='caption'>
           Create new checklist template in this folder:
         </Typography>
         <div>
           <ThemeProvider theme={buttonTheme}>
             <Button
-              variant="contained"
-              color="primary"
+              variant='contained'
+              color='primary'
               style={{
-                color: "white",
+                color: 'white',
               }}
             >
-              <AddIcon fontSize="small" />
-              <Typography style={{ fontWeight: "bold" }} variant="body2">
+              <AddIcon fontSize='small' />
+              <Typography style={{ fontWeight: 'bold' }} variant='body2'>
                 NEW TEMPLATE
               </Typography>
             </Button>
@@ -139,7 +146,7 @@ function ChecklistTemplates() {
 const StyledTableCell = withStyles((theme: Theme) =>
   createStyles({
     head: {
-      backgroundColor: "white",
+      backgroundColor: 'white',
     },
     body: {
       fontSize: 14,
@@ -150,7 +157,7 @@ const StyledTableCell = withStyles((theme: Theme) =>
 const StyledTableRow = withStyles((theme: Theme) =>
   createStyles({
     root: {
-      "&:nth-of-type(odd)": {
+      '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
       },
     },
@@ -158,13 +165,11 @@ const StyledTableRow = withStyles((theme: Theme) =>
 )(TableRow);
 
 function createData(
-  status: React.ReactNode,
   name: string,
   schedule: React.ReactNode,
   actions: React.ReactNode
 ) {
   return {
-    status,
     name,
     schedule,
     actions,
@@ -187,177 +192,216 @@ const blueTheme = createTheme({
   },
 });
 
-const rows = [
-  createData(
-    <StarOutlineIcon fontSize="small" />,
-    "1Place Standard Centre Closing Procedure // v1.1",
-    <ThemeProvider theme={redTheme}>
-      <Button variant="outlined" color="primary" size="small">
-        3
-      </Button>
-    </ThemeProvider>,
-    <ThemeProvider theme={blueTheme}>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Start
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Edit
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Settings
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          More
-        </Button>
-      </div>
-    </ThemeProvider>
-  ),
-  createData(
-    <StarOutlineIcon fontSize="small" />,
-    "1Place Standard Centre Opening Procedure - version 1.1",
-    <ThemeProvider theme={redTheme}>
-      <Button variant="outlined" color="inherit" size="small">
-        0
-      </Button>
-    </ThemeProvider>,
-    <ThemeProvider theme={blueTheme}>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Start
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Edit
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Settings
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          More
-        </Button>
-      </div>
-    </ThemeProvider>
-  ),
-  createData(
-    <StarOutlineIcon fontSize="small" />,
-    "1Place Standard Classroom Closing Procedure - v1.1",
-    <ThemeProvider theme={redTheme}>
-      <Button variant="outlined" color="primary" size="small">
-        1
-      </Button>
-    </ThemeProvider>,
-    <ThemeProvider theme={blueTheme}>
-      <div style={{ display: "flex", gap: "0.5rem" }}>
-        <Button
-          variant="contained"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Start
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Edit
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          Settings
-        </Button>
-        <Button
-          variant="outlined"
-          color="primary"
-          size="small"
-          style={{ textTransform: "none" }}
-        >
-          More
-        </Button>
-      </div>
-    </ThemeProvider>
-  ),
+interface ICheckListData {
+  title: string;
+  schedules: number;
+}
+
+const mockData: ICheckListData[] = [
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.1',
+    schedules: 3,
+  },
+  {
+    title: '2Place Standard Centre Closing Procedure // v1.1',
+    schedules: 4,
+  },
+  {
+    title: '3Place Standard Centre Closing Procedure // v1.1',
+    schedules: 5,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
+  {
+    title: '4Place Standard Centre Closing Procedure // v1.1',
+    schedules: 1,
+  },
 ];
 
 function CheckListsTable() {
+  const [checkLists, setCheckLists] = React.useState<IChecklist[]>();
+  const processRows = () => {
+    const createdRows = mockData.map(({ title, schedules }) => {
+      return createData(
+        title,
+        <ThemeProvider theme={redTheme}>
+          <Button variant='outlined' color='primary' size='small'>
+            {schedules}
+          </Button>
+        </ThemeProvider>,
+        <ThemeProvider theme={blueTheme}>
+          <div style={{ display: 'flex', gap: '0.5rem' }}>
+            <Button
+              variant='contained'
+              color='primary'
+              size='small'
+              style={{ textTransform: 'none' }}
+            >
+              Start
+            </Button>
+            <Button
+              variant='outlined'
+              color='primary'
+              size='small'
+              style={{ textTransform: 'none' }}
+            >
+              Edit
+            </Button>
+            <Button
+              variant='outlined'
+              color='primary'
+              size='small'
+              style={{ textTransform: 'none' }}
+              id='menu-btn'
+              aria-controls='menu'
+              onClick={handleClick}
+            >
+              More
+            </Button>
+          </div>
+        </ThemeProvider>
+      );
+    });
+    setCheckLists(createdRows);
+  };
+  const DEFAULT_ROWS_PAGE = 5;
+  const menuRef = React.useRef(null);
+  // * handle dropdown menu
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [open, setOpen] = React.useState(false);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+    setOpen(true);
+  };
+  const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PAGE);
+  const [page, setPage] = React.useState(0);
+  const handleClose = () => {
+    setAnchorEl(null);
+    setOpen(false);
+  };
+
+  React.useEffect(() => {
+    processRows();
+  }, []);
+
+  const handleChangePage = (
+    event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value));
+    setPage(0);
+  };
+
   return (
-    <TableContainer component={Paper} style={{ marginTop: "2rem" }}>
-      <Table size="small">
+    <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
+      <Table size='small'>
         <TableHead>
+          <Menu
+            id='menu'
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            ref={menuRef}
+            MenuListProps={{
+              'aria-labelledby': 'menu-btn',
+            }}
+          >
+            <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <MenuItem onClick={handleClose}>My account</MenuItem>
+            <MenuItem onClick={handleClose}>Logout</MenuItem>
+          </Menu>
           <TableRow>
-            <StyledTableCell align="center">
-              <StarIcon fontSize="small" />
-            </StyledTableCell>
             <StyledTableCell>
-              <Typography style={{ fontWeight: "bold" }}>Name</Typography>
+              <Typography style={{ fontWeight: 'bold' }}>Name</Typography>
             </StyledTableCell>
-            <StyledTableCell align="center">
-              <Typography style={{ fontWeight: "bold" }}>
+            <StyledTableCell align='center'>
+              <Typography style={{ fontWeight: 'bold' }}>
                 Current Schedules
               </Typography>
             </StyledTableCell>
             <StyledTableCell>
-              <Typography style={{ fontWeight: "bold" }}>Actions</Typography>
+              <Typography style={{ fontWeight: 'bold' }}>Actions</Typography>
             </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <StyledTableRow key={index}>
-              <StyledTableCell align="center">{row.status}</StyledTableCell>
-              <StyledTableCell>{row.name}</StyledTableCell>
-              <StyledTableCell align="center">{row.schedule}</StyledTableCell>
-              <StyledTableCell>{row.actions}</StyledTableCell>
-            </StyledTableRow>
-          ))}
+          {checkLists &&
+            checkLists
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row, index) => (
+                <StyledTableRow key={index}>
+                  <StyledTableCell>{row.name}</StyledTableCell>
+                  <StyledTableCell align='center'>
+                    {row.schedule}
+                  </StyledTableCell>
+                  <StyledTableCell>{row.actions}</StyledTableCell>
+                </StyledTableRow>
+              ))}
         </TableBody>
       </Table>
+      {checkLists && (
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component='div'
+          count={checkLists.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      )}
     </TableContainer>
   );
 }
@@ -371,11 +415,11 @@ function CenteredTabs() {
   };
 
   const tabs = [
-    "Checklist Templates",
-    "To-Do List",
-    "Schedules & Surveys",
-    "Register",
-    "Settings",
+    'Checklist Templates',
+    'To-Do List',
+    'Schedules & Surveys',
+    'Register',
+    'Settings',
   ];
 
   return (
@@ -384,8 +428,8 @@ function CenteredTabs() {
         <Tabs
           value={value}
           onChange={handleChange}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor='primary'
+          textColor='primary'
           centered
           className={classes.tabs}
         >
@@ -393,7 +437,7 @@ function CenteredTabs() {
             <Tab
               key={index}
               label={
-                <Typography style={{ textTransform: "none" }}>{tab}</Typography>
+                <Typography style={{ textTransform: 'none' }}>{tab}</Typography>
               }
               {...a11yProps(index)}
             />
