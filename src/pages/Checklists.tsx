@@ -203,64 +203,64 @@ const mockData: ICheckListData[] = [
     schedules: 3,
   },
   {
-    title: '2Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.2',
     schedules: 4,
   },
   {
-    title: '3Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.3',
     schedules: 5,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.4',
     schedules: 1,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.5',
+    schedules: 8,
+  },
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.6',
+    schedules: 9,
+  },
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.7',
+    schedules: 11,
+  },
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.8',
+    schedules: 2,
+  },
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.9',
     schedules: 1,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.10',
+    schedules: 8,
+  },
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.11',
     schedules: 1,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.12',
     schedules: 1,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.13',
+    schedules: 6,
+  },
+  {
+    title: '1Place Standard Centre Closing Procedure // v1.14',
     schedules: 1,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
+    title: '1Place Standard Centre Closing Procedure // v1.15',
     schedules: 1,
   },
   {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
-  },
-  {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
-  },
-  {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
-  },
-  {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
-  },
-  {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
-  },
-  {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
-  },
-  {
-    title: '4Place Standard Centre Closing Procedure // v1.1',
-    schedules: 1,
+    title: '1Place Standard Centre Closing Procedure // v1.16',
+    schedules: 4,
   },
 ];
 
@@ -300,6 +300,8 @@ function CheckListsTable() {
               style={{ textTransform: 'none' }}
               id='menu-btn'
               aria-controls='menu'
+              aria-haspopup='true'
+              aria-expanded={open ? 'true' : undefined}
               onClick={handleClick}
             >
               More
@@ -312,7 +314,7 @@ function CheckListsTable() {
   };
   const DEFAULT_ROWS_PAGE = 5;
   const menuRef = React.useRef(null);
-  // * handle dropdown menu
+
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [open, setOpen] = React.useState(false);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -348,20 +350,6 @@ function CheckListsTable() {
     <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
       <Table size='small'>
         <TableHead>
-          <Menu
-            id='menu'
-            anchorEl={anchorEl}
-            open={open}
-            onClose={handleClose}
-            ref={menuRef}
-            MenuListProps={{
-              'aria-labelledby': 'menu-btn',
-            }}
-          >
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>My account</MenuItem>
-            <MenuItem onClick={handleClose}>Logout</MenuItem>
-          </Menu>
           <TableRow>
             <StyledTableCell>
               <Typography style={{ fontWeight: 'bold' }}>Name</Typography>
@@ -377,6 +365,28 @@ function CheckListsTable() {
           </TableRow>
         </TableHead>
         <TableBody>
+          <Menu
+            id='menu'
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            ref={menuRef}
+            MenuListProps={{
+              'aria-labelledby': 'menu-btn',
+            }}
+            getContentAnchorEl={null}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          >
+            <MenuItem onClick={handleClose}>Schedule</MenuItem>
+            <MenuItem onClick={handleClose}>Survey</MenuItem>
+            <MenuItem onClick={handleClose}>Versions</MenuItem>
+            <MenuItem onClick={handleClose}>Settings</MenuItem>
+            <MenuItem onClick={handleClose}>Copy</MenuItem>
+            <MenuItem onClick={handleClose}>Delete</MenuItem>
+            <MenuItem onClick={handleClose}>Deactivate</MenuItem>
+            <MenuItem onClick={handleClose}>Print PDF</MenuItem>
+          </Menu>
           {checkLists &&
             checkLists
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
