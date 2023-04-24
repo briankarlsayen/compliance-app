@@ -172,7 +172,7 @@ interface ICheckListData {
     adhoc: boolean
 }
 
-function CheckListsTable() {
+function CheckListsTable({ setTab }) {
     const mockData: ICheckListData[] = [
         {
             title: '1Place Standard Centre Closing Procedure // v1.1',
@@ -382,6 +382,10 @@ function CheckListsTable() {
         setPage(0)
     }
 
+    const handleTabChange = (page: number) => {
+        return setTab(page ?? 0)
+    }
+
     return (
         <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
             <ChecklistFilter mockData={mockData} processRows={processRows} />
@@ -425,7 +429,7 @@ function CheckListsTable() {
                             horizontal: 'left',
                         }}
                     >
-                        <MenuItem onClick={handleClose}>
+                        <MenuItem onClick={() => handleTabChange(2)}>
                             {i18n.t('schedule')}
                         </MenuItem>
                         <MenuItem onClick={handleClose}>
@@ -529,7 +533,7 @@ function CenteredTabs() {
             <Paper className={classes.tab} style={{ minHeight: '710px' }}>
                 <TabPanel value={value} index={0}>
                     <ChecklistTemplates />
-                    <CheckListsTable />
+                    <CheckListsTable setTab={setValue} />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Typography>To-Do List</Typography>
