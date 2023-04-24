@@ -25,8 +25,11 @@ import TableRow from '@material-ui/core/TableRow'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 import { Menu, MenuItem, TablePagination } from '@material-ui/core'
-import ChecklistFilter from '../components/ChecklistFilter'
 
+import ChecklistFilter from '../components/ChecklistFilter'
+import { i18n } from '../i18n'
+import { fetchChecklist } from '../api'
+i18n.initialise()
 export default function CheckLists() {
     return <CenteredTabs />
 }
@@ -83,59 +86,20 @@ function a11yProps(index: any) {
     }
 }
 
-const buttonTheme = createTheme({
-    palette: {
-        primary: {
-            main: lightGreen[600],
-        },
-    },
-})
-
 function ChecklistTemplates() {
     return (
         <div
             style={{
                 display: 'flex',
-                alignItems: 'flex-end',
+                alignItems: 'flex-start',
                 justifyContent: 'space-between',
-                marginTop: '3rem',
             }}
         >
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Typography style={{ fontWeight: 'bold' }}>
-                    Checklist Templates
+                    {i18n.t('checklist_temp')}
                 </Typography>
-                <Typography>&nbsp;/ Health & Safety</Typography>
-            </div>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                }}
-            >
-                <Typography variant="caption">
-                    Create new checklist template in this folder:
-                </Typography>
-                <div>
-                    <ThemeProvider theme={buttonTheme}>
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            style={{
-                                color: 'white',
-                            }}
-                        >
-                            <AddIcon fontSize="small" />
-                            <Typography
-                                style={{ fontWeight: 'bold' }}
-                                variant="body2"
-                            >
-                                NEW TEMPLATE
-                            </Typography>
-                        </Button>
-                    </ThemeProvider>
-                </div>
+                <Typography>&nbsp;/ {i18n.t('health_and_safety')}</Typography>
             </div>
         </div>
     )
@@ -302,6 +266,7 @@ function CheckListsTable() {
     ]
     const [checkLists, setCheckLists] = React.useState<IChecklist[]>()
     const processRows = (data: ICheckListData[]) => {
+        setPage(0)
         const createdRows = data.map(({ title, schedules }) => {
             return createData(
                 title,
@@ -318,7 +283,7 @@ function CheckListsTable() {
                             size="small"
                             style={{ textTransform: 'none' }}
                         >
-                            Start
+                            {i18n.t('start')}
                         </Button>
                         <Button
                             variant="outlined"
@@ -326,7 +291,7 @@ function CheckListsTable() {
                             size="small"
                             style={{ textTransform: 'none' }}
                         >
-                            Edit
+                            {i18n.t('edit')}
                         </Button>
                         <Button
                             variant="outlined"
@@ -339,7 +304,7 @@ function CheckListsTable() {
                             aria-expanded={open ? 'true' : undefined}
                             onClick={handleClick}
                         >
-                            More
+                            {i18n.t('more')}
                         </Button>
                     </div>
                 </ThemeProvider>
@@ -347,7 +312,7 @@ function CheckListsTable() {
         })
         setCheckLists(createdRows)
     }
-    const DEFAULT_ROWS_PAGE = 5
+    const DEFAULT_ROWS_PAGE = 10
     const menuRef = React.useRef(null)
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -363,8 +328,18 @@ function CheckListsTable() {
         setOpen(false)
     }
 
+    const fetchData = async () => {
+        try {
+            // const lists = await fetchChecklist()
+            // processRows(lists?.data)
+            processRows(mockData)
+        } catch (error) {
+            console.log('failed to get checklist')
+        }
+    }
+
     React.useEffect(() => {
-        processRows(mockData)
+        fetchData()
     }, [])
 
     const handleChangePage = (
@@ -389,17 +364,17 @@ function CheckListsTable() {
                     <TableRow>
                         <StyledTableCell>
                             <Typography style={{ fontWeight: 'bold' }}>
-                                Name
+                                {i18n.t('checklist_name')}
                             </Typography>
                         </StyledTableCell>
                         <StyledTableCell align="center">
                             <Typography style={{ fontWeight: 'bold' }}>
-                                Current Schedules
+                                {i18n.t('current_schedules')}
                             </Typography>
                         </StyledTableCell>
                         <StyledTableCell>
                             <Typography style={{ fontWeight: 'bold' }}>
-                                Actions
+                                {i18n.t('actions')}
                             </Typography>
                         </StyledTableCell>
                     </TableRow>
@@ -424,14 +399,30 @@ function CheckListsTable() {
                             horizontal: 'left',
                         }}
                     >
-                        <MenuItem onClick={handleClose}>Schedule</MenuItem>
-                        <MenuItem onClick={handleClose}>Survey</MenuItem>
-                        <MenuItem onClick={handleClose}>Versions</MenuItem>
-                        <MenuItem onClick={handleClose}>Settings</MenuItem>
-                        <MenuItem onClick={handleClose}>Copy</MenuItem>
-                        <MenuItem onClick={handleClose}>Delete</MenuItem>
-                        <MenuItem onClick={handleClose}>Deactivate</MenuItem>
-                        <MenuItem onClick={handleClose}>Print PDF</MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('schedule')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('survey')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('versions')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('settings')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('copy')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('delete')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('deactivate')}
+                        </MenuItem>
+                        <MenuItem onClick={handleClose}>
+                            {i18n.t('print_pdf')}
+                        </MenuItem>
                     </Menu>
                     {checkLists &&
                         checkLists
@@ -456,7 +447,7 @@ function CheckListsTable() {
             </Table>
             {checkLists && (
                 <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
+                    rowsPerPageOptions={[10, 25]}
                     component="div"
                     count={checkLists.length}
                     page={page}
@@ -509,7 +500,7 @@ function CenteredTabs() {
                     ))}
                 </Tabs>
             </Paper>
-            <Paper className={classes.tab}>
+            <Paper className={classes.tab} style={{ minHeight: '710px' }}>
                 <TabPanel value={value} index={0}>
                     <ChecklistTemplates />
                     <CheckListsTable />

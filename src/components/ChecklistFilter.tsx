@@ -3,13 +3,21 @@ import {
     MenuItem,
     InputLabel,
     FormControl,
-    makeStyles,
     Button,
     Typography,
 } from '@material-ui/core'
-import { Search } from '@material-ui/icons'
+import {
+    ThemeProvider,
+    makeStyles,
+    createTheme,
+} from '@material-ui/core/styles'
+import grey from '@material-ui/core/colors/grey'
+import lightGreen from '@material-ui/core/colors/lightGreen'
+import { Search, Add } from '@material-ui/icons'
 
+import { i18n } from '../i18n'
 import React from 'react'
+i18n.initialise()
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -28,10 +36,26 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const greyTheme = createTheme({
+    palette: {
+        primary: {
+            main: grey[500],
+        },
+    },
+})
+
+const buttonTheme = createTheme({
+    palette: {
+        primary: {
+            main: lightGreen[600],
+        },
+    },
+})
+
 const ChecklistFilter = ({ mockData, processRows }: any) => {
     const [filter, setFilter] = React.useState({
-        template: '',
-        status: '',
+        template: 'all',
+        status: 'all',
     })
     const handleChange = (e: any) => {
         const { name, value } = e.target
@@ -73,7 +97,14 @@ const ChecklistFilter = ({ mockData, processRows }: any) => {
 
     const classes = useStyles()
     return (
-        <form onSubmit={handleSubmit}>
+        <form
+            onSubmit={handleSubmit}
+            style={{
+                display: 'flex',
+                alignItems: 'baseline',
+                padding: '.5rem',
+            }}
+        >
             <FormControl variant="standard" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">
                     Form Template Types
@@ -85,6 +116,17 @@ const ChecklistFilter = ({ mockData, processRows }: any) => {
                     label="All"
                     name="template"
                     onChange={handleChange}
+                    MenuProps={{
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        },
+                        transformOrigin: {
+                            vertical: 'top',
+                            horizontal: 'left',
+                        },
+                        getContentAnchorEl: null,
+                    }}
                 >
                     <MenuItem value="all">All</MenuItem>
                     <MenuItem value="form">Form Templates</MenuItem>
@@ -104,26 +146,78 @@ const ChecklistFilter = ({ mockData, processRows }: any) => {
                     label="All"
                     name="status"
                     onChange={handleChange}
+                    MenuProps={{
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'left',
+                        },
+                        transformOrigin: {
+                            vertical: 'top',
+                            horizontal: 'left',
+                        },
+                        getContentAnchorEl: null,
+                    }}
                 >
                     <MenuItem value="all">All</MenuItem>
                     <MenuItem value="active">Active</MenuItem>
                     <MenuItem value="inactive">Inactive</MenuItem>
                 </Select>
             </FormControl>
-            <Button
-                variant="contained"
-                color="primary"
+            <ThemeProvider theme={greyTheme}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    style={{
+                        color: 'white',
+                    }}
+                    size="large"
+                    type="submit"
+                >
+                    <Search fontSize="small" />
+                    <Typography style={{ fontWeight: 'bold' }} variant="body2">
+                        {i18n.t('search')}
+                    </Typography>
+                </Button>
+            </ThemeProvider>
+            <div
                 style={{
-                    color: 'white',
+                    display: 'flex',
+                    alignSelf: 'flex-start',
+                    flex: 1,
+                    textAlignLast: 'end',
                 }}
-                size="large"
-                type="submit"
             >
-                <Search fontSize="small" />
-                <Typography style={{ fontWeight: 'bold' }} variant="body2">
-                    Search
-                </Typography>
-            </Button>
+                <div
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'column',
+                    }}
+                >
+                    <Typography variant="caption">
+                        {i18n.t('new_checklist_temp')}:
+                    </Typography>
+                    <div>
+                        <ThemeProvider theme={buttonTheme}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    color: 'white',
+                                }}
+                            >
+                                <Add fontSize="small" />
+                                <Typography
+                                    style={{ fontWeight: 'bold' }}
+                                    variant="body2"
+                                >
+                                    {i18n.t('new_temp')}
+                                </Typography>
+                            </Button>
+                        </ThemeProvider>
+                    </div>
+                </div>
+            </div>
         </form>
     )
 }
