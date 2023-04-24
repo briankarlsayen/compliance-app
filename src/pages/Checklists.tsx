@@ -14,8 +14,6 @@ import Typography from '@material-ui/core/Typography'
 import Box from '@material-ui/core/Box'
 import grey from '@material-ui/core/colors/grey'
 import Button from '@material-ui/core/Button'
-import AddIcon from '@material-ui/icons/Add'
-import lightGreen from '@material-ui/core/colors/lightGreen'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
@@ -158,11 +156,20 @@ const blueTheme = createTheme({
     },
 })
 
+const greyTheme = createTheme({
+    palette: {
+        primary: {
+            main: grey[500],
+        },
+    },
+})
+
 interface ICheckListData {
     title: string
     schedules: number
     template?: string
     status?: string
+    adhoc: boolean
 }
 
 function CheckListsTable() {
@@ -172,102 +179,119 @@ function CheckListsTable() {
             schedules: 3,
             template: 'form',
             status: 'inactive',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.2',
             schedules: 4,
             template: 'form',
             status: 'active',
+            adhoc: false,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.3',
             schedules: 5,
             template: 'partner',
             status: 'active',
+            adhoc: false,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.4',
             schedules: 1,
             template: 'form',
             status: 'inactive',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.5',
             schedules: 8,
             template: 'form',
             status: 'inactive',
+
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.6',
             schedules: 9,
             template: 'partner',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.7',
             schedules: 11,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.8',
             schedules: 2,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.9',
             schedules: 1,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.10',
             schedules: 8,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.11',
             schedules: 1,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.12',
             schedules: 1,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.13',
             schedules: 6,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.14',
             schedules: 1,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.15',
             schedules: 1,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
         {
             title: '1Place Standard Centre Closing Procedure // v1.16',
             schedules: 4,
             template: 'form',
             status: 'active',
+            adhoc: true,
         },
     ]
     const [checkLists, setCheckLists] = React.useState<IChecklist[]>()
     const processRows = (data: ICheckListData[]) => {
         setPage(0)
-        const createdRows = data.map(({ title, schedules }) => {
+        const createdRows = data.map(({ title, schedules, adhoc }) => {
             return createData(
                 title,
                 <ThemeProvider theme={redTheme}>
@@ -275,16 +299,18 @@ function CheckListsTable() {
                         {schedules}
                     </Button>
                 </ThemeProvider>,
-                <ThemeProvider theme={blueTheme}>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    <ThemeProvider theme={adhoc ? blueTheme : greyTheme}>
                         <Button
                             variant="contained"
                             color="primary"
                             size="small"
-                            style={{ textTransform: 'none' }}
+                            style={{ textTransform: 'none', color: 'white' }}
                         >
                             {i18n.t('start')}
                         </Button>
+                    </ThemeProvider>
+                    <ThemeProvider theme={blueTheme}>
                         <Button
                             variant="outlined"
                             color="primary"
@@ -306,8 +332,8 @@ function CheckListsTable() {
                         >
                             {i18n.t('more')}
                         </Button>
-                    </div>
-                </ThemeProvider>
+                    </ThemeProvider>
+                </div>
             )
         })
         setCheckLists(createdRows)
