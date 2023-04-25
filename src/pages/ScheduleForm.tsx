@@ -15,9 +15,11 @@ import {
   Box,
   Grid,
   TextField,
-  Card,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 
+import AddIcon from '@material-ui/icons/Add';
 import {
   Theme,
   ThemeProvider,
@@ -26,7 +28,11 @@ import {
   makeStyles,
   withStyles,
 } from '@material-ui/core/styles';
-import { red, blue, lightGreen } from '@material-ui/core/colors';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
+import { red, blue, lightGreen, grey } from '@material-ui/core/colors';
 
 const buttonTheme = createTheme({
   palette: {
@@ -36,96 +42,99 @@ const buttonTheme = createTheme({
   },
 });
 
+const blueTheme = createTheme({
+  palette: {
+    primary: {
+      main: blue[500],
+    },
+  },
+});
+
+const greyTheme = createTheme({
+  palette: {
+    primary: {
+      main: grey[600],
+    },
+  },
+});
+
 const ScheduleForm = () => {
   return (
-    <Box style={{ padding: '2rem', gap: '1rem' }}>
-      <Box style={{ display: 'flex', gap: '1rem' }}>
-        <Details />
-        <Details />
-      </Box>
-      <Box style={{ paddingTop: '1rem', float: 'right' }}>
-        <Button>
-          <Typography style={{ fontWeight: 'bold' }} variant='body2'>
-            CANCEL
-          </Typography>
-        </Button>
-        <ThemeProvider theme={buttonTheme}>
-          <Button>
-            <Typography style={{ fontWeight: 'bold' }} variant='body2'>
-              SAVE
-            </Typography>
-          </Button>
-        </ThemeProvider>
+    <Box>
+      <ScheduleHeader />
+      <Box
+        style={{
+          display: 'flex',
+          marginTop: '2rem',
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2rem',
+            width: '50%',
+          }}
+        >
+          <Details />
+          <EventFreq />
+          <Box
+            style={{
+              paddingTop: '1rem',
+              float: 'right',
+              display: 'flex',
+              gap: '1rem',
+              flexDirection: 'row-reverse',
+              paddingRight: '1rem',
+            }}
+          >
+            <ThemeProvider theme={buttonTheme}>
+              <Button
+                variant='contained'
+                color='primary'
+                style={{
+                  color: 'white',
+                }}
+              >
+                <Typography style={{ fontWeight: 'bold' }} variant='body2'>
+                  SAVE
+                </Typography>
+              </Button>
+            </ThemeProvider>
+            <ThemeProvider theme={greyTheme}>
+              <Button
+                variant='contained'
+                color='primary'
+                style={{
+                  color: 'white',
+                }}
+              >
+                <Typography style={{ fontWeight: 'bold' }} variant='body2'>
+                  CANCEL
+                </Typography>
+              </Button>
+            </ThemeProvider>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
 };
+
 const Details = () => {
   return (
-    <Card style={{ padding: '2rem' }}>
-      <Typography variant='h2' gutterBottom>
-        Shipping address
+    <div style={{ padding: '1rem' }}>
+      <Typography variant='h3' gutterBottom>
+        Schedule Details
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid item xs={12} sm={12}>
           <TextField
             required
-            id='firstName'
-            name='firstName'
-            label='First name'
-            fullWidth
-            autoComplete='given-name'
-            variant='standard'
-          />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <TextField
-            required
-            id='lastName'
-            name='lastName'
-            label='Last name'
-            fullWidth
-            autoComplete='family-name'
-            variant='standard'
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            required
-            id='address1'
-            name='address1'
-            label='Address line 1'
-            fullWidth
-            autoComplete='shipping address-line1'
-            variant='standard'
-          />
-        </Grid>
-        <Grid item xs={12}>
-          <TextField
-            id='address2'
-            name='address2'
-            label='Address line 2'
-            fullWidth
-            autoComplete='shipping address-line2'
-            variant='standard'
-          />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <TextField
-            required
-            id='city'
-            name='city'
-            label='City'
-            fullWidth
-            autoComplete='shipping address-level2'
-            variant='standard'
-          />
-        </Grid>
-        <Grid item xs={12} sm={12}>
-          <TextField
-            id='state'
-            name='state'
-            label='State/Province/Region'
+            id='name'
+            name='name'
+            label='Schedule name'
             fullWidth
             variant='standard'
           />
@@ -133,38 +142,96 @@ const Details = () => {
         <Grid item xs={12} sm={12}>
           <TextField
             required
-            id='zip'
-            name='zip'
-            label='Zip / Postal code'
+            id='sched_for'
+            name='sched_for'
+            label='Schedule for'
             fullWidth
-            autoComplete='shipping postal-code'
             variant='standard'
           />
         </Grid>
-        <Grid item xs={12} sm={12}>
-          <TextField
-            required
-            id='country'
-            name='country'
-            label='Country'
-            fullWidth
-            autoComplete='shipping country'
-            variant='standard'
-          />
-        </Grid>
-        {/* <Grid item xs={12}>
-          <FormControlLabel
-            control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-            label="Use this address for payment details"
-          />
-        </Grid> */}
+        <ThemeProvider theme={blueTheme}>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox color='primary' />}
+              label='Show forms overdue on the form action dashboard'
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox color='primary' />}
+              label='Add for future dates only'
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Checkbox color='primary' />}
+              label='Send email reminder on due day'
+            />
+          </Grid>
+        </ThemeProvider>
       </Grid>
-    </Card>
+    </div>
   );
 };
 
 const EventFreq = () => {
-  return <Box></Box>;
+  return (
+    <div style={{ padding: '1rem' }}>
+      <Typography variant='h3' gutterBottom>
+        Schedule Event Frequency
+      </Typography>
+      <Grid container spacing={1}>
+        <Grid item xs={12} sm={12} style={{ marginTop: '1rem' }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker label='Start date' />
+          </LocalizationProvider>
+        </Grid>
+        <Grid item xs={12} sm={12}>
+          <TextField
+            required
+            id='whithin_days'
+            name='whithin_days'
+            label='Within days'
+            fullWidth
+            variant='standard'
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} style={{ marginTop: '1rem' }}>
+          <Typography
+            style={{
+              color: 'blue',
+              cursor: 'pointer',
+              alignItems: 'center',
+              display: 'flex',
+            }}
+          >
+            <AddIcon fontSize='small' />
+            Add Rules
+          </Typography>
+        </Grid>
+      </Grid>
+    </div>
+  );
+};
+
+const ScheduleHeader = () => {
+  return (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'flex-end',
+        justifyContent: 'space-between',
+      }}
+    >
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <Typography style={{ fontWeight: 'bold' }}>
+          Schedules & Surveys
+        </Typography>
+        <Typography>&nbsp;/ Create Form Schedules</Typography>
+      </div>
+    </div>
+  );
 };
 
 export default ScheduleForm;

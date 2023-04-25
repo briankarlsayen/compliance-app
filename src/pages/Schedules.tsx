@@ -43,7 +43,7 @@ interface IScheduleData {
 
 const Schedules = () => {
   return (
-    <Box style={{ padding: '4rem' }}>
+    <Box>
       <ScheduleHeader />
       <ScheduleTable />
     </Box>
@@ -65,14 +65,13 @@ const ScheduleHeader = () => {
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'space-between',
-        marginTop: '3rem',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Typography style={{ fontWeight: 'bold' }}>
-          Checklist Templates
+          Schedules & Surveys
         </Typography>
-        <Typography>&nbsp;/ Schedules</Typography>
+        <Typography>&nbsp;/ Form Schedules for</Typography>
       </div>
     </div>
   );
@@ -274,10 +273,40 @@ const ScheduleTable = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'flex-end',
-          padding: '1rem',
+          paddingBottom: '.5rem',
+          // padding: '.5rem',
         }}
       >
-        <div>
+        <div
+          style={{
+            display: 'flex',
+            flex: 1,
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            padding: '.5rem',
+          }}
+        >
+          <Typography variant='caption'>
+            Create new schedule in this folder:
+          </Typography>
+          <div>
+            <ThemeProvider theme={buttonTheme}>
+              <Button
+                variant='contained'
+                color='primary'
+                style={{
+                  color: 'white',
+                }}
+              >
+                <AddIcon fontSize='small' />
+                <Typography style={{ fontWeight: 'bold' }} variant='body2'>
+                  NEW SCHEDULe
+                </Typography>
+              </Button>
+            </ThemeProvider>
+          </div>
+        </div>
+        {/* <div>
           <ThemeProvider theme={buttonTheme}>
             <Button
               variant='contained'
@@ -292,9 +321,8 @@ const ScheduleTable = () => {
               </Typography>
             </Button>
           </ThemeProvider>
-        </div>
+        </div> */}
       </div>
-      {/* <ChecklistFilter mockData={mockData} processRows={processRows} /> */}
       <Table size='small'>
         <TableHead>
           <TableRow>
@@ -372,7 +400,7 @@ const StyledTableRow = withStyles((theme: Theme) =>
       '&:nth-of-type(odd)': {
         backgroundColor: theme.palette.action.hover,
       },
-      height: '40px',
+      height: '44px',
     },
   })
 )(TableRow);
