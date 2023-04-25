@@ -9,8 +9,8 @@ export default function App() {
         // <KeycloakProvider>
         <MuiThemeProvider theme={oneplaceTheme}>
             <Container maxWidth={false}>
-                <CheckLists />
-                {/* <Schedules /> */}
+                {/* <CheckLists /> */}
+                <Schedules />
                 {/* <ScheduleForm /> */}
             </Container>
         </MuiThemeProvider>
