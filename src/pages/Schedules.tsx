@@ -443,22 +443,6 @@ const ScheduleTable = () => {
                         </ThemeProvider>
                     </div>
                 </div>
-                {/* <div>
-          <ThemeProvider theme={buttonTheme}>
-            <Button
-              variant='contained'
-              color='primary'
-              style={{
-                color: 'white',
-              }}
-            >
-              <AddIcon fontSize='small' />
-              <Typography style={{ fontWeight: 'bold' }} variant='body2'>
-                NEW SCHEDULE
-              </Typography>
-            </Button>
-          </ThemeProvider>
-        </div> */}
             </div>
             <Table size="small">
                 <TableHead>
@@ -512,7 +496,7 @@ const ScheduleTable = () => {
                                         {row.sched_freq}
                                     </StyledTableCell>
                                     <StyledTableCell>
-                                        <ul>
+                                        <ul style={{ margin: 0 }}>
                                             {row.for_user.map((user) => (
                                                 <li
                                                     style={{
@@ -550,6 +534,7 @@ const StyledTableCell = withStyles((theme: Theme) =>
         },
         body: {
             fontSize: 14,
+            verticalAlign: 'top',
         },
     })
 )(TableCell)
