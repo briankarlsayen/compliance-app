@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import {
     Theme,
     ThemeProvider,
@@ -166,7 +166,7 @@ const greyTheme = createTheme({
     },
 })
 
-interface ICheckListData {
+export interface ICheckListData {
     title: string
     schedules: number
     template?: string
@@ -174,7 +174,7 @@ interface ICheckListData {
     adhoc: boolean
 }
 
-function CheckListsTable({ setTab }) {
+function CheckListsTable({ setTab }: any) {
     const mockData: ICheckListData[] = [
         {
             title: '1Place Standard Centre Closing Procedure // v1.1',
@@ -290,7 +290,7 @@ function CheckListsTable({ setTab }) {
             adhoc: true,
         },
     ]
-    const [checkLists, setCheckLists] = React.useState<IChecklist[]>()
+    const [checkLists, setCheckLists] = useState<IChecklist[]>()
     const processRows = (data: ICheckListData[]) => {
         setPage(0)
         const createdRows = data.map(({ title, schedules, adhoc }) => {
@@ -341,16 +341,16 @@ function CheckListsTable({ setTab }) {
         setCheckLists(createdRows)
     }
     const DEFAULT_ROWS_PAGE = 10
-    const menuRef = React.useRef(null)
+    const menuRef = useRef(null)
 
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
-    const [open, setOpen] = React.useState(false)
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+    const [open, setOpen] = useState(false)
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget)
         setOpen(true)
     }
-    const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PAGE)
-    const [page, setPage] = React.useState(0)
+    const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
+    const [page, setPage] = useState(0)
     const handleClose = () => {
         setAnchorEl(null)
         setOpen(false)
@@ -358,15 +358,16 @@ function CheckListsTable({ setTab }) {
 
     const fetchData = async () => {
         try {
-            // const lists = await fetchChecklist()
-            // processRows(lists?.data)
-            processRows(mockData)
+            const lists = await fetchChecklist()
+            console.log('lists', lists)
+            processRows(lists)
+            // processRows(mockData)
         } catch (error) {
             console.log('failed to get checklist')
         }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchData()
     }, [])
 
@@ -391,20 +392,20 @@ function CheckListsTable({ setTab }) {
     return (
         <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
             <ChecklistFilter mockData={mockData} processRows={processRows} />
-            <Table size="small">
+            <Table data-testid="checklist-table" role="table" size="small">
                 <TableHead>
-                    <TableRow>
-                        <StyledTableCell>
+                    <TableRow role="rowheader">
+                        <StyledTableCell role="columnheader">
                             <Typography style={{ fontWeight: 'bold' }}>
                                 {i18n.t('checklist_name')}
                             </Typography>
                         </StyledTableCell>
-                        <StyledTableCell align="center">
+                        <StyledTableCell role="columnheader" align="center">
                             <Typography style={{ fontWeight: 'bold' }}>
                                 {i18n.t('current_schedules')}
                             </Typography>
                         </StyledTableCell>
-                        <StyledTableCell>
+                        <StyledTableCell role="columnheader">
                             <Typography style={{ fontWeight: 'bold' }}>
                                 {i18n.t('actions')}
                             </Typography>
@@ -463,14 +464,14 @@ function CheckListsTable({ setTab }) {
                                 page * rowsPerPage + rowsPerPage
                             )
                             .map((row, index) => (
-                                <StyledTableRow key={index}>
-                                    <StyledTableCell>
+                                <StyledTableRow key={index} role="row">
+                                    <StyledTableCell role="cell">
                                         {row.name}
                                     </StyledTableCell>
-                                    <StyledTableCell align="center">
+                                    <StyledTableCell role="cell" align="center">
                                         {row.schedule}
                                     </StyledTableCell>
-                                    <StyledTableCell>
+                                    <StyledTableCell role="cell">
                                         {row.actions}
                                     </StyledTableCell>
                                 </StyledTableRow>
@@ -494,7 +495,7 @@ function CheckListsTable({ setTab }) {
 
 function CenteredTabs() {
     const classes = useStyles()
-    const [value, setValue] = React.useState(0)
+    const [value, setValue] = useState(0)
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue)

@@ -131,6 +131,16 @@ export class I18nHelper implements Ii18nHelper {
                                 copy: 'Copy',
                                 deactivate: 'Deactivate',
                                 print_pdf: 'Print PDF',
+                                sched_and_survey: 'Schedules & Surveys',
+                                form_sched_for: 'Form Schedules for',
+                                new_sched_caption:
+                                    'Create new schedule in this folder',
+                                new_sched: 'New schedule',
+                                sched_name: 'Schedule Name',
+                                start_date: 'Start Date',
+                                show_when_overdue: 'Show when Overdue',
+                                sched_frequency: 'Schedule Frequency',
+                                for: 'For',
                             },
                         },
                     },
@@ -173,11 +183,11 @@ export class I18nHelper implements Ii18nHelper {
         )
     }
 
-    mockT() {
-        this._t = (key: string | string[], values?: any) => {
-            return values ? key + ' ' + JSON.stringify(values) : key
-        }
-    }
+    // mockT() {
+    //     this._t = (key: string | string[], values?: any) => {
+    //         return values ? key + ' ' + JSON.stringify(values) : key
+    //     }
+    // }
 }
 
 export const i18n = new I18nHelper()
