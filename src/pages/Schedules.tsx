@@ -25,20 +25,12 @@ import {
 import AddIcon from '@material-ui/icons/Add';
 import { red, blue, lightGreen } from '@material-ui/core/colors';
 
-interface IChecklist {
-  name: string;
-  start_date: string;
-  show_over_due: string;
-  sched_freq: string;
-  for_user: string;
-}
-
 interface IScheduleData {
   name: string;
   start_date: string;
-  show_over_due: string;
+  show_over_due: boolean;
   sched_freq: string;
-  for_user: string;
+  for_user: string[];
 }
 
 const Schedules = () => {
@@ -82,116 +74,250 @@ const ScheduleTable = () => {
     {
       name: 'Documentation 1',
       start_date: '04-24-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'daily',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 6',
+        'User 7',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 2',
       start_date: '01-04-2023',
-      show_over_due: '02-07-2023',
-      sched_freq: 'monthly',
-      for_user: 'Ben',
+      show_over_due: false,
+      sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 3',
       start_date: '05-11-2023',
-      show_over_due: '06-12-2023',
-      sched_freq: 'yearly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq:
+        'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 6',
+        'User 7',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 4',
       start_date: '04-24-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'daily',
-      for_user: 'Ben',
+      show_over_due: false,
+      sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
+      for_user: ['User 1', 'User 2', 'User 3', 'User 4', 'User 5', 'User 12'],
     },
     {
       name: 'Documentation 5',
       start_date: '05-14-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'monthly',
-      for_user: 'Ben',
+      show_over_due: false,
+      sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
+      for_user: [
+        'User 1',
+        'User 5',
+        'User 6',
+        'User 7',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 6',
       start_date: '01-21-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'daily',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 7',
       start_date: '04-24-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'monthly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 6',
+        'User 7',
+        'User 8',
+      ],
     },
     {
       name: 'Documentation 8',
       start_date: '01-24-2023',
-      show_over_due: '08-26-2023',
-      sched_freq: 'monthly',
-      for_user: 'Ben',
+      show_over_due: false,
+      sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
+      for_user: [
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 6',
+        'User 7',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 9',
       start_date: '03-24-2023',
-      show_over_due: '09-26-2023',
-      sched_freq: 'yearly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq:
+        'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 10',
       start_date: '04-24-2023',
-      show_over_due: '06-26-2023',
-      sched_freq: 'monthly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 11',
       start_date: '01-24-2023',
-      show_over_due: '02-26-2023',
-      sched_freq: 'yearly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq:
+        'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 6',
+        'User 7',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 12',
       start_date: '01-14-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'monthly',
-      for_user: 'Ben',
+      show_over_due: false,
+      sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 6',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 13',
       start_date: '04-04-2023',
-      show_over_due: '04-11-2023',
-      sched_freq: 'yearly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq:
+        'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
+      for_user: [
+        'User 4',
+        'User 5',
+        'User 6',
+        'User 7',
+        'User 8',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
     {
       name: 'Documentation 14',
       start_date: '04-24-2023',
-      show_over_due: '06-26-2023',
-      sched_freq: 'daily',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
+      for_user: ['User 1'],
     },
     {
       name: 'Documentation 15',
       start_date: '04-21-2023',
-      show_over_due: '04-26-2023',
-      sched_freq: 'yearly',
-      for_user: 'Ben',
+      show_over_due: true,
+      sched_freq:
+        'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
+      for_user: [
+        'User 1',
+        'User 2',
+        'User 3',
+        'User 4',
+        'User 5',
+        'User 9',
+        'User 10',
+        'User 11',
+        'User 12',
+      ],
     },
   ];
 
   function createData(
     name: string,
     start_date: string,
-    show_over_due: string,
+    show_over_due: boolean,
     sched_freq: string,
-    for_user: string
+    for_user: string[]
   ) {
     return {
       name,
@@ -218,7 +344,7 @@ const ScheduleTable = () => {
     },
   });
 
-  const [checkLists, setCheckLists] = React.useState<IChecklist[]>();
+  const [schedules, setSchedules] = React.useState<IScheduleData[]>();
   const processRows = (data: IScheduleData[]) => {
     const createdRows = data.map(
       ({ name, start_date, show_over_due, sched_freq, for_user }) => {
@@ -231,7 +357,7 @@ const ScheduleTable = () => {
         );
       }
     );
-    setCheckLists(createdRows);
+    setSchedules(createdRows);
   };
   const DEFAULT_ROWS_PAGE = 10;
   const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PAGE);
@@ -350,8 +476,8 @@ const ScheduleTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {checkLists &&
-            checkLists
+          {schedules &&
+            schedules
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => (
                 <StyledTableRow key={index}>
@@ -360,19 +486,25 @@ const ScheduleTable = () => {
                     {formatDate(row.start_date)}
                   </StyledTableCell>
                   <StyledTableCell>
-                    {formatDate(row.show_over_due)}
+                    {row.show_over_due.toString()}
                   </StyledTableCell>
                   <StyledTableCell>{row.sched_freq}</StyledTableCell>
-                  <StyledTableCell>{row.for_user}</StyledTableCell>
+                  <StyledTableCell>
+                    <ul>
+                      {row.for_user.map((user) => (
+                        <li style={{ marginLeft: '-1.3rem' }}>{user}</li>
+                      ))}
+                    </ul>
+                  </StyledTableCell>
                 </StyledTableRow>
               ))}
         </TableBody>
       </Table>
-      {checkLists && (
+      {schedules && (
         <TablePagination
           rowsPerPageOptions={[10, 25]}
           component='div'
-          count={checkLists.length}
+          count={schedules.length}
           page={page}
           onPageChange={handleChangePage}
           rowsPerPage={rowsPerPage}
