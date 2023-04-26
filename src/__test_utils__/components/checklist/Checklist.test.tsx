@@ -16,6 +16,8 @@ const mockResolvedVal = (mockVal: any) => {
 describe('<Checklists />', () => {
     let mockData = [] as ICheckListData[]
 
+    beforeEach(async () => await mockResolvedVal(mockData))
+
     it('renders table', async () => {
         mockData.push(
             {
@@ -33,7 +35,7 @@ describe('<Checklists />', () => {
                 adhoc: true,
             }
         )
-        await mockResolvedVal(mockData)
+
         render(
             <MemoryRouter>
                 <CheckLists />
