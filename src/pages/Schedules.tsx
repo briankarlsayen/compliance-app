@@ -73,11 +73,56 @@ const ScheduleHeader = () => {
                 justifyContent: 'space-between',
             }}
         >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+                style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    alignSelf: 'self-start',
+                }}
+            >
                 <Typography style={{ fontWeight: 'bold' }}>
                     {i18n.t('sched_and_survey')}
                 </Typography>
                 <Typography>&nbsp;/ {i18n.t('form_sched_for')}</Typography>
+            </div>
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-end',
+                }}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        flex: 1,
+                        flexDirection: 'column',
+                        alignItems: 'flex-end',
+                    }}
+                >
+                    <Typography variant="caption">
+                        {i18n.t('new_sched_caption')}:
+                    </Typography>
+                    <div>
+                        <ThemeProvider theme={buttonTheme}>
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                style={{
+                                    color: 'white',
+                                }}
+                            >
+                                <AddIcon fontSize="small" />
+                                <Typography
+                                    style={{ fontWeight: 'bold' }}
+                                    variant="body2"
+                                >
+                                    {i18n.t('new_sched')}
+                                </Typography>
+                            </Button>
+                        </ThemeProvider>
+                    </div>
+                </div>
             </div>
         </div>
     )
@@ -429,109 +474,70 @@ const ScheduleTable = () => {
     }
 
     return (
-        <>
-            <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
-                <div
-                    style={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'flex-end',
-                        paddingBottom: '.5rem',
-                    }}
-                >
-                    <div
-                        style={{
-                            display: 'flex',
-                            flex: 1,
-                            flexDirection: 'column',
-                            alignItems: 'flex-end',
-                            padding: '.5rem',
-                        }}
-                    >
-                        <Typography variant="caption">
-                            {i18n.t('new_sched_caption')}:
-                        </Typography>
-                        <div>
-                            <ThemeProvider theme={buttonTheme}>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    style={{
-                                        color: 'white',
-                                    }}
-                                >
-                                    <AddIcon fontSize="small" />
-                                    <Typography
-                                        style={{ fontWeight: 'bold' }}
-                                        variant="body2"
-                                    >
-                                        {i18n.t('new_sched')}
-                                    </Typography>
-                                </Button>
-                            </ThemeProvider>
-                        </div>
-                    </div>
-                </div>
-                <Table size="small">
-                    <TableHead>
-                        <TableRow>
-                            <StyledTableCell>
-                                <Typography style={{ fontWeight: 'bold' }}>
-                                    {i18n.t('sched_name')}
-                                </Typography>
-                            </StyledTableCell>
-                            <StyledTableCell align="center">
-                                <Typography style={{ fontWeight: 'bold' }}>
-                                    {i18n.t('start_date')}
-                                </Typography>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Typography style={{ fontWeight: 'bold' }}>
-                                    {i18n.t('show_when_overdue')}
-                                </Typography>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Typography style={{ fontWeight: 'bold' }}>
-                                    {i18n.t('sched_frequency')}
-                                </Typography>
-                            </StyledTableCell>
-                            <StyledTableCell>
-                                <Typography style={{ fontWeight: 'bold' }}>
-                                    {i18n.t('for')}
-                                </Typography>
-                            </StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {schedules &&
-                            schedules
-                                .slice(
-                                    page * rowsPerPage,
-                                    page * rowsPerPage + rowsPerPage
-                                )
-                                .map((row, index) => (
-                                    <StyledTableRow key={index}>
-                                        <StyledTableCell>
-                                            <Link
-                                                to={'/schedule-form'}
-                                                style={{
-                                                    textDecoration: 'none',
-                                                    color: 'blue',
-                                                }}
-                                            >
-                                                {row.name}
-                                            </Link>
-                                        </StyledTableCell>
-                                        <StyledTableCell align="center">
-                                            {formatDate(row.start_date)}
-                                        </StyledTableCell>
-                                        <StyledTableCell>
-                                            {row.show_over_due.toString()}
-                                        </StyledTableCell>
-                                        <StyledTableCell>
-                                            {row.sched_freq}
-                                        </StyledTableCell>
-                                        <StyledTruncatedCell
+        <TableContainer
+            component={Paper}
+            style={{ marginTop: '2rem', borderRadius: '5px' }}
+        >
+            <Table size="small">
+                <TableHead>
+                    <TableRow>
+                        <StyledTableCell>
+                            <Typography style={{ fontWeight: 'bold' }}>
+                                {i18n.t('sched_name')}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell align="center">
+                            <Typography style={{ fontWeight: 'bold' }}>
+                                {i18n.t('start_date')}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography style={{ fontWeight: 'bold' }}>
+                                {i18n.t('show_when_overdue')}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography style={{ fontWeight: 'bold' }}>
+                                {i18n.t('sched_frequency')}
+                            </Typography>
+                        </StyledTableCell>
+                        <StyledTableCell>
+                            <Typography style={{ fontWeight: 'bold' }}>
+                                {i18n.t('for')}
+                            </Typography>
+                        </StyledTableCell>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {schedules &&
+                        schedules
+                            .slice(
+                                page * rowsPerPage,
+                                page * rowsPerPage + rowsPerPage
+                            )
+                            .map((row, index) => (
+                                <StyledTableRow key={index}>
+                                    <StyledTableCell>
+                                        <Link
+                                            to={'/schedule-form'}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'blue',
+                                            }}
+                                        >
+                                            {row.name}
+                                        </Link>
+                                    </StyledTableCell>
+                                    <StyledTableCell align="center">
+                                        {formatDate(row.start_date)}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {row.show_over_due.toString()}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {row.sched_freq}
+                                    </StyledTableCell>
+                                    {/* <StyledTruncatedCell
                                             style={{
                                                 color: 'blue',
                                                 cursor: 'pointer',
@@ -543,33 +549,44 @@ const ScheduleTable = () => {
                                             }
                                         >
                                             {row.for_user.join(', ')}
-                                        </StyledTruncatedCell>
-                                    </StyledTableRow>
-                                ))}
-                    </TableBody>
-                </Table>
-                {schedules && (
-                    <TablePagination
-                        rowsPerPageOptions={[10, 25]}
-                        component="div"
-                        count={schedules.length}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
-                )}
-            </TableContainer>
-            {usersSched && (
-                <TableModal
-                    // schedules={schedules}
-                    // schedIdx={Number(schedIdx)}
-                    usersSched={usersSched}
-                    handleCloseModal={handleCloseModal}
-                    show={typeof schedIdx === 'number'}
+                                        </StyledTruncatedCell> */}
+                                    <StyledTableCell>
+                                        <ul
+                                            style={{
+                                                border: '1px black solid',
+                                                padding: '1rem',
+                                                borderRadius: '5px',
+                                                backgroundColor: 'white',
+                                            }}
+                                        >
+                                            {row.for_user.map((user) => (
+                                                <li
+                                                    style={{
+                                                        marginLeft: '1rem',
+                                                        // padding: '.5rem',
+                                                    }}
+                                                >
+                                                    {user}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))}
+                </TableBody>
+            </Table>
+            {schedules && (
+                <TablePagination
+                    rowsPerPageOptions={[10, 25]}
+                    component="div"
+                    count={schedules.length}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    rowsPerPage={rowsPerPage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             )}
-        </>
+        </TableContainer>
     )
 }
 const StyledTableCell = withStyles((theme: Theme) =>
