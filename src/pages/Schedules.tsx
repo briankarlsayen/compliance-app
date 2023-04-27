@@ -537,19 +537,6 @@ const ScheduleTable = () => {
                                     <StyledTableCell>
                                         {row.sched_freq}
                                     </StyledTableCell>
-                                    {/* <StyledTruncatedCell
-                                            style={{
-                                                color: 'blue',
-                                                cursor: 'pointer',
-                                            }}
-                                            onClick={() =>
-                                                handleOpenModal(
-                                                    index + page * rowsPerPage
-                                                )
-                                            }
-                                        >
-                                            {row.for_user.join(', ')}
-                                        </StyledTruncatedCell> */}
                                     <StyledTableCell>
                                         <ul
                                             style={{
@@ -559,11 +546,11 @@ const ScheduleTable = () => {
                                                 backgroundColor: 'white',
                                             }}
                                         >
-                                            {row.for_user.map((user) => (
+                                            {row.for_user.map((user, index) => (
                                                 <li
+                                                    key={index}
                                                     style={{
                                                         marginLeft: '1rem',
-                                                        // padding: '.5rem',
                                                     }}
                                                 >
                                                     {user}
