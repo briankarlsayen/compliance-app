@@ -25,7 +25,6 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 
 import { red, blue, lightGreen, grey } from '@material-ui/core/colors'
-import TableModal from '../components/UsersSchedModal'
 import { Link } from 'react-router-dom'
 i18n.initialise()
 export interface IScheduleData {
@@ -519,7 +518,7 @@ const ScheduleTable = () => {
                                 <StyledTableRow key={index}>
                                     <StyledTableCell>
                                         <Link
-                                            to={'/schedule-form'}
+                                            to={`/checklists/schedules/${index}`}
                                             style={{
                                                 textDecoration: 'none',
                                                 color: 'blue',
