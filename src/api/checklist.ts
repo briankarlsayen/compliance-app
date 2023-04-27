@@ -1,3 +1,4 @@
+import { fetchWithErrorHandling } from '../common'
 import { ICheckListData } from '../pages/Checklists'
 
 function wait<T>(ms: number, value: T) {
@@ -121,4 +122,17 @@ export const mockChecklist = async () => {
         },
     ]
     return await wait(3000, mockData)
+}
+
+export async function updateChecklist(checklist: any): Promise<any> {
+    return fetchWithErrorHandling<any>(
+        'PUT',
+        'checklist/' + checklist.id,
+        JSON.stringify(checklist)
+    )
+}
+
+export async function fetchChecklist(): Promise<any> {
+    return mockChecklist()
+    return fetchWithErrorHandling<any>('GET', 'checklists')
 }

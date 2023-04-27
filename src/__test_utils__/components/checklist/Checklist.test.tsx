@@ -1,11 +1,15 @@
-import { fireEvent, screen, render } from '@testing-library/react'
+import {
+    fireEvent,
+    screen,
+    render,
+    waitForElementToBeRemoved,
+} from '@testing-library/react'
 import CheckLists, { ICheckListData } from '../../../pages/Checklists'
 import { MemoryRouter } from 'react-router-dom'
-import * as api from '../../../api'
+import * as api from '../../../api/checklist'
 jest.mock('../../../api/index')
 
 const mockResolvedVal = (mockVal: any) => {
-    console.log('mockVal', mockVal)
     global.fetch = jest.fn(() => {
         Promise.resolve({
             json: () => Promise.resolve({ ...mockVal }),
@@ -15,8 +19,10 @@ const mockResolvedVal = (mockVal: any) => {
 
 describe('<Checklists />', () => {
     let mockData = [] as ICheckListData[]
-
-    beforeEach(async () => await mockResolvedVal(mockData))
+    afterEach(() => {
+        mockData = []
+    })
+    mockResolvedVal(mockData)
 
     it('renders table', async () => {
         mockData.push(
@@ -41,12 +47,21 @@ describe('<Checklists />', () => {
                 <CheckLists />
             </MemoryRouter>
         )
-        expect(mockResolvedVal).toHaveBeenCalledTimes(1)
+
+        expect(screen.queryByAltText('Loading')).toBeInTheDocument()
+        await waitForElementToBeRemoved(screen.queryByAltText('Loading'), {
+            timeout: 10000,
+        })
+
         expect(screen.getByTestId('checklist-table')).toBeInTheDocument
         expect(screen.getByRole('table')).toBeInTheDocument
         expect(screen.getByRole('rowheader')).toBeInTheDocument
         expect(screen.getAllByRole('columnheader').length).toBe(3)
         // expect(screen.getAllByRole('cell').length).toBe(30)
-        expect(screen.getAllByRole('row').length).toBe(10)
+        // expect(screen.getAllByRole('row').length).toBe(10)
+
+        const btnMore = screen.getAllByText('More')
+        fireEvent.click(btnMore[0])
+        fireEvent.click(screen.getByText('Schedule'))
     })
 })

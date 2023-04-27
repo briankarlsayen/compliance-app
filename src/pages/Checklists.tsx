@@ -26,9 +26,10 @@ import { Menu, MenuItem, TablePagination } from '@material-ui/core'
 
 import ChecklistFilter from '../components/ChecklistFilter'
 import { i18n } from '../i18n'
-import { fetchChecklist } from '../api'
+import { fetchChecklist } from '../api/checklist'
 import Schedules from './Schedules'
 import ScheduleForm from './ScheduleForm'
+import Loading from '../components/Loading'
 i18n.initialise()
 export default function CheckLists() {
     return <CenteredTabs />
@@ -331,6 +332,7 @@ function CheckListsTable({ setTab }: any) {
                             aria-haspopup="true"
                             aria-expanded={open ? 'true' : undefined}
                             onClick={handleClick}
+                            data-testid="btn-more"
                         >
                             {i18n.t('more')}
                         </Button>
@@ -355,13 +357,16 @@ function CheckListsTable({ setTab }: any) {
         setAnchorEl(null)
         setOpen(false)
     }
+    const [loading, setLoading] = useState(false)
 
     const fetchData = async () => {
         try {
+            setLoading(true)
             const lists = await fetchChecklist()
             console.log('lists', lists)
             processRows(lists)
             // processRows(mockData)
+            setLoading(false)
         } catch (error) {
             console.log('failed to get checklist')
         }
@@ -390,106 +395,124 @@ function CheckListsTable({ setTab }: any) {
     }
 
     return (
-        <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
-            <ChecklistFilter mockData={mockData} processRows={processRows} />
-            <Table data-testid="checklist-table" role="table" size="small">
-                <TableHead>
-                    <TableRow role="rowheader">
-                        <StyledTableCell role="columnheader">
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('checklist_name')}
-                            </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell role="columnheader" align="center">
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('current_schedules')}
-                            </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell role="columnheader">
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('actions')}
-                            </Typography>
-                        </StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <Menu
-                        id="menu"
-                        anchorEl={anchorEl}
-                        open={open}
-                        onClose={handleClose}
-                        ref={menuRef}
-                        MenuListProps={{
-                            'aria-labelledby': 'menu-btn',
-                        }}
-                        getContentAnchorEl={null}
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'left',
-                        }}
-                    >
-                        <MenuItem onClick={() => handleTabChange(2)}>
-                            {i18n.t('schedule')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('survey')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('versions')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('settings')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('copy')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('delete')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('deactivate')}
-                        </MenuItem>
-                        <MenuItem onClick={handleClose}>
-                            {i18n.t('print_pdf')}
-                        </MenuItem>
-                    </Menu>
-                    {checkLists &&
-                        checkLists
-                            .slice(
-                                page * rowsPerPage,
-                                page * rowsPerPage + rowsPerPage
-                            )
-                            .map((row, index) => (
-                                <StyledTableRow key={index} role="row">
-                                    <StyledTableCell role="cell">
-                                        {row.name}
-                                    </StyledTableCell>
-                                    <StyledTableCell role="cell" align="center">
-                                        {row.schedule}
-                                    </StyledTableCell>
-                                    <StyledTableCell role="cell">
-                                        {row.actions}
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))}
-                </TableBody>
-            </Table>
+        <>
             {checkLists && (
-                <TablePagination
-                    rowsPerPageOptions={[10, 25]}
-                    component="div"
-                    count={checkLists.length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
+                    <ChecklistFilter
+                        mockData={mockData}
+                        processRows={processRows}
+                    />
+                    <Table
+                        data-testid="checklist-table"
+                        role="table"
+                        size="small"
+                    >
+                        <TableHead>
+                            <TableRow role="rowheader">
+                                <StyledTableCell role="columnheader">
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('checklist_name')}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell
+                                    role="columnheader"
+                                    align="center"
+                                >
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('current_schedules')}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell role="columnheader">
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('actions')}
+                                    </Typography>
+                                </StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <Menu
+                                id="menu"
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={handleClose}
+                                ref={menuRef}
+                                MenuListProps={{
+                                    'aria-labelledby': 'menu-btn',
+                                }}
+                                getContentAnchorEl={null}
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'left',
+                                }}
+                                transformOrigin={{
+                                    vertical: 'top',
+                                    horizontal: 'left',
+                                }}
+                            >
+                                <MenuItem onClick={() => handleTabChange(2)}>
+                                    {i18n.t('schedule')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('survey')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('versions')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('settings')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('copy')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('delete')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('deactivate')}
+                                </MenuItem>
+                                <MenuItem onClick={handleClose}>
+                                    {i18n.t('print_pdf')}
+                                </MenuItem>
+                            </Menu>
+                            {checkLists &&
+                                checkLists
+                                    .slice(
+                                        page * rowsPerPage,
+                                        page * rowsPerPage + rowsPerPage
+                                    )
+                                    .map((row, index) => (
+                                        <StyledTableRow key={index} role="row">
+                                            <StyledTableCell role="cell">
+                                                {row.name}
+                                            </StyledTableCell>
+                                            <StyledTableCell
+                                                role="cell"
+                                                align="center"
+                                            >
+                                                {row.schedule}
+                                            </StyledTableCell>
+                                            <StyledTableCell role="cell">
+                                                {row.actions}
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                        </TableBody>
+                    </Table>
+                    {checkLists && (
+                        <TablePagination
+                            rowsPerPageOptions={[10, 25]}
+                            component="div"
+                            count={checkLists.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    )}
+                </TableContainer>
             )}
-        </TableContainer>
+            <Loading loading={loading} />
+        </>
     )
 }
 
