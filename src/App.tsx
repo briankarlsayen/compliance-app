@@ -2,7 +2,6 @@ import { Container, MuiThemeProvider } from '@material-ui/core'
 import oneplaceTheme from './theme/oneplace-theme'
 import CheckLists from './pages/Checklists'
 import Schedules from './pages/Schedules'
-import ScheduleForm from './pages/ScheduleForm'
 import { HashRouter } from 'react-router-dom'
 import ChecklistHome from './pages/ChecklistHome'
 

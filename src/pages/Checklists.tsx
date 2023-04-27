@@ -28,7 +28,6 @@ import ChecklistFilter from '../components/ChecklistFilter'
 import { i18n } from '../i18n'
 import { fetchChecklist } from '../api/checklist'
 import Schedules from './Schedules'
-import ScheduleForm from './ScheduleForm'
 import Loading from '../components/Loading'
 i18n.initialise()
 export default function CheckLists() {
