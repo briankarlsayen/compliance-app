@@ -171,7 +171,37 @@ export default function EditSchedule() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <FormControl fullWidth size="small">
+                                        <Grid container>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    required
+                                                    id="name"
+                                                    name="name"
+                                                    label="name"
+                                                    fullWidth
+                                                    size="small"
+                                                    autoComplete="off"
+                                                    variant="outlined"
+                                                    value={inputField.name}
+                                                    onChange={updateField}
+                                                />
+                                            </Grid>
+                                            <Grid item xs={12} sm={6}>
+                                                <TextField
+                                                    required
+                                                    id="name"
+                                                    name="name"
+                                                    label="name"
+                                                    fullWidth
+                                                    size="small"
+                                                    autoComplete="off"
+                                                    variant="outlined"
+                                                    value={inputField.name}
+                                                    onChange={updateField}
+                                                />
+                                            </Grid>
+                                        </Grid>
+                                        {/* <FormControl fullWidth size="small">
                                             <InputLabel id="demo-simple-select-label">
                                                 Select an option
                                             </InputLabel>
@@ -194,7 +224,7 @@ export default function EditSchedule() {
                                                     )
                                                 )}
                                             </Select>
-                                        </FormControl>
+                                        </FormControl> */}
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
