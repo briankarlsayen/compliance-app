@@ -24,9 +24,9 @@ export default function EditSchedule() {
         sched_for: '',
         alias: '',
         franchisees: [],
-        recurrence: '',
+        recurrence: 'monthly',
         startDate: new Date(),
-        every: '',
+        every_x: '',
         repeat_weekly: '',
         repeat_monthly: '',
         end: '',
@@ -56,14 +56,14 @@ export default function EditSchedule() {
     const day_of_month = [`Day 'x' of the month`, 'The 1st day of the month']
 
     const sched_for = [
-        'science',
-        'sports',
-        'business',
-        'politics',
-        'entertainment',
-        'technology',
-        'world',
-        'all',
+        'user1',
+        'user2',
+        'user3',
+        'user4',
+        'user5',
+        'user6',
+        'user7',
+        'user8',
     ]
     const franchisee_alias = [
         'science',
@@ -75,16 +75,7 @@ export default function EditSchedule() {
         'world',
         'all',
     ]
-    const recurrence = [
-        'science',
-        'sports',
-        'business',
-        'politics',
-        'entertainment',
-        'technology',
-        'world',
-        'all',
-    ]
+    const recurrence = ['monthly', 'weekly']
 
     return (
         <React.Fragment>
@@ -266,15 +257,23 @@ export default function EditSchedule() {
                                             <Select
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
-                                                // value={age}
-                                                label="Age"
-                                                // onChange={handleChange}
+                                                value={inputField.recurrence}
+                                                name="recurrence"
+                                                label="Recurrence"
+                                                onChange={updateField}
+                                                style={{
+                                                    textTransform: 'capitalize',
+                                                }}
                                             >
                                                 {recurrence.map(
                                                     (item, index) => (
                                                         <MenuItem
                                                             key={index}
                                                             value={item}
+                                                            style={{
+                                                                textTransform:
+                                                                    'capitalize',
+                                                            }}
                                                         >
                                                             {item}
                                                         </MenuItem>
@@ -294,16 +293,6 @@ export default function EditSchedule() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        {/* <TextField
-                                        required
-                                        id="title"
-                                        name="title"
-                                        label="Title"
-                                        fullWidth
-                                        size="small"
-                                        autoComplete="off"
-                                        variant="outlined"
-                                    /> */}
                                         <LocalizationProvider
                                             dateAdapter={AdapterDayjs}
                                         >
@@ -341,46 +330,62 @@ export default function EditSchedule() {
                                             size="small"
                                             autoComplete="off"
                                             variant="outlined"
+                                            inputProps={{
+                                                inputMode: 'numeric',
+                                                pattern: '[0-9]*',
+                                            }}
                                         />
 
-                                        <Typography>
-                                            Repeat on (Weekly)
-                                        </Typography>
-                                        <FormGroup
-                                            style={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                            }}
-                                        >
-                                            {day_of_week.map(
-                                                (option, index) => (
-                                                    <FormControlLabel
-                                                        key={index}
-                                                        control={<Checkbox />}
-                                                        label={option}
-                                                        sx={{
-                                                            alignItems:
-                                                                'center',
-                                                            marginRight: '20px',
-                                                        }}
-                                                    />
-                                                )
-                                            )}
-                                        </FormGroup>
-                                        <Typography>
-                                            Repeat on (Monthly)
-                                        </Typography>
-                                        <FormGroup>
-                                            {day_of_month.map(
-                                                (option, index) => (
-                                                    <FormControlLabel
-                                                        key={index}
-                                                        control={<Checkbox />}
-                                                        label={option}
-                                                    />
-                                                )
-                                            )}
-                                        </FormGroup>
+                                        {inputField.recurrence === 'monthly' ? (
+                                            <div>
+                                                <Typography>
+                                                    Repeat on (Monthly)
+                                                </Typography>
+                                                <FormGroup>
+                                                    {day_of_month.map(
+                                                        (option, index) => (
+                                                            <FormControlLabel
+                                                                key={index}
+                                                                control={
+                                                                    <Checkbox />
+                                                                }
+                                                                label={option}
+                                                            />
+                                                        )
+                                                    )}
+                                                </FormGroup>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <Typography>
+                                                    Repeat on (Weekly)
+                                                </Typography>
+                                                <FormGroup
+                                                    style={{
+                                                        display: 'flex',
+                                                        flexDirection: 'row',
+                                                    }}
+                                                >
+                                                    {day_of_week.map(
+                                                        (option, index) => (
+                                                            <FormControlLabel
+                                                                key={index}
+                                                                control={
+                                                                    <Checkbox />
+                                                                }
+                                                                label={option}
+                                                                sx={{
+                                                                    alignItems:
+                                                                        'center',
+                                                                    marginRight:
+                                                                        '20px',
+                                                                }}
+                                                            />
+                                                        )
+                                                    )}
+                                                </FormGroup>
+                                            </div>
+                                        )}
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
