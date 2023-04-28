@@ -10,8 +10,8 @@ export default function App() {
         // <KeycloakProvider>
         <MuiThemeProvider theme={oneplaceTheme}>
             <Container maxWidth={false}>
+                {/* <CheckLists /> */}
                 <HashRouter>
-                    {/* <CheckLists /> */}
                     <ChecklistHome />
                 </HashRouter>
                 {/* <Schedules /> */}

@@ -39,7 +39,7 @@ const useStyles = makeStyles({
     root: {
         '& .MuiTableCell-head': {
             color: 'white',
-            backgroundColor: 'darkblue',
+            backgroundColor: '#223d79',
             padding: '1rem',
         },
     },
