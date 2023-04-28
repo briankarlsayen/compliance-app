@@ -1,24 +1,39 @@
-import * as React from 'react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
-import Typography from '@mui/material/Typography'
-import TextField from '@mui/material/TextField'
-import Box from '@mui/material/Box'
-import Paper from '@mui/material/Paper'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
-import Select from '@mui/material/Select'
-import UploadFileIcon from '@mui/icons-material/UploadFile'
-import Button from '@mui/material/Button'
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material'
-// import { LocalizationProvider } from '@mui/x-date-pickers'
+import {
+    Typography,
+    TextField,
+    Box,
+    Paper,
+    InputLabel,
+    MenuItem,
+    FormControl,
+    Select,
+    Button,
+    Checkbox,
+    FormControlLabel,
+    FormGroup,
+    createTheme,
+    ThemeProvider,
+    makeStyles,
+} from '@material-ui/core'
+
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs'
+import { blue } from '@mui/material/colors'
+
+const useStyles = makeStyles({
+    root: {
+        '& .MuiFormControl-root': {
+            marginTop: 0,
+        },
+    },
+})
 
 export default function EditSchedule() {
+    const classes = useStyles()
     const [inputField, setInputField] = useState({
         name: '',
         sched_for: '',
@@ -30,6 +45,14 @@ export default function EditSchedule() {
         repeat_weekly: '',
         repeat_monthly: '',
         end: '',
+    })
+
+    const blueTheme = createTheme({
+        palette: {
+            primary: {
+                main: blue[500],
+            },
+        },
     })
 
     const updateField = (e: any) => {
@@ -65,21 +88,20 @@ export default function EditSchedule() {
         'user7',
         'user8',
     ]
-    const franchisee_alias = [
-        'science',
-        'sports',
-        'business',
-        'politics',
-        'entertainment',
-        'technology',
-        'world',
-        'all',
-    ]
+
     const recurrence = ['monthly', 'weekly']
 
     return (
         <React.Fragment>
-            <Paper elevation={3} sx={{ padding: '2rem', marginY: '2rem' }}>
+            <Paper
+                className={classes.root}
+                elevation={3}
+                style={{
+                    padding: '2rem',
+                    marginTop: '2rem',
+                    marginBottom: '2rem',
+                }}
+            >
                 <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
@@ -87,12 +109,12 @@ export default function EditSchedule() {
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={10}>
-                        <Paper elevation={3} sx={{}}>
-                            <Box sx={{ padding: 5 }}>
+                        <Paper elevation={3}>
+                            <Box style={{ padding: '2rem' }}>
                                 <Grid container spacing={3}>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -116,7 +138,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -126,16 +148,16 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <FormControl fullWidth size="small">
-                                            <InputLabel id="demo-simple-select-label">
-                                                Schedule for
+                                            <InputLabel id="demo-siaple-select-labelz">
+                                                Schedule forzz
                                             </InputLabel>
                                             <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
+                                                labelId="select-sched-for"
+                                                id="select-sched-for"
                                                 value={inputField.sched_for}
-                                                label="sched_for"
                                                 name="sched_for"
                                                 onChange={updateField}
+                                                variant="outlined"
                                             >
                                                 {sched_for.map(
                                                     (item, index) => (
@@ -152,7 +174,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -219,7 +241,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -241,7 +263,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -255,12 +277,13 @@ export default function EditSchedule() {
                                                 Select an option
                                             </InputLabel>
                                             <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
+                                                labelId="select-recurrence"
+                                                id="select-recurrence"
                                                 value={inputField.recurrence}
                                                 name="recurrence"
-                                                label="Recurrence"
+                                                aria-label="recurrence"
                                                 onChange={updateField}
+                                                variant="outlined"
                                                 style={{
                                                     textTransform: 'capitalize',
                                                 }}
@@ -284,7 +307,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -312,7 +335,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -374,7 +397,7 @@ export default function EditSchedule() {
                                                                     <Checkbox />
                                                                 }
                                                                 label={option}
-                                                                sx={{
+                                                                style={{
                                                                     alignItems:
                                                                         'center',
                                                                     marginRight:
@@ -389,7 +412,7 @@ export default function EditSchedule() {
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
-                                            sx={{
+                                            style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
@@ -403,11 +426,11 @@ export default function EditSchedule() {
                                                 Select an option
                                             </InputLabel>
                                             <Select
-                                                labelId="demo-simple-select-label"
-                                                id="demo-simple-select"
+                                                labelId="select-end"
+                                                id="select-end"
                                                 value={inputField.end}
-                                                label="End"
                                                 name="end"
+                                                variant="outlined"
                                                 onChange={updateField}
                                             >
                                                 {sched_for.map(
@@ -429,27 +452,33 @@ export default function EditSchedule() {
                     </Grid>
 
                     <Grid item xs={12} sm={2} style={{ alignSelf: 'end' }}>
-                        <Box
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '1rem',
-                            }}
-                        >
-                            <Button
-                                variant="contained"
-                                style={{ width: '100%' }}
-                                onClick={handleSubmit}
+                        <ThemeProvider theme={blueTheme}>
+                            <Box
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '1rem',
+                                }}
                             >
-                                Save
-                            </Button>
-                            <Button
-                                variant="contained"
-                                style={{ width: '100%' }}
-                            >
-                                Save and new Schedule
-                            </Button>
-                        </Box>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    style={{ width: '100%' }}
+                                    onClick={handleSubmit}
+                                >
+                                    Save
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    style={{ width: '100%' }}
+                                >
+                                    Save and new Schedule
+                                </Button>
+                            </Box>
+                        </ThemeProvider>
                     </Grid>
                 </Grid>
             </Paper>
