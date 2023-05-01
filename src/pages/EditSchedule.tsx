@@ -1,3 +1,5 @@
+import { i18n } from '../i18n'
+
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import {
@@ -18,11 +20,20 @@ import {
     makeStyles,
 } from '@material-ui/core'
 
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs, { Dayjs } from 'dayjs'
+// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+// import dayjs, { Dayjs } from 'dayjs'
 import { blue } from '@mui/material/colors'
+import SelectFranchisee from '../components/SelectFranchisee'
+
+import MomentUtils from '@date-io/moment'
+// import DateFnsUtils from '@date-io/date-fns'
+// import LuxonUtils from '@date-io/luxon'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import Recurrence from '../components/Recurrence'
+
+i18n.initialise()
 
 const useStyles = makeStyles({
     root: {
@@ -45,6 +56,7 @@ export default function EditSchedule() {
         repeat_weekly: '',
         repeat_monthly: '',
         end: '',
+        rrule: '',
     })
 
     const blueTheme = createTheme({
@@ -89,6 +101,16 @@ export default function EditSchedule() {
         'user8',
     ]
 
+    const franchisees = [
+        'franchisee 1',
+        'franchisee 2',
+        'franchisee 3',
+        'franchisee 5',
+        'franchisee 6',
+    ]
+
+    const selected_franchisee = ['franchisee 4']
+
     const recurrence = ['monthly', 'weekly']
 
     return (
@@ -105,7 +127,7 @@ export default function EditSchedule() {
                 <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
-                    Edit Schedule
+                    {i18n.t('edit_sched')}
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={10}>
@@ -119,7 +141,7 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Schedule Name
+                                            {i18n.t('sched_name')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -143,15 +165,20 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Schedule For
+                                            {i18n.t('sched_for')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <FormControl fullWidth size="small">
-                                            <InputLabel id="demo-siaple-select-labelz">
-                                                Schedule forzz
+                                        <FormControl
+                                            fullWidth
+                                            size="small"
+                                            variant="outlined"
+                                        >
+                                            <InputLabel id="sched-for-label">
+                                                {i18n.t('select_an_opt')}
                                             </InputLabel>
                                             <Select
+                                                label={i18n.t('select_an_opt')}
                                                 labelId="select-sched-for"
                                                 id="select-sched-for"
                                                 value={inputField.sched_for}
@@ -179,54 +206,28 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Use Franchisee Alias to Select
-                                            Franchisees
+                                            {i18n.t('use_franchisee_alias')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <Grid container>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    required
-                                                    id="name"
-                                                    name="name"
-                                                    label="name"
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    variant="outlined"
-                                                    value={inputField.name}
-                                                    onChange={updateField}
-                                                />
-                                            </Grid>
-                                            <Grid item xs={12} sm={6}>
-                                                <TextField
-                                                    required
-                                                    id="name"
-                                                    name="name"
-                                                    label="name"
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    variant="outlined"
-                                                    value={inputField.name}
-                                                    onChange={updateField}
-                                                />
-                                            </Grid>
-                                        </Grid>
-                                        {/* <FormControl fullWidth size="small">
-                                            <InputLabel id="demo-simple-select-label">
-                                                Select an option
+                                        <FormControl
+                                            fullWidth
+                                            size="small"
+                                            variant="outlined"
+                                        >
+                                            <InputLabel id="use-franchisee-alias-label">
+                                                {i18n.t('select_an_opt')}
                                             </InputLabel>
                                             <Select
+                                                label={i18n.t('select_an_opt')}
                                                 labelId="demo-simple-select-label"
                                                 id="demo-simple-select"
                                                 value={inputField.alias}
-                                                label="Alias"
                                                 name="alias"
                                                 onChange={updateField}
+                                                variant="outlined"
                                             >
-                                                {franchisee_alias.map(
+                                                {sched_for.map(
                                                     (item, index) => (
                                                         <MenuItem
                                                             key={index}
@@ -237,7 +238,7 @@ export default function EditSchedule() {
                                                     )
                                                 )}
                                             </Select>
-                                        </FormControl> */}
+                                        </FormControl>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
@@ -246,19 +247,17 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Select Franchisees
+                                            {i18n.t('select_franchisees')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <TextField
-                                            required
-                                            id="title"
-                                            name="title"
-                                            label="Franchisee"
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
+                                        <SelectFranchisee
+                                            selected_franchisee={
+                                                selected_franchisee
+                                            }
+                                            franchisees={franchisees}
+                                            setInputField={setInputField}
+                                            inputField={inputField}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -268,20 +267,24 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Recurrence
+                                            {i18n.t('recurrence')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <FormControl fullWidth size="small">
-                                            <InputLabel id="demo-simple-select-label">
-                                                Select an option
+                                        {/* <FormControl
+                                            fullWidth
+                                            size="small"
+                                            variant="outlined"
+                                        >
+                                            <InputLabel id="recurrence-label">
+                                                {i18n.t('select_an_opt')}
                                             </InputLabel>
                                             <Select
+                                                label={i18n.t('select_an_opt')}
                                                 labelId="select-recurrence"
                                                 id="select-recurrence"
                                                 value={inputField.recurrence}
                                                 name="recurrence"
-                                                aria-label="recurrence"
                                                 onChange={updateField}
                                                 variant="outlined"
                                                 style={{
@@ -303,7 +306,12 @@ export default function EditSchedule() {
                                                     )
                                                 )}
                                             </Select>
-                                        </FormControl>
+                                        </FormControl> */}
+
+                                        <Recurrence
+                                            setInputField={setInputField}
+                                            inputField={inputField}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
@@ -312,11 +320,29 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Start Date
+                                            {i18n.t('start_date')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <LocalizationProvider
+                                        <TextField
+                                            fullWidth
+                                            id="date"
+                                            label="Birthday"
+                                            type="date"
+                                            defaultValue="2017-05-24"
+                                            variant="outlined"
+                                            value={inputField.startDate}
+                                            onChange={(e: any) =>
+                                                setInputField({
+                                                    ...inputField,
+                                                    startDate: e,
+                                                })
+                                            }
+                                            InputLabelProps={{
+                                                shrink: true,
+                                            }}
+                                        />
+                                        {/* <LocalizationProvider
                                             dateAdapter={AdapterDayjs}
                                         >
                                             <DatePicker
@@ -331,16 +357,16 @@ export default function EditSchedule() {
                                                     })
                                                 }
                                             />
-                                        </LocalizationProvider>
+                                        </LocalizationProvider> */}
                                     </Grid>
-                                    <Grid item xs={12} sm={4}>
+                                    {/* <Grid item xs={12} sm={4}>
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Every 'x' Weeks / Months
+                                            {i18n.t('every_x_weeks_months')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -417,15 +443,20 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            End
+                                            {i18n.t('end')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <FormControl fullWidth size="small">
-                                            <InputLabel id="demo-simple-select-label">
-                                                Select an option
+                                        <FormControl
+                                            fullWidth
+                                            size="small"
+                                            variant="outlined"
+                                        >
+                                            <InputLabel id="end-label">
+                                                {i18n.t('select_an_opt')}
                                             </InputLabel>
                                             <Select
+                                                label={i18n.t('select_an_opt')}
                                                 labelId="select-end"
                                                 id="select-end"
                                                 value={inputField.end}
@@ -445,7 +476,7 @@ export default function EditSchedule() {
                                                 )}
                                             </Select>
                                         </FormControl>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </Box>
                         </Paper>
@@ -467,7 +498,7 @@ export default function EditSchedule() {
                                     style={{ width: '100%' }}
                                     onClick={handleSubmit}
                                 >
-                                    Save
+                                    {i18n.t('save')}
                                 </Button>
                                 <Button
                                     variant="contained"
@@ -475,7 +506,7 @@ export default function EditSchedule() {
                                     size="small"
                                     style={{ width: '100%' }}
                                 >
-                                    Save and new Schedule
+                                    {i18n.t('save_and_new_sched')}
                                 </Button>
                             </Box>
                         </ThemeProvider>

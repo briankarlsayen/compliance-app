@@ -141,6 +141,18 @@ export class I18nHelper implements Ii18nHelper {
                                 show_when_overdue: 'Show when Overdue',
                                 sched_frequency: 'Schedule Frequency',
                                 for: 'For',
+
+                                sched_for: 'Schedule For',
+                                use_franchisee_alias:
+                                    'Use Franchisee Alias to Select Franchisees',
+                                select_franchisees: 'Select Franchisees',
+                                recurrence: 'Recurrence',
+                                every_x_weeks_months:
+                                    "Every 'x' Weeks / Months",
+                                end: 'End',
+                                save_and_new_sched: 'Save and new Schedule',
+                                select_an_opt: 'Select an option',
+                                edit_sched: 'Edit Schedule',
                             },
                         },
                     },
