@@ -130,6 +130,7 @@ export class I18nHelper implements Ii18nHelper {
                                 settings: 'Settings',
                                 copy: 'Copy',
                                 deactivate: 'Deactivate',
+                                activate: 'Activate',
                                 print_pdf: 'Print PDF',
                                 sched_and_survey: 'Schedules & Surveys',
                                 form_sched_for: 'Form Schedules for',

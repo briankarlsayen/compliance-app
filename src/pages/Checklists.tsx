@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, useContext } from 'react'
 import {
     Theme,
     ThemeProvider,
@@ -29,6 +29,7 @@ import { i18n } from '../i18n'
 import { fetchChecklist } from '../api/checklist'
 import Schedules from './Schedules'
 import Loading from '../components/Loading'
+import FeatureFlagsContext from '../feature/featureContext'
 i18n.initialise()
 export default function CheckLists() {
     return <CenteredTabs />
@@ -170,130 +171,16 @@ export interface ICheckListData {
     title: string
     schedules: number
     template?: string
-    status?: string
+    status: string
     adhoc: boolean
 }
 
 function CheckListsTable({ setTab }: any) {
-    const mockData: ICheckListData[] = [
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.1',
-            schedules: 3,
-            template: 'form',
-            status: 'inactive',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.2',
-            schedules: 4,
-            template: 'form',
-            status: 'active',
-            adhoc: false,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.3',
-            schedules: 5,
-            template: 'partner',
-            status: 'active',
-            adhoc: false,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.4',
-            schedules: 1,
-            template: 'form',
-            status: 'inactive',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.5',
-            schedules: 8,
-            template: 'form',
-            status: 'inactive',
-
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.6',
-            schedules: 9,
-            template: 'partner',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.7',
-            schedules: 11,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.8',
-            schedules: 2,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.9',
-            schedules: 1,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.10',
-            schedules: 8,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.11',
-            schedules: 1,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.12',
-            schedules: 1,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.13',
-            schedules: 6,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.14',
-            schedules: 1,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.15',
-            schedules: 1,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-        {
-            title: '1Place Standard Centre Closing Procedure // v1.16',
-            schedules: 4,
-            template: 'form',
-            status: 'active',
-            adhoc: true,
-        },
-    ]
+    const featureFlags = useContext(FeatureFlagsContext).features
     const [checkLists, setCheckLists] = useState<IChecklist[]>()
     const processRows = (data: ICheckListData[]) => {
         setPage(0)
-        const createdRows = data.map(({ title, schedules, adhoc }) => {
+        const createdRows = data.map(({ title, schedules, adhoc, status }) => {
             return createData(
                 title,
                 <ThemeProvider theme={redTheme}>
@@ -313,28 +200,33 @@ function CheckListsTable({ setTab }: any) {
                         </Button>
                     </ThemeProvider>
                     <ThemeProvider theme={blueTheme}>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            size="small"
-                            style={{ textTransform: 'none' }}
-                        >
-                            {i18n.t('edit')}
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            color="primary"
-                            size="small"
-                            style={{ textTransform: 'none' }}
-                            id="menu-btn"
-                            aria-controls="menu"
-                            aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
-                            onClick={handleClick}
-                            data-testid="btn-more"
-                        >
-                            {i18n.t('more')}
-                        </Button>
+                        {!featureFlags?.hideCreateChecklistTemplate && (
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="small"
+                                style={{ textTransform: 'none' }}
+                            >
+                                {i18n.t('edit')}
+                            </Button>
+                        )}
+
+                        {!featureFlags?.hideCreateChecklistSchedule && (
+                            <Button
+                                variant="outlined"
+                                color="primary"
+                                size="small"
+                                style={{ textTransform: 'none' }}
+                                id="menu-btn"
+                                aria-controls="menu"
+                                aria-haspopup="true"
+                                aria-expanded={open ? 'true' : undefined}
+                                onClick={(e) => handleClick(e, status)}
+                                data-testid="btn-more"
+                            >
+                                {i18n.t('more')}
+                            </Button>
+                        )}
                     </ThemeProvider>
                 </div>
             )
@@ -346,9 +238,14 @@ function CheckListsTable({ setTab }: any) {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
     const [open, setOpen] = useState(false)
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const [activeBtn, setActiveBtn] = useState(false)
+    const handleClick = (
+        event: React.MouseEvent<HTMLButtonElement>,
+        status: string
+    ) => {
         setAnchorEl(event.currentTarget)
         setOpen(true)
+        status === 'active' ? setActiveBtn(true) : setActiveBtn(false)
     }
     const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
     const [page, setPage] = useState(0)
@@ -358,11 +255,13 @@ function CheckListsTable({ setTab }: any) {
     }
     const [loading, setLoading] = useState(false)
 
+    const [checklist, setChecklist] = useState([])
+
     const fetchData = async () => {
         try {
             setLoading(true)
             const lists = await fetchChecklist()
-            console.log('lists', lists)
+            setChecklist(lists)
             processRows(lists)
             // processRows(mockData)
             setLoading(false)
@@ -398,7 +297,7 @@ function CheckListsTable({ setTab }: any) {
             {checkLists && (
                 <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
                     <ChecklistFilter
-                        mockData={mockData}
+                        checklist={checklist}
                         processRows={processRows}
                     />
                     <Table
@@ -454,24 +353,39 @@ function CheckListsTable({ setTab }: any) {
                                 <MenuItem onClick={handleClose}>
                                     {i18n.t('survey')}
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    {i18n.t('versions')}
-                                </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    {i18n.t('settings')}
-                                </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    {i18n.t('copy')}
-                                </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    {i18n.t('delete')}
-                                </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    {i18n.t('deactivate')}
-                                </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    {i18n.t('print_pdf')}
-                                </MenuItem>
+                                {!featureFlags?.hideCreateChecklistTemplate && (
+                                    <MenuItem onClick={handleClose}>
+                                        {i18n.t('versions')}
+                                    </MenuItem>
+                                )}
+                                {!featureFlags?.hideCreateChecklistTemplate && (
+                                    <MenuItem onClick={handleClose}>
+                                        {i18n.t('settings')}
+                                    </MenuItem>
+                                )}
+                                {!featureFlags?.hideCreateChecklistTemplate && (
+                                    <MenuItem onClick={handleClose}>
+                                        {i18n.t('copy')}
+                                    </MenuItem>
+                                )}
+                                {!featureFlags?.hideCreateChecklistTemplate &&
+                                    activeBtn && (
+                                        <MenuItem onClick={handleClose}>
+                                            {i18n.t('delete')}
+                                        </MenuItem>
+                                    )}
+                                {!featureFlags?.hideCreateChecklistTemplate && (
+                                    <MenuItem onClick={handleClose}>
+                                        {activeBtn
+                                            ? i18n.t('deactivate')
+                                            : i18n.t('activate')}
+                                    </MenuItem>
+                                )}
+                                {!featureFlags?.hideCreateChecklistTemplate && (
+                                    <MenuItem onClick={handleClose}>
+                                        {i18n.t('print_pdf')}
+                                    </MenuItem>
+                                )}
                             </Menu>
                             {checkLists &&
                                 checkLists

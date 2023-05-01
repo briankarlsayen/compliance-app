@@ -52,7 +52,12 @@ const buttonTheme = createTheme({
     },
 })
 
-const ChecklistFilter = ({ mockData, processRows }: any) => {
+interface PChecklistFilter {
+    checklist: any
+    processRows: any
+}
+
+const ChecklistFilter = ({ checklist, processRows }: PChecklistFilter) => {
     const [filter, setFilter] = useState({
         template: 'all',
         status: 'all',
@@ -91,7 +96,7 @@ const ChecklistFilter = ({ mockData, processRows }: any) => {
     }
 
     const filterChecklist = () => {
-        const filtered = filterArray(mockData, filters)
+        const filtered = filterArray(checklist, filters)
         processRows(filtered)
     }
 

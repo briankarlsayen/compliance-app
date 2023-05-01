@@ -64,7 +64,6 @@ export default function EditSchedule() {
     })
 
     const updateField = (e: any) => {
-        console.log('e', e)
         setInputField({
             ...inputField,
             [e.target.name]: e.target.value,
@@ -331,17 +330,11 @@ export default function EditSchedule() {
                                                 defaultValue={null}
                                                 name="startDate"
                                                 value={inputField.startDate}
-                                                // format={
-                                                //     capabilities.dateTimeFormat
-                                                // }
                                                 onChange={(e: any) =>
                                                     setInputField({
                                                         ...inputField,
                                                         startDate: e,
                                                     })
-                                                }
-                                                onClick={() =>
-                                                    console.log('click')
                                                 }
                                                 InputProps={{
                                                     endAdornment: (
@@ -359,7 +352,6 @@ export default function EditSchedule() {
                                                                     startDate:
                                                                         null,
                                                                 })
-                                                                console.log('x')
                                                             }}
                                                         >
                                                             <ClearIcon />
