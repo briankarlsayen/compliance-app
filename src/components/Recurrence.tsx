@@ -1,8 +1,14 @@
 import React from 'react'
 import RRuleGenerator from 'react-rrule-generator'
 import '../styles/Recurrence.css'
+import { IInputField } from '../pages/EditSchedule'
 
-const Recurrence = ({ setInputField, inputField }) => {
+interface PRecurrence {
+    setInputField: any
+    inputField: IInputField
+}
+
+const Recurrence = ({ setInputField, inputField }: PRecurrence) => {
     return (
         <div id="recurrence-input">
             <RRuleGenerator

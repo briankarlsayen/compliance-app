@@ -11,9 +11,6 @@ import {
 
 import AddIcon from '@material-ui/icons/Add'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { DatePicker } from '@mui/x-date-pickers/DatePicker'
 
 import { blue, lightGreen, grey } from '@material-ui/core/colors'
 

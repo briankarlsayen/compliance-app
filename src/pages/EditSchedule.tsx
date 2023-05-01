@@ -1,4 +1,6 @@
 import { i18n } from '../i18n'
+import Recurrence from '../components/Recurrence'
+import SelectFranchisee from '../components/SelectFranchisee'
 
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
@@ -17,15 +19,10 @@ import {
     makeStyles,
     InputAdornment,
 } from '@material-ui/core'
-
 import { blue } from '@mui/material/colors'
-import SelectFranchisee from '../components/SelectFranchisee'
-
 import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
-import Recurrence from '../components/Recurrence'
 import ClearIcon from '@material-ui/icons/Clear'
-
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -36,12 +33,11 @@ const useStyles = makeStyles({
     },
 })
 
-interface IInputField {
+export interface IInputField {
     name: string
     sched_for: string
     alias: string
     franchisees: string[] | []
-    recurrence: string
     startDate?: Date | null
     every_x: string
     rrule: string
@@ -54,7 +50,6 @@ export default function EditSchedule() {
         sched_for: '',
         alias: '',
         franchisees: [],
-        recurrence: 'monthly',
         startDate: null,
         every_x: '',
         rrule: '',
