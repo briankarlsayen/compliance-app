@@ -12,26 +12,19 @@ import {
     FormControl,
     Select,
     Button,
-    Checkbox,
-    FormControlLabel,
-    FormGroup,
     createTheme,
     ThemeProvider,
     makeStyles,
+    InputAdornment,
 } from '@material-ui/core'
 
-// import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker'
-// import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-// import dayjs, { Dayjs } from 'dayjs'
 import { blue } from '@mui/material/colors'
 import SelectFranchisee from '../components/SelectFranchisee'
 
-import MomentUtils from '@date-io/moment'
-// import DateFnsUtils from '@date-io/date-fns'
-// import LuxonUtils from '@date-io/luxon'
-import { MuiPickersUtilsProvider } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import Recurrence from '../components/Recurrence'
+import ClearIcon from '@material-ui/icons/Clear'
 
 i18n.initialise()
 
@@ -43,19 +36,27 @@ const useStyles = makeStyles({
     },
 })
 
+interface IInputField {
+    name: string
+    sched_for: string
+    alias: string
+    franchisees: string[] | []
+    recurrence: string
+    startDate?: Date | null
+    every_x: string
+    rrule: string
+}
+
 export default function EditSchedule() {
     const classes = useStyles()
-    const [inputField, setInputField] = useState({
+    const [inputField, setInputField] = useState<IInputField>({
         name: '',
         sched_for: '',
         alias: '',
         franchisees: [],
         recurrence: 'monthly',
-        startDate: new Date(),
+        startDate: null,
         every_x: '',
-        repeat_weekly: '',
-        repeat_monthly: '',
-        end: '',
         rrule: '',
     })
 
@@ -68,6 +69,7 @@ export default function EditSchedule() {
     })
 
     const updateField = (e: any) => {
+        console.log('e', e)
         setInputField({
             ...inputField,
             [e.target.name]: e.target.value,
@@ -324,7 +326,54 @@ export default function EditSchedule() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <TextField
+                                        <MuiPickersUtilsProvider
+                                            utils={DateFnsUtils}
+                                        >
+                                            <DatePicker
+                                                variant="inline"
+                                                inputVariant="outlined"
+                                                label="Default DateTime"
+                                                defaultValue={null}
+                                                name="startDate"
+                                                value={inputField.startDate}
+                                                // format={
+                                                //     capabilities.dateTimeFormat
+                                                // }
+                                                onChange={(e: any) =>
+                                                    setInputField({
+                                                        ...inputField,
+                                                        startDate: e,
+                                                    })
+                                                }
+                                                onClick={() =>
+                                                    console.log('click')
+                                                }
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment
+                                                            position="end"
+                                                            style={{
+                                                                zIndex: 33,
+                                                            }}
+                                                            onClick={(
+                                                                e: any
+                                                            ) => {
+                                                                e.stopPropagation()
+                                                                setInputField({
+                                                                    ...inputField,
+                                                                    startDate:
+                                                                        null,
+                                                                })
+                                                                console.log('x')
+                                                            }}
+                                                        >
+                                                            <ClearIcon />
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        </MuiPickersUtilsProvider>
+                                        {/* <TextField
                                             fullWidth
                                             id="date"
                                             label="Birthday"
@@ -341,7 +390,7 @@ export default function EditSchedule() {
                                             InputLabelProps={{
                                                 shrink: true,
                                             }}
-                                        />
+                                        /> */}
                                         {/* <LocalizationProvider
                                             dateAdapter={AdapterDayjs}
                                         >
