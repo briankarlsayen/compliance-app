@@ -341,7 +341,7 @@ export default function EditSchedule() {
                                                         <InputAdornment
                                                             position="end"
                                                             style={{
-                                                                zIndex: 33,
+                                                                cursor: 'pointer',
                                                             }}
                                                             onClick={(
                                                                 e: any
@@ -354,7 +354,9 @@ export default function EditSchedule() {
                                                                 })
                                                             }}
                                                         >
-                                                            <ClearIcon />
+                                                            {inputField.startDate ? (
+                                                                <ClearIcon />
+                                                            ) : null}
                                                         </InputAdornment>
                                                     ),
                                                 }}
