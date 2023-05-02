@@ -75,17 +75,6 @@ export default function EditSchedule() {
         alert(JSON.stringify(inputField))
     }
 
-    const day_of_week = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-    ]
-    const day_of_month = [`Day 'x' of the month`, 'The 1st day of the month']
-
     const sched_for = [
         'user1',
         'user2',
@@ -106,8 +95,6 @@ export default function EditSchedule() {
     ]
 
     const selected_franchisee = ['franchisee 4']
-
-    const recurrence = ['monthly', 'weekly']
 
     return (
         <React.Fragment>
@@ -267,43 +254,6 @@ export default function EditSchedule() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        {/* <FormControl
-                                            fullWidth
-                                            size="small"
-                                            variant="outlined"
-                                        >
-                                            <InputLabel id="recurrence-label">
-                                                {i18n.t('select_an_opt')}
-                                            </InputLabel>
-                                            <Select
-                                                label={i18n.t('select_an_opt')}
-                                                labelId="select-recurrence"
-                                                id="select-recurrence"
-                                                value={inputField.recurrence}
-                                                name="recurrence"
-                                                onChange={updateField}
-                                                variant="outlined"
-                                                style={{
-                                                    textTransform: 'capitalize',
-                                                }}
-                                            >
-                                                {recurrence.map(
-                                                    (item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item}
-                                                            style={{
-                                                                textTransform:
-                                                                    'capitalize',
-                                                            }}
-                                                        >
-                                                            {item}
-                                                        </MenuItem>
-                                                    )
-                                                )}
-                                            </Select>
-                                        </FormControl> */}
-
                                         <Recurrence
                                             setInputField={setInputField}
                                             inputField={inputField}
@@ -326,7 +276,7 @@ export default function EditSchedule() {
                                             <DatePicker
                                                 variant="inline"
                                                 inputVariant="outlined"
-                                                label="Default DateTime"
+                                                label="Select start date"
                                                 defaultValue={null}
                                                 name="startDate"
                                                 value={inputField.startDate}
@@ -362,159 +312,7 @@ export default function EditSchedule() {
                                                 }}
                                             />
                                         </MuiPickersUtilsProvider>
-                                        {/* <TextField
-                                            fullWidth
-                                            id="date"
-                                            label="Birthday"
-                                            type="date"
-                                            defaultValue="2017-05-24"
-                                            variant="outlined"
-                                            value={inputField.startDate}
-                                            onChange={(e: any) =>
-                                                setInputField({
-                                                    ...inputField,
-                                                    startDate: e,
-                                                })
-                                            }
-                                            InputLabelProps={{
-                                                shrink: true,
-                                            }}
-                                        /> */}
-                                        {/* <LocalizationProvider
-                                            dateAdapter={AdapterDayjs}
-                                        >
-                                            <DatePicker
-                                                label="Start date"
-                                                value={dayjs(
-                                                    inputField.startDate
-                                                )}
-                                                onChange={(e: any) =>
-                                                    setInputField({
-                                                        ...inputField,
-                                                        startDate: e,
-                                                    })
-                                                }
-                                            />
-                                        </LocalizationProvider> */}
                                     </Grid>
-                                    {/* <Grid item xs={12} sm={4}>
-                                        <InputLabel
-                                            style={{
-                                                display: 'flex',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            {i18n.t('every_x_weeks_months')}
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8}>
-                                        <TextField
-                                            required
-                                            id="every_x"
-                                            name="every_x"
-                                            label="Enter a value"
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
-                                            inputProps={{
-                                                inputMode: 'numeric',
-                                                pattern: '[0-9]*',
-                                            }}
-                                        />
-
-                                        {inputField.recurrence === 'monthly' ? (
-                                            <div>
-                                                <Typography>
-                                                    Repeat on (Monthly)
-                                                </Typography>
-                                                <FormGroup>
-                                                    {day_of_month.map(
-                                                        (option, index) => (
-                                                            <FormControlLabel
-                                                                key={index}
-                                                                control={
-                                                                    <Checkbox />
-                                                                }
-                                                                label={option}
-                                                            />
-                                                        )
-                                                    )}
-                                                </FormGroup>
-                                            </div>
-                                        ) : (
-                                            <div>
-                                                <Typography>
-                                                    Repeat on (Weekly)
-                                                </Typography>
-                                                <FormGroup
-                                                    style={{
-                                                        display: 'flex',
-                                                        flexDirection: 'row',
-                                                    }}
-                                                >
-                                                    {day_of_week.map(
-                                                        (option, index) => (
-                                                            <FormControlLabel
-                                                                key={index}
-                                                                control={
-                                                                    <Checkbox />
-                                                                }
-                                                                label={option}
-                                                                style={{
-                                                                    alignItems:
-                                                                        'center',
-                                                                    marginRight:
-                                                                        '20px',
-                                                                }}
-                                                            />
-                                                        )
-                                                    )}
-                                                </FormGroup>
-                                            </div>
-                                        )}
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <InputLabel
-                                            style={{
-                                                display: 'flex',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            {i18n.t('end')}
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8}>
-                                        <FormControl
-                                            fullWidth
-                                            size="small"
-                                            variant="outlined"
-                                        >
-                                            <InputLabel id="end-label">
-                                                {i18n.t('select_an_opt')}
-                                            </InputLabel>
-                                            <Select
-                                                label={i18n.t('select_an_opt')}
-                                                labelId="select-end"
-                                                id="select-end"
-                                                value={inputField.end}
-                                                name="end"
-                                                variant="outlined"
-                                                onChange={updateField}
-                                            >
-                                                {sched_for.map(
-                                                    (item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item}
-                                                        >
-                                                            {item}
-                                                        </MenuItem>
-                                                    )
-                                                )}
-                                            </Select>
-                                        </FormControl>
-                                    </Grid> */}
                                 </Grid>
                             </Box>
                         </Paper>
