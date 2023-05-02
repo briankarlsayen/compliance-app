@@ -200,7 +200,11 @@ const ChecklistFilter = ({ checklist, processRows }: PChecklistFilter) => {
                     }}
                 >
                     <Typography variant="caption">
-                        {i18n.t('new_checklist_temp')}:
+                        Create new{' '}
+                        <span style={{ textTransform: 'lowercase' }}>
+                            {i18n.t('customLabel_checklist')}
+                        </span>{' '}
+                        template in this folder:
                     </Typography>
                     <div>
                         <ThemeProvider theme={buttonTheme}>

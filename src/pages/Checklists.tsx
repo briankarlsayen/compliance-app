@@ -98,7 +98,7 @@ function ChecklistTemplates() {
         >
             <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Typography style={{ fontWeight: 'bold' }}>
-                    {i18n.t('checklist_temp')}
+                    {i18n.t('customLabel_checklist')}
                 </Typography>
                 <Typography>&nbsp;/ {i18n.t('health_and_safety')}</Typography>
             </div>

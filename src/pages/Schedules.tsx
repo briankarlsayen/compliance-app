@@ -82,7 +82,9 @@ const ScheduleHeader = () => {
                 <Typography style={{ fontWeight: 'bold' }}>
                     {i18n.t('sched_and_survey')}
                 </Typography>
-                <Typography>&nbsp;/ {i18n.t('form_sched_for')}</Typography>
+                <Typography>
+                    &nbsp;/ {i18n.t('customLabel_checklist')}
+                </Typography>
             </div>
             <div
                 style={{

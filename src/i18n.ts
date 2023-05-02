@@ -30,6 +30,7 @@ export class I18nHelper implements Ii18nHelper {
                     resources: {
                         en: {
                             common: {
+                                customLabel_checklist: 'Form', // * do not copy
                                 ok: 'OK',
                                 save: 'Save',
                                 delete: 'Delete',
@@ -116,10 +117,7 @@ export class I18nHelper implements Ii18nHelper {
                                 site_alias: '$t(customLabel_site) Alias',
                                 current_schedules: 'Current schedules',
                                 actions: 'Actions',
-                                checklist_temp: 'Checklist Templates',
                                 health_and_safety: 'Health & Safety',
-                                new_checklist_temp:
-                                    'Create new checklist template in this folder',
                                 new_temp: 'New Template',
                                 start: 'Start',
                                 edit: 'Edit',
@@ -133,7 +131,6 @@ export class I18nHelper implements Ii18nHelper {
                                 activate: 'Activate',
                                 print_pdf: 'Print PDF',
                                 sched_and_survey: 'Schedules & Surveys',
-                                form_sched_for: 'Form Schedules for',
                                 new_sched_caption:
                                     'Create new schedule in this folder',
                                 new_sched: 'New schedule',
