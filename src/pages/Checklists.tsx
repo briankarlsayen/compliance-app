@@ -1,3 +1,10 @@
+import ChecklistFilter from '../components/ChecklistFilter'
+import { i18n } from '../i18n'
+import { fetchChecklist } from '../api/checklist'
+import Schedules from './Schedules'
+import Loading from '../components/Loading'
+import FeatureFlagsContext from '../feature/featureContext'
+
 import React, { useState, useRef, useEffect, useContext } from 'react'
 import {
     Theme,
@@ -24,12 +31,6 @@ import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 import { Menu, MenuItem, TablePagination } from '@material-ui/core'
 
-import ChecklistFilter from '../components/ChecklistFilter'
-import { i18n } from '../i18n'
-import { fetchChecklist } from '../api/checklist'
-import Schedules from './Schedules'
-import Loading from '../components/Loading'
-import FeatureFlagsContext from '../feature/featureContext'
 i18n.initialise()
 export default function CheckLists() {
     return <CenteredTabs />
