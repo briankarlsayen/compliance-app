@@ -1,6 +1,6 @@
 import { i18n } from '../i18n'
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     TableContainer,
     Table,
@@ -411,7 +411,7 @@ const ScheduleTable = () => {
         },
     })
 
-    const [schedules, setSchedules] = React.useState<IScheduleData[]>()
+    const [schedules, setSchedules] = useState<IScheduleData[]>()
     const processRows = (data: IScheduleData[]) => {
         const createdRows = data.map(
             ({ name, start_date, show_over_due, sched_freq, for_user }) => {
@@ -427,12 +427,12 @@ const ScheduleTable = () => {
         setSchedules(createdRows)
     }
     const DEFAULT_ROWS_PAGE = 10
-    const [rowsPerPage, setRowsPerPage] = React.useState(DEFAULT_ROWS_PAGE)
-    const [page, setPage] = React.useState(0)
-    const [schedIdx, setSchedIdx] = React.useState<number | null>(null)
-    const [usersSched, setUsersSched] = React.useState<string[] | null>(null)
+    const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
+    const [page, setPage] = useState(0)
+    const [schedIdx, setSchedIdx] = useState<number | null>(null)
+    const [usersSched, setUsersSched] = useState<string[] | null>(null)
 
-    React.useEffect(() => {
+    useEffect(() => {
         processRows(mockData)
     }, [])
 

@@ -4,6 +4,7 @@ import CheckLists from './Checklists'
 import EditSchedule from './EditSchedule'
 import { fetchUserInfo } from '../api/userInfo'
 import { FeatureFlagProvider } from '../feature/featureflag'
+import { defaultFeatures } from '../feature/featureContext'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -18,7 +19,9 @@ const ChecklistHome = () => {
     if (response) {
         console.log('response', response)
         return (
-            <FeatureFlagProvider features={{ features: response }}>
+            <FeatureFlagProvider
+                features={{ features: { ...defaultFeatures.features } }}
+            >
                 <Switch>
                     <Route
                         exact
