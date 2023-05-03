@@ -1,4 +1,5 @@
 import { fetchWithErrorHandling } from '../common'
+import { ICapabilities, IFeatureFlagsProps } from '../feature/featureContext'
 
 function wait<T>(ms: number, value: T) {
     return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
@@ -54,10 +55,11 @@ export const mockUser = async () => {
         franchiseeReadOnly: false,
         hideSiteManager: false,
         siteReadOnly: false,
-        incidentCategoryStreamLine: true,
+        // incidentCategoryStreamLine: true,
         pageSize: 20,
-        hideCreateChecklistSchedule: false,
-        hideCreateChecklistTemplate: false,
+        // hideCreateChecklistSchedule: true,
+        // hideCreateChecklistTemplate: true,
+        // partnerPortal: true,
     }
     return await wait(0, mockUser)
 }

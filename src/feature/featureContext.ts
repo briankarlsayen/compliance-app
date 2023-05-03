@@ -52,6 +52,7 @@ export interface ICapabilities {
     pageSize: number
     hideCreateChecklistSchedule: boolean
     hideCreateChecklistTemplate: boolean
+    partnerPortal: boolean
 }
 
 export interface IFeatureFlagsProps {
@@ -110,6 +111,7 @@ export const defaultFeatures: IFeatureFlagsProps = {
         pageSize: 8,
         hideCreateChecklistTemplate: false,
         hideCreateChecklistSchedule: false,
+        partnerPortal: false,
     },
 }
 const FeatureFlagsContext = createContext<IFeatureFlagsProps>(defaultFeatures)

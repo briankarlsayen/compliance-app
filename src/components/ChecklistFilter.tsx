@@ -16,7 +16,8 @@ import lightGreen from '@material-ui/core/colors/lightGreen'
 import { Search, Add } from '@material-ui/icons'
 
 import { i18n } from '../i18n'
-import React, { useState } from 'react'
+import { useContext, useState } from 'react'
+import FeatureFlagsContext from '../feature/featureContext'
 i18n.initialise()
 
 const useStyles = makeStyles((theme) => ({
@@ -58,12 +59,12 @@ interface PChecklistFilter {
 }
 
 const ChecklistFilter = ({ checklist, processRows }: PChecklistFilter) => {
+    const featureFlags = useContext(FeatureFlagsContext).features
     const [filter, setFilter] = useState({
         template: 'all',
         status: 'all',
     })
     const handleChange = (e: any) => {
-        const { name, value } = e.target
         setFilter({
             ...filter,
             [e.target.name]: e.target.value,
@@ -110,36 +111,38 @@ const ChecklistFilter = ({ checklist, processRows }: PChecklistFilter) => {
                 padding: '.5rem',
             }}
         >
-            <FormControl variant="standard" className={classes.formControl}>
-                <InputLabel id="demo-simple-select-label">
-                    Form Template Types
-                </InputLabel>
-                <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={filter.template}
-                    label="All"
-                    name="template"
-                    onChange={handleChange}
-                    MenuProps={{
-                        anchorOrigin: {
-                            vertical: 'bottom',
-                            horizontal: 'left',
-                        },
-                        transformOrigin: {
-                            vertical: 'top',
-                            horizontal: 'left',
-                        },
-                        getContentAnchorEl: null,
-                    }}
-                >
-                    <MenuItem value="all">All</MenuItem>
-                    <MenuItem value="form">Form Templates</MenuItem>
-                    <MenuItem value="partner">
-                        Partner Provided Form Templates
-                    </MenuItem>
-                </Select>
-            </FormControl>
+            {featureFlags?.partnerPortal ? (
+                <FormControl variant="standard" className={classes.formControl}>
+                    <InputLabel id="demo-simple-select-label">
+                        Form Template Types
+                    </InputLabel>
+                    <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={filter.template}
+                        label="All"
+                        name="template"
+                        onChange={handleChange}
+                        MenuProps={{
+                            anchorOrigin: {
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            },
+                            transformOrigin: {
+                                vertical: 'top',
+                                horizontal: 'left',
+                            },
+                            getContentAnchorEl: null,
+                        }}
+                    >
+                        <MenuItem value="all">All</MenuItem>
+                        <MenuItem value="form">Form Templates</MenuItem>
+                        <MenuItem value="partner">
+                            Partner Provided Form Templates
+                        </MenuItem>
+                    </Select>
+                </FormControl>
+            ) : null}
             <FormControl variant="standard" className={classes.formControl}>
                 <InputLabel id="demo-simple-select-label">
                     Status Filter
