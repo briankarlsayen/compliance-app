@@ -24,8 +24,10 @@ import {
 } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
 
-import { red, blue, lightGreen, grey } from '@material-ui/core/colors'
+import { lightGreen } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
+import { fetchSchedule } from '../api/checklist'
+import Loading from '../components/Loading'
 i18n.initialise()
 export interface IScheduleData {
     name: string
@@ -130,255 +132,6 @@ const ScheduleHeader = () => {
 }
 
 const ScheduleTable = () => {
-    const mockData: IScheduleData[] = [
-        {
-            name: 'Documentation 1',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 2',
-            start_date: '01-04-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 3',
-            start_date: '05-11-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 4',
-            start_date: '04-24-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 5',
-            start_date: '05-14-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 6',
-            start_date: '01-21-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 7',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-            ],
-        },
-        {
-            name: 'Documentation 8',
-            start_date: '01-24-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 9',
-            start_date: '03-24-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 10',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 11',
-            start_date: '01-24-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 12',
-            start_date: '01-14-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 13',
-            start_date: '04-04-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            name: 'Documentation 14',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: ['User 1'],
-        },
-        {
-            name: 'Documentation 15',
-            start_date: '04-21-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-    ]
-
     function createData(
         name: string,
         start_date: string,
@@ -394,22 +147,6 @@ const ScheduleTable = () => {
             for_user,
         }
     }
-
-    const redTheme = createTheme({
-        palette: {
-            primary: {
-                main: red[500],
-            },
-        },
-    })
-
-    const blueTheme = createTheme({
-        palette: {
-            primary: {
-                main: blue[500],
-            },
-        },
-    })
 
     const [schedules, setSchedules] = useState<IScheduleData[]>()
     const processRows = (data: IScheduleData[]) => {
@@ -429,11 +166,23 @@ const ScheduleTable = () => {
     const DEFAULT_ROWS_PAGE = 10
     const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
     const [page, setPage] = useState(0)
-    const [schedIdx, setSchedIdx] = useState<number | null>(null)
-    const [usersSched, setUsersSched] = useState<string[] | null>(null)
+    const [loading, setLoading] = useState(false)
+
+    const fetchData = async () => {
+        try {
+            setLoading(true)
+            const lists = await fetchSchedule()
+            setSchedules(lists)
+            processRows(lists)
+            // processRows(mockData)
+            setLoading(false)
+        } catch (error) {
+            console.log('failed to get schedules')
+        }
+    }
 
     useEffect(() => {
-        processRows(mockData)
+        fetchData()
     }, [])
 
     const handleChangePage = (
@@ -462,119 +211,123 @@ const ScheduleTable = () => {
             .toUpperCase()
     }
 
-    const handleOpenModal = (index: number) => {
-        if (schedules) {
-            const users = [...schedules[index].for_user]
-            setUsersSched(users)
-        }
-    }
-
-    const handleCloseModal = () => {
-        setUsersSched(null)
-        setSchedIdx(null)
-    }
-
     return (
-        <TableContainer
-            component={Paper}
-            style={{ marginTop: '2rem', borderRadius: '5px' }}
-        >
-            <Table size="small">
-                <TableHead>
-                    <TableRow>
-                        <StyledTableCell>
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('sched_name')}
-                            </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('start_date')}
-                            </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('show_when_overdue')}
-                            </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('sched_frequency')}
-                            </Typography>
-                        </StyledTableCell>
-                        <StyledTableCell>
-                            <Typography style={{ fontWeight: 'bold' }}>
-                                {i18n.t('for')}
-                            </Typography>
-                        </StyledTableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {schedules &&
-                        schedules
-                            .slice(
-                                page * rowsPerPage,
-                                page * rowsPerPage + rowsPerPage
-                            )
-                            .map((row, index) => (
-                                <StyledTableRow key={index}>
-                                    <StyledTableCell>
-                                        <Link
-                                            to={`/checklists/schedules/${index}`}
-                                            style={{
-                                                textDecoration: 'none',
-                                                color: 'blue',
-                                            }}
-                                        >
-                                            {row.name}
-                                        </Link>
-                                    </StyledTableCell>
-                                    <StyledTableCell align="center">
-                                        {formatDate(row.start_date)}
-                                    </StyledTableCell>
-                                    <StyledTableCell>
-                                        {row.show_over_due.toString()}
-                                    </StyledTableCell>
-                                    <StyledTableCell>
-                                        {row.sched_freq}
-                                    </StyledTableCell>
-                                    <StyledTableCell>
-                                        <ul
-                                            style={{
-                                                border: '1px black solid',
-                                                padding: '1rem',
-                                                borderRadius: '5px',
-                                                backgroundColor: 'white',
-                                            }}
-                                        >
-                                            {row.for_user.map((user, index) => (
-                                                <li
-                                                    key={index}
+        <>
+            {schedules && (
+                <TableContainer
+                    component={Paper}
+                    style={{ marginTop: '2rem', borderRadius: '5px' }}
+                >
+                    <Table
+                        data-testid="schedule-table"
+                        role="table"
+                        size="small"
+                    >
+                        <TableHead>
+                            <TableRow role="rowheader">
+                                <StyledTableCell role="columnheader">
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('sched_name')}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell
+                                    role="columnheader"
+                                    align="center"
+                                >
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('start_date')}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell role="columnheader">
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('show_when_overdue')}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell role="columnheader">
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('sched_frequency')}
+                                    </Typography>
+                                </StyledTableCell>
+                                <StyledTableCell role="columnheader">
+                                    <Typography style={{ fontWeight: 'bold' }}>
+                                        {i18n.t('for')}
+                                    </Typography>
+                                </StyledTableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {schedules &&
+                                schedules
+                                    .slice(
+                                        page * rowsPerPage,
+                                        page * rowsPerPage + rowsPerPage
+                                    )
+                                    .map((row, index) => (
+                                        <StyledTableRow key={index}>
+                                            <StyledTableCell>
+                                                <Link
+                                                    to={`/checklists/schedules/${index}`}
                                                     style={{
-                                                        marginLeft: '1rem',
+                                                        textDecoration: 'none',
+                                                        color: 'blue',
                                                     }}
                                                 >
-                                                    {user}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </StyledTableCell>
-                                </StyledTableRow>
-                            ))}
-                </TableBody>
-            </Table>
-            {schedules && (
-                <TablePagination
-                    rowsPerPageOptions={[10, 25]}
-                    component="div"
-                    count={schedules.length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                />
+                                                    {row.name}
+                                                </Link>
+                                            </StyledTableCell>
+                                            <StyledTableCell align="center">
+                                                {formatDate(row.start_date)}
+                                            </StyledTableCell>
+                                            <StyledTableCell>
+                                                {row.show_over_due.toString()}
+                                            </StyledTableCell>
+                                            <StyledTableCell>
+                                                {row.sched_freq}
+                                            </StyledTableCell>
+                                            <StyledTableCell>
+                                                <ul
+                                                    style={{
+                                                        border: '1px black solid',
+                                                        padding: '1rem',
+                                                        borderRadius: '5px',
+                                                        backgroundColor:
+                                                            'white',
+                                                    }}
+                                                >
+                                                    {row.for_user.map(
+                                                        (user, index) => (
+                                                            <li
+                                                                key={index}
+                                                                style={{
+                                                                    marginLeft:
+                                                                        '1rem',
+                                                                }}
+                                                            >
+                                                                {user}
+                                                            </li>
+                                                        )
+                                                    )}
+                                                </ul>
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
+                        </TableBody>
+                    </Table>
+                    {schedules && (
+                        <TablePagination
+                            rowsPerPageOptions={[10, 25]}
+                            component="div"
+                            count={schedules.length}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    )}
+                </TableContainer>
             )}
-        </TableContainer>
+            <Loading loading={loading} />
+        </>
     )
 }
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -589,22 +342,6 @@ const StyledTableCell = withStyles((theme: Theme) =>
     })
 )(TableCell)
 
-const StyledTruncatedCell = withStyles((theme: Theme) =>
-    createStyles({
-        head: {
-            backgroundColor: 'white',
-        },
-        body: {
-            fontSize: 14,
-            verticalAlign: 'top',
-            maxWidth: 100,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-        },
-    })
-)(TableCell)
-
 const StyledTableRow = withStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -615,11 +352,5 @@ const StyledTableRow = withStyles((theme: Theme) =>
         },
     })
 )(TableRow)
-
-const StyledTableHead = withStyles((theme) => ({
-    root: {
-        backgroundColor: 'orange',
-    },
-}))(TableHead)
 
 export default Schedules
