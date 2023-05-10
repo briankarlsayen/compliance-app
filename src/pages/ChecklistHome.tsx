@@ -5,6 +5,8 @@ import EditSchedule from './EditSchedule'
 import { fetchUserInfo } from '../api/userInfo'
 import { FeatureFlagProvider } from '../feature/featureflag'
 import { defaultFeatures } from '../feature/featureContext'
+import Survey from './Survey'
+import SurveyForm from './SurveyForm'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -28,7 +30,9 @@ const ChecklistHome = () => {
                         path="/checklists/schedules/:id"
                         component={EditSchedule}
                     />
+                    <Route exact path="/surveys/:id" component={SurveyForm} />
                     <Route exact path="/checklists" component={CheckLists} />
+                    <Route exact path="/surveys" component={Survey} />
                     <Route component={CheckLists} />
                 </Switch>
             </FeatureFlagProvider>
