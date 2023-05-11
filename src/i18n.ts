@@ -165,6 +165,8 @@ export class I18nHelper implements Ii18nHelper {
                                 select_sites: 'Select Sites',
                                 save_and_copy: 'Save and Copy',
                                 edit_survey: 'Edit Survey',
+                                new_survey: 'New Survey',
+                                surveys: 'Surveys',
                             },
                         },
                     },

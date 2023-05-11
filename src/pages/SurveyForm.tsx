@@ -29,6 +29,7 @@ import SurveyQRCode from '../common/SurveyQRCode'
 import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
+import AutoComplete from '../common/AutoComplete'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -123,11 +124,18 @@ export default function SurveyForm() {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
+        console.log('hahaha')
         alert(JSON.stringify(inputField))
     }
 
     const surveyFor_list = ['User1', 'User2', 'User3', 'User4']
-
+    const surveyTo_list = [
+        { id: 1, name: 'Email1' },
+        { id: 2, name: 'Email2' },
+        { id: 3, name: 'Email3' },
+        { id: 4, name: 'Email4' },
+        { id: 5, name: 'Email5' },
+    ]
     const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
     const sites = ['Site1', 'Site4', 'Site5', 'Site6', 'Site7']
@@ -344,7 +352,7 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <TextField
+                                        {/* <TextField
                                             required
                                             id="survey_to"
                                             name="survey_to"
@@ -355,6 +363,35 @@ export default function SurveyForm() {
                                             variant="outlined"
                                             value={inputField.survey_to}
                                             onChange={updateField}
+                                        /> */}
+
+                                        <AutoComplete
+                                            fieldLabel="to"
+                                            itemKey="id"
+                                            itemLabel="name"
+                                            items={surveyTo_list}
+                                            // onChange={(
+                                            //     _event: any,
+                                            //     newValue: IIDAndName[]
+                                            // ) => {
+                                            //     setEmailTemplate({
+                                            //         ...emailTemplate,
+                                            //         incidentTypes: [
+                                            //             ...newValue,
+                                            //         ],
+                                            //     })
+                                            // }}
+                                            onChange={(
+                                                _event: any,
+                                                newValue: any
+                                            ) => {
+                                                setInputField({
+                                                    ...inputField,
+                                                    survey_to: [...newValue],
+                                                })
+                                            }}
+                                            // onChange={updateField}
+                                            selectedItems={inputField.survey_to}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -380,8 +417,8 @@ export default function SurveyForm() {
                                                 label="survey-for"
                                                 labelId="select-surver-for-label"
                                                 id="select-surver-for"
-                                                value={inputField.alias}
-                                                name="alias"
+                                                value={inputField.survey_for}
+                                                name="survey_for"
                                                 onChange={updateField}
                                                 variant="outlined"
                                             >
@@ -451,6 +488,7 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <MultiSelectField
+                                            name="selected_sites"
                                             list={sites}
                                             selectedList={selectedSites}
                                             inputField={inputField}
@@ -481,7 +519,7 @@ export default function SurveyForm() {
                                     size="small"
                                 >
                                     <Link
-                                        to={`/surveys`}
+                                        to={`/checklists/surveys`}
                                         style={{
                                             textDecoration: 'none',
                                             color: 'white',
@@ -504,6 +542,7 @@ export default function SurveyForm() {
                                     variant="contained"
                                     color="primary"
                                     size="small"
+                                    onClick={handleSubmit}
                                 >
                                     {i18n.t('save')}
                                 </Button>

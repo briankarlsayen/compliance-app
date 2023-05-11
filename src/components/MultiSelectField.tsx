@@ -26,9 +26,11 @@ export interface PMultiSelectField {
     list: string[]
     setInputField: any
     inputField: any
+    name: string
 }
 
 const MultiSelectField = ({
+    name,
     selectedList,
     list,
     setInputField,
@@ -43,7 +45,7 @@ const MultiSelectField = ({
     const [filteredRight, setFilteredRight] = useState(selectedList)
 
     useEffect(() => {
-        setInputField({ ...inputField, list: rightSide })
+        setInputField({ ...inputField, [name]: rightSide })
     }, [rightSide, rightFilter])
 
     const handleChangeMultiple = (event: any) => {
@@ -120,14 +122,14 @@ const MultiSelectField = ({
     }
 
     const handleFilter = (e: any) => {
-        const filterVal = e.target.value
+        const filterVal = e.target.value.toLowerCase()
         const name = e.target.name
         switch (name) {
             case 'left-filter':
                 setLeftFilter(filterVal)
                 const leftFilterArr = leftSide
                 const filteredLeft = leftFilterArr.filter((x) =>
-                    x.includes(filterVal)
+                    x.toLocaleLowerCase().includes(filterVal)
                 )
                 setFilteredLeft(filteredLeft)
                 break
@@ -135,7 +137,7 @@ const MultiSelectField = ({
                 setRightFilter(filterVal)
                 const rightFilterArr = rightSide
                 const filteredRight = rightFilterArr.filter((x) =>
-                    x.includes(filterVal)
+                    x.toLocaleLowerCase().includes(filterVal)
                 )
                 setFilteredRight(filteredRight)
                 break

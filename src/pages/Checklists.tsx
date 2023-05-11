@@ -354,7 +354,7 @@ function CheckListsTable({ setTab }: any) {
                                 </MenuItem>
                                 <MenuItem onClick={handleClose}>
                                     <Link
-                                        to={`/surveys`}
+                                        to={`/checklists/surveys`}
                                         style={{
                                             textDecoration: 'none',
                                             color: 'black',

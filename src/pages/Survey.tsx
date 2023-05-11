@@ -30,12 +30,10 @@ import { Add as AddIcon, Done, FileCopyOutlined } from '@material-ui/icons'
 
 import { red, blue, lightGreen, grey } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
-import { mockSchedule, mockSurvey } from '../mocks'
 import LinkQRDialog from '../common/LinkQRDialog'
 import CopyButton from '../components/CopyButton'
 import { fetchSurvey } from '../api/checklist'
 import Loading from '../components/Loading'
-// import Loading from '../common/Loading'
 
 i18n.initialise()
 
@@ -279,7 +277,7 @@ const SurveyTable = () => {
                                         <StyledTableRow key={index}>
                                             <StyledTableCell>
                                                 <Link
-                                                    to={`/surveys/${row.name}`}
+                                                    to={`/checklists/surveys/${row.name}`}
                                                     style={{
                                                         textDecoration: 'none',
                                                         color: 'blue',
