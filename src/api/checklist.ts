@@ -1,6 +1,7 @@
 import { fetchWithErrorHandling } from '../common'
 import { ICheckListData } from '../pages/Checklists'
 import { IScheduleData } from '../pages/Schedules'
+import { ISurvey } from '../pages/Survey'
 
 function wait<T>(ms: number, value: T) {
     return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
@@ -378,6 +379,254 @@ export const mockSchedule = async () => {
     return await wait(0, mockSchedules)
 }
 
+export const mockSurvey = async () => {
+    const mockSchedules: ISurvey[] = [
+        {
+            name: 'Survey 1',
+            expiry_date: '04-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '0KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 6',
+                'User 7',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 2',
+            expiry_date: '01-04-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '1KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 3',
+            expiry_date: '05-11-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '2KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 6',
+                'User 7',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 4',
+            expiry_date: '04-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 5',
+            expiry_date: '05-14-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 5',
+                'User 6',
+                'User 7',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 6',
+            expiry_date: '01-21-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 7',
+            expiry_date: '04-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 6',
+                'User 7',
+                'User 8',
+            ],
+        },
+        {
+            name: 'Survey 8',
+            expiry_date: '01-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 6',
+                'User 7',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 9',
+            expiry_date: '03-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 10',
+            expiry_date: '04-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 11',
+            expiry_date: '01-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 6',
+                'User 7',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 12',
+            expiry_date: '01-14-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 6',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 13',
+            expiry_date: '04-04-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 4',
+                'User 5',
+                'User 6',
+                'User 7',
+                'User 8',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+        {
+            name: 'Survey 14',
+            expiry_date: '04-24-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: ['User 1'],
+        },
+        {
+            name: 'Survey 15',
+            expiry_date: '04-21-2023',
+            qr_image: 'https://picsum.photos/200',
+            path: '3KFNLztllSbTlXckrVE9Kx',
+            for_user: [
+                'User 1',
+                'User 2',
+                'User 3',
+                'User 4',
+                'User 5',
+                'User 9',
+                'User 10',
+                'User 11',
+                'User 12',
+            ],
+        },
+    ]
+
+    return await wait(0, mockSchedules)
+}
+
 export async function updateChecklist(checklist: any): Promise<any> {
     return fetchWithErrorHandling<any>(
         'PUT',
@@ -393,5 +642,10 @@ export async function fetchChecklist(): Promise<any> {
 
 export async function fetchSchedule(): Promise<any> {
     return mockSchedule()
+    return fetchWithErrorHandling<any>('GET', 'schedules')
+}
+
+export async function fetchSurvey(): Promise<any> {
+    return mockSurvey()
     return fetchWithErrorHandling<any>('GET', 'schedules')
 }

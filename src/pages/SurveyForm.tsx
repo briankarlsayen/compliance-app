@@ -27,6 +27,8 @@ import QRCode from 'react-qr-code'
 import CopyButton from '../components/CopyButton'
 import SurveyQRCode from '../common/SurveyQRCode'
 import MultiSelectField from '../components/MultiSelectField'
+import { grey } from '@material-ui/core/colors'
+import { Link } from 'react-router-dom'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -99,6 +101,14 @@ export default function SurveyForm() {
         },
     })
 
+    const greyTheme = createTheme({
+        palette: {
+            primary: {
+                main: grey[500],
+            },
+        },
+    })
+
     const updateField = (e: any) => {
         if (e.target.name === 'welcome_msg') {
             let charLen = maxChar - e.target.value.length
@@ -140,7 +150,7 @@ export default function SurveyForm() {
                     {i18n.t('edit_survey')}
                 </Typography>
                 <Grid container spacing={3}>
-                    <Grid item xs={12} sm={10}>
+                    <Grid item xs={12} sm={12}>
                         <Paper elevation={3}>
                             <Box style={{ padding: '2rem' }}>
                                 <Grid container spacing={3}>
@@ -285,7 +295,7 @@ export default function SurveyForm() {
                                             required
                                             id="welcome_msg"
                                             name="welcome_msg"
-                                            label="welcome_msg"
+                                            label={i18n.t('welcome_msg')}
                                             fullWidth
                                             size="small"
                                             autoComplete="off"
@@ -306,7 +316,7 @@ export default function SurveyForm() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Text answers to copy to form name
+                                            {i18n.t('txt_ans_to_copy')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -314,7 +324,7 @@ export default function SurveyForm() {
                                             required
                                             id="text_form_name"
                                             name="text_form_name"
-                                            label="text_form_name"
+                                            label="text answers"
                                             fullWidth
                                             size="small"
                                             autoComplete="off"
@@ -330,7 +340,7 @@ export default function SurveyForm() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Email completed surveys to
+                                            {i18n.t('surveys_to')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -338,7 +348,7 @@ export default function SurveyForm() {
                                             required
                                             id="survey_to"
                                             name="survey_to"
-                                            label="survey_to"
+                                            label="to"
                                             fullWidth
                                             size="small"
                                             autoComplete="off"
@@ -354,7 +364,7 @@ export default function SurveyForm() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Survey for
+                                            {i18n.t('survey_for')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -364,10 +374,10 @@ export default function SurveyForm() {
                                             variant="outlined"
                                         >
                                             <InputLabel id="use-room-alias-label">
-                                                {i18n.t('surver_for')}
+                                                {i18n.t('for')}
                                             </InputLabel>
                                             <Select
-                                                label={i18n.t('surver_for')}
+                                                label="survey-for"
                                                 labelId="select-surver-for-label"
                                                 id="select-surver-for"
                                                 value={inputField.alias}
@@ -395,7 +405,7 @@ export default function SurveyForm() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Use room alias to select sites
+                                            {i18n.t('use_room_alias')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -405,12 +415,10 @@ export default function SurveyForm() {
                                             variant="outlined"
                                         >
                                             <InputLabel id="use-room-alias-label">
-                                                {i18n.t('alias_select_site')}
+                                                Select sites
                                             </InputLabel>
                                             <Select
-                                                label={i18n.t(
-                                                    'alias_select_site'
-                                                )}
+                                                label="use-room-alias"
                                                 labelId="select-room-alias-label"
                                                 id="select-room-alias"
                                                 value={inputField.alias}
@@ -452,35 +460,55 @@ export default function SurveyForm() {
                                 </Grid>
                             </Box>
                         </Paper>
-                        <Grid item xs={12} sm={2} style={{ alignSelf: 'end' }}>
-                            <ThemeProvider theme={blueTheme}>
-                                <Box
-                                    style={{
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        gap: '1rem',
-                                    }}
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        style={{ alignSelf: 'end', paddingTop: 24 }}
+                    >
+                        <Box
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                gap: '1rem',
+                                float: 'right',
+                            }}
+                        >
+                            <ThemeProvider theme={greyTheme}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
                                 >
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                        style={{ width: '100%' }}
-                                        onClick={handleSubmit}
+                                    <Link
+                                        to={`/surveys`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'white',
+                                        }}
                                     >
-                                        {i18n.t('save')}
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                        style={{ width: '100%' }}
-                                    >
-                                        {i18n.t('save_and_new_sched')}
-                                    </Button>
-                                </Box>
+                                        {i18n.t('cancel')}
+                                    </Link>
+                                </Button>
                             </ThemeProvider>
-                        </Grid>
+                            <ThemeProvider theme={blueTheme}>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    onClick={handleSubmit}
+                                >
+                                    {i18n.t('save_and_copy')}
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                >
+                                    {i18n.t('save')}
+                                </Button>
+                            </ThemeProvider>
+                        </Box>
                     </Grid>
                 </Grid>
             </Paper>

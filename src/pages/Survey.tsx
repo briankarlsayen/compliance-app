@@ -33,6 +33,8 @@ import { Link } from 'react-router-dom'
 import { mockSchedule, mockSurvey } from '../mocks'
 import LinkQRDialog from '../common/LinkQRDialog'
 import CopyButton from '../components/CopyButton'
+import { fetchSurvey } from '../api/checklist'
+import Loading from '../components/Loading'
 // import Loading from '../common/Loading'
 
 i18n.initialise()
@@ -187,7 +189,7 @@ const SurveyTable = () => {
     const fetchData = async () => {
         try {
             setLoading(true)
-            const lists = await mockSurvey()
+            const lists = await fetchSurvey()
             setSurveys(lists)
             processRows(lists)
             // processRows(mockData)
@@ -378,7 +380,7 @@ const SurveyTable = () => {
                     )}
                 </TableContainer>
             )}
-            {/* <Loading loading={loading} /> */}
+            <Loading loading={loading} />
         </>
     )
 }
