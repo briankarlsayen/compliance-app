@@ -25,6 +25,8 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import QRCode from 'react-qr-code'
 import CopyButton from '../components/CopyButton'
+import SurveyQRCode from '../common/SurveyQRCode'
+import MultiSelectField from '../components/MultiSelectField'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -54,7 +56,7 @@ export default function SurveyForm() {
     const silentCheckUrl =
         processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'
 
-    const dummyLink = `${silentCheckUrl}/pa/3KFNLztllSbTlXckrVE9Kx`
+    const dummyLink = `${silentCheckUrl}/pa/3KFNLztllSbTlXckrVE9Kx` as string
 
     const classes = useStyles()
     let maxChar = 500
@@ -70,6 +72,24 @@ export default function SurveyForm() {
         welcome_msg: '',
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
+
+    const qrData = {
+        name: 'Survey 15',
+        expiry_date: '04-21-2023',
+        qr_image: 'https://picsum.photos/200',
+        path: '3KFNLztllSbTlXckrVE9Kx',
+        for_user: [
+            'User 1',
+            'User 2',
+            'User 3',
+            'User 4',
+            'User 5',
+            'User 9',
+            'User 10',
+            'User 11',
+            'User 12',
+        ],
+    }
 
     const blueTheme = createTheme({
         palette: {
@@ -99,6 +119,9 @@ export default function SurveyForm() {
     const surveyFor_list = ['User1', 'User2', 'User3', 'User4']
 
     const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
+
+    const sites = ['Site1', 'Site4', 'Site5', 'Site6', 'Site7']
+    const selectedSites = ['Site2', 'Site3']
 
     return (
         <React.Fragment>
@@ -162,20 +185,12 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <QRCode
-                                            // ref={qrRef}
-                                            size={256}
-                                            style={{
-                                                height: 'auto',
-                                                maxWidth: '200',
-                                                width: '200',
+                                        <SurveyQRCode
+                                            details={{
+                                                ...qrData,
+                                                qrValue: inputField.link,
                                             }}
-                                            value={inputField?.link}
-                                            viewBox={`0 0 256 256`}
                                         />
-                                        <Typography style={{ color: 'blue' }}>
-                                            Download QR Code
-                                        </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
@@ -416,39 +431,56 @@ export default function SurveyForm() {
                                             </Select>
                                         </FormControl>
                                     </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            Select sites
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <MultiSelectField
+                                            list={sites}
+                                            selectedList={selectedSites}
+                                            inputField={inputField}
+                                            setInputField={setInputField}
+                                        />
+                                    </Grid>
                                 </Grid>
                             </Box>
                         </Paper>
-                    </Grid>
-
-                    <Grid item xs={12} sm={2} style={{ alignSelf: 'end' }}>
-                        <ThemeProvider theme={blueTheme}>
-                            <Box
-                                style={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    gap: '1rem',
-                                }}
-                            >
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
-                                    style={{ width: '100%' }}
-                                    onClick={handleSubmit}
+                        <Grid item xs={12} sm={2} style={{ alignSelf: 'end' }}>
+                            <ThemeProvider theme={blueTheme}>
+                                <Box
+                                    style={{
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                        gap: '1rem',
+                                    }}
                                 >
-                                    {i18n.t('save')}
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
-                                    style={{ width: '100%' }}
-                                >
-                                    {i18n.t('save_and_new_sched')}
-                                </Button>
-                            </Box>
-                        </ThemeProvider>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="small"
+                                        style={{ width: '100%' }}
+                                        onClick={handleSubmit}
+                                    >
+                                        {i18n.t('save')}
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        size="small"
+                                        style={{ width: '100%' }}
+                                    >
+                                        {i18n.t('save_and_new_sched')}
+                                    </Button>
+                                </Box>
+                            </ThemeProvider>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Paper>
