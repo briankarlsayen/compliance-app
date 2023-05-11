@@ -21,7 +21,7 @@ interface PMove {
     position: string
 }
 
-export interface PSelectFranchisee {
+export interface PMultiSelectField {
     selectedList: string[]
     list: string[]
     setInputField: any
@@ -33,7 +33,7 @@ const MultiSelectField = ({
     list,
     setInputField,
     inputField,
-}: PSelectFranchisee) => {
+}: PMultiSelectField) => {
     const [leftSide, setLeftSide] = useState(list)
     const [rightSide, setRightSide] = useState(selectedList)
     const [selected, setSelected] = useState([])
