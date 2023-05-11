@@ -30,6 +30,7 @@ import TableRow from '@material-ui/core/TableRow'
 import red from '@material-ui/core/colors/red'
 import blue from '@material-ui/core/colors/blue'
 import { Menu, MenuItem, TablePagination } from '@material-ui/core'
+import { Link } from 'react-router-dom'
 
 i18n.initialise()
 export default function CheckLists() {
@@ -352,7 +353,16 @@ function CheckListsTable({ setTab }: any) {
                                     {i18n.t('schedule')}
                                 </MenuItem>
                                 <MenuItem onClick={handleClose}>
-                                    {i18n.t('survey')}
+                                    <Link
+                                        to={`/surveys`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'black',
+                                        }}
+                                    >
+                                        {i18n.t('survey')}
+                                    </Link>
+                                    {/* {i18n.t('survey')} */}
                                 </MenuItem>
                                 {!featureFlags?.hideCreateChecklistTemplate && (
                                     <MenuItem onClick={handleClose}>

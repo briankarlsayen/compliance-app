@@ -122,7 +122,7 @@ export const mockChecklist = async () => {
             adhoc: true,
         },
     ]
-    return await wait(3000, mockData)
+    return await wait(0, mockData)
 }
 
 export const mockSchedule = async () => {
@@ -375,7 +375,7 @@ export const mockSchedule = async () => {
         },
     ]
 
-    return await wait(3000, mockSchedules)
+    return await wait(0, mockSchedules)
 }
 
 export async function updateChecklist(checklist: any): Promise<any> {

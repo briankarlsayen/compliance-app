@@ -1,409 +1,457 @@
-import { i18n } from "../i18n";
+import { i18n } from '../i18n'
+import Recurrence from '../components/Recurrence'
+import SelectFranchisee from '../components/SelectFranchisee'
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from 'react'
+import Grid from '@mui/material/Grid'
 import {
-  TableContainer,
-  Table,
-  Button,
-  Paper,
-  TableHead,
-  TableRow,
-  Typography,
-  TableBody,
-  TablePagination,
-  TableCell,
-  Box,
-  TextField,
-  InputAdornment,
-  IconButton,
-} from "@material-ui/core";
-import {
-  Theme,
-  ThemeProvider,
-  createStyles,
-  createTheme,
-  makeStyles,
-  withStyles,
-  ThemeOptions,
-} from "@material-ui/core/styles";
-import { Add as AddIcon, Done, FileCopyOutlined } from "@material-ui/icons";
-
-import { red, blue, lightGreen, grey } from "@material-ui/core/colors";
-import { Link, useParams } from "react-router-dom";
-import { mockSchedule, mockSurvey } from "../mocks";
-import LinkQRDialog from "../common/LinkQRDialog";
-// import Loading from '../common/Loading'
-
-i18n.initialise();
-
-export interface IScheduleData {
-  name: string;
-  start_date: string;
-  show_over_due: boolean;
-  sched_freq: string;
-  for_user: string[];
-}
-
-export interface ISurvey {
-  name: string;
-  expiry_date: string;
-  qr_image: string;
-  path: string;
-  for_user: string[];
-}
+    Typography,
+    TextField,
+    Box,
+    Paper,
+    InputLabel,
+    MenuItem,
+    FormControl,
+    Select,
+    Button,
+    createTheme,
+    ThemeProvider,
+    makeStyles,
+    InputAdornment,
+} from '@material-ui/core'
+import { blue } from '@mui/material/colors'
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
+import ClearIcon from '@material-ui/icons/Clear'
+import QRCode from 'react-qr-code'
+import CopyButton from '../components/CopyButton'
+i18n.initialise()
 
 const useStyles = makeStyles({
-  root: {
-    "& .MuiTableCell-head": {
-      color: "white",
-      backgroundColor: "#223d79",
-      padding: "1rem",
+    root: {
+        '& .MuiFormControl-root': {
+            marginTop: 0,
+        },
     },
-  },
-});
+})
 
-const Survey = () => {
-  const classes = useStyles();
-  return (
-    <Box className={classes.root}>
-      <SurveyHeader />
-      <SurveyTable />
-    </Box>
-  );
-};
-
-const buttonTheme = createTheme({
-  palette: {
-    primary: {
-      main: lightGreen[600],
-    },
-  },
-});
-
-const SurveyHeader = () => {
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "flex-end",
-        justifyContent: "space-between",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          alignSelf: "self-start",
-        }}
-      >
-        <Typography style={{ fontWeight: "bold" }}>
-          {i18n.t("surveys")}
-        </Typography>
-        <Typography>&nbsp;/ {i18n.t("customLabel_checklist")}</Typography>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-end",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "column",
-            alignItems: "flex-end",
-          }}
-        >
-          <Typography variant="caption">
-            {i18n.t("new_sched_caption")}:
-          </Typography>
-          <div>
-            <ThemeProvider theme={buttonTheme}>
-              <Button
-                variant="contained"
-                color="primary"
-                style={{
-                  color: "white",
-                }}
-              >
-                <AddIcon fontSize="small" />
-                <Typography style={{ fontWeight: "bold" }} variant="body2">
-                  {i18n.t("new_survey")}
-                </Typography>
-              </Button>
-            </ThemeProvider>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-interface CopyButtonProps {
-  value: string;
+export interface IInputField {
+    alias: string
+    expiry_date?: Date | null
+    name: string
+    selected_sites?: string[]
+    survey_for: string
+    survey_to: string[]
+    text_form_name: string
+    welcome_msg: string
+    link: string
 }
 
-const CopyButton = ({ value }: CopyButtonProps) => {
-  const [copied, setCopied] = useState(false);
+export default function SurveyForm() {
+    const isServer = typeof window === 'undefined'
 
-  const handleCopy = (path: string) => {
-    navigator.clipboard.writeText(value);
-    setCopied(true);
-  };
+    const processEnv = isServer ? process.env : {}
+    const silentCheckUrl =
+        processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'
 
-  return (
-    <Button
-      variant="contained"
-      color="primary"
-      startIcon={copied ? <Done /> : <FileCopyOutlined />}
-      onClick={(e: React.MouseEvent) => handleCopy(value)}
-    >
-      {copied ? "Copied" : "Copy"}
-    </Button>
-  );
-};
+    const dummyLink = `${silentCheckUrl}/pa/3KFNLztllSbTlXckrVE9Kx`
 
-const SurveyTable = () => {
-  const { surveyId } = useParams<{ surveyId: string }>();
+    const classes = useStyles()
+    let maxChar = 500
+    const [inputField, setInputField] = useState<IInputField>({
+        alias: '',
+        expiry_date: null,
+        link: dummyLink,
+        name: '',
+        selected_sites: [],
+        survey_for: '',
+        survey_to: [],
+        text_form_name: '',
+        welcome_msg: '',
+    })
+    const [charRemaining, setCharRemaining] = useState(maxChar)
 
-  function createData(
-    name: string,
-    expiry_date: string,
-    qr_image: string,
-    path: string,
-    for_user: string[]
-  ) {
-    return {
-      name,
-      expiry_date,
-      qr_image,
-      path,
-      for_user,
-    };
-  }
+    const blueTheme = createTheme({
+        palette: {
+            primary: {
+                main: blue[500],
+            },
+        },
+    })
 
-  const isServer = typeof window === "undefined";
-
-  const processEnv = isServer ? process.env : {};
-
-  const silentCheckUrl =
-    processEnv?.REACT_APP_SILENT_CHECK_URL || "http://localhost:3000";
-  const [surveys, setSurveys] = useState<ISurvey[]>();
-  const processRows = (data: ISurvey[]) => {
-    const createdRows = data.map(
-      ({ name, expiry_date, qr_image, path, for_user }) => {
-        return createData(name, expiry_date, qr_image, path, for_user);
-      }
-    );
-    setSurveys(createdRows);
-  };
-  const DEFAULT_ROWS_PAGE = 10;
-  const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE);
-  const [page, setPage] = useState(0);
-  const [loading, setLoading] = useState(false);
-
-  const fetchData = async () => {
-    try {
-      setLoading(true);
-      const lists = await mockSurvey();
-      setSurveys(lists);
-      processRows(lists);
-      // processRows(mockData)
-      setLoading(false);
-    } catch (error) {
-      console.log("failed to get surveys");
+    const updateField = (e: any) => {
+        if (e.target.name === 'welcome_msg') {
+            let charLen = maxChar - e.target.value.length
+            if (charLen < 0) return null
+            setCharRemaining(charLen)
+        }
+        setInputField({
+            ...inputField,
+            [e.target.name]: e.target.value,
+        })
     }
-  };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+        alert(JSON.stringify(inputField))
+    }
 
-  const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+    const surveyFor_list = ['User1', 'User2', 'User3', 'User4']
 
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value));
-    setPage(0);
-  };
+    const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
-  const formatDate = (date: string) => {
-    return new Date(date)
-      .toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      })
-      .split(" ")
-      .join("-")
-      .toUpperCase();
-  };
+    return (
+        <React.Fragment>
+            <Paper
+                className={classes.root}
+                elevation={3}
+                style={{
+                    padding: '2rem',
+                    marginTop: '2rem',
+                    marginBottom: '2rem',
+                }}
+            >
+                <Typography
+                    style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
+                >
+                    {i18n.t('edit_survey')}
+                </Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={10}>
+                        <Paper elevation={3}>
+                            <Box style={{ padding: '2rem' }}>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            {i18n.t('survey_link')}
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <Box style={{ display: 'flex' }}>
+                                            <TextField
+                                                required
+                                                id="link"
+                                                name="link"
+                                                label="link"
+                                                fullWidth
+                                                size="small"
+                                                autoComplete="off"
+                                                variant="outlined"
+                                                value={inputField.link}
+                                                onChange={updateField}
+                                                disabled
+                                            />
+                                            <CopyButton
+                                                value={inputField.link}
+                                            />
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            {i18n.t('QR_code')}
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <QRCode
+                                            // ref={qrRef}
+                                            size={256}
+                                            style={{
+                                                height: 'auto',
+                                                maxWidth: '200',
+                                                width: '200',
+                                            }}
+                                            value={inputField?.link}
+                                            viewBox={`0 0 256 256`}
+                                        />
+                                        <Typography style={{ color: 'blue' }}>
+                                            Download QR Code
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            {i18n.t('survey_name')}
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <TextField
+                                            required
+                                            id="name"
+                                            name="name"
+                                            label="name"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            variant="outlined"
+                                            value={inputField.name}
+                                            onChange={updateField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            {i18n.t('survey_expiry_date')}
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <MuiPickersUtilsProvider
+                                            utils={DateFnsUtils}
+                                        >
+                                            <DatePicker
+                                                variant="inline"
+                                                inputVariant="outlined"
+                                                label="Select expiry date"
+                                                defaultValue={null}
+                                                name="expiry_date"
+                                                value={inputField.expiry_date}
+                                                onChange={(e: any) =>
+                                                    setInputField({
+                                                        ...inputField,
+                                                        expiry_date: e,
+                                                    })
+                                                }
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment
+                                                            position="end"
+                                                            style={{
+                                                                cursor: 'pointer',
+                                                            }}
+                                                            onClick={(
+                                                                e: any
+                                                            ) => {
+                                                                e.stopPropagation()
+                                                                setInputField({
+                                                                    ...inputField,
+                                                                    expiry_date:
+                                                                        null,
+                                                                })
+                                                            }}
+                                                        >
+                                                            {inputField.expiry_date ? (
+                                                                <ClearIcon />
+                                                            ) : null}
+                                                        </InputAdornment>
+                                                    ),
+                                                }}
+                                            />
+                                        </MuiPickersUtilsProvider>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            {i18n.t('welcome_msg')}
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <TextField
+                                            required
+                                            id="welcome_msg"
+                                            name="welcome_msg"
+                                            label="welcome_msg"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            variant="outlined"
+                                            value={inputField.welcome_msg}
+                                            onChange={updateField}
+                                            multiline
+                                            minRows={3}
+                                        />
+                                        <Typography>
+                                            {charRemaining} characters remaining
+                                        </Typography>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            Text answers to copy to form name
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <TextField
+                                            required
+                                            id="text_form_name"
+                                            name="text_form_name"
+                                            label="text_form_name"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            variant="outlined"
+                                            value={inputField.text_form_name}
+                                            onChange={updateField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            Email completed surveys to
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <TextField
+                                            required
+                                            id="survey_to"
+                                            name="survey_to"
+                                            label="survey_to"
+                                            fullWidth
+                                            size="small"
+                                            autoComplete="off"
+                                            variant="outlined"
+                                            value={inputField.survey_to}
+                                            onChange={updateField}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            Survey for
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <FormControl
+                                            fullWidth
+                                            size="small"
+                                            variant="outlined"
+                                        >
+                                            <InputLabel id="use-room-alias-label">
+                                                {i18n.t('surver_for')}
+                                            </InputLabel>
+                                            <Select
+                                                label={i18n.t('surver_for')}
+                                                labelId="select-surver-for-label"
+                                                id="select-surver-for"
+                                                value={inputField.alias}
+                                                name="alias"
+                                                onChange={updateField}
+                                                variant="outlined"
+                                            >
+                                                {surveyFor_list.map(
+                                                    (item, index) => (
+                                                        <MenuItem
+                                                            key={index}
+                                                            value={item}
+                                                        >
+                                                            {item}
+                                                        </MenuItem>
+                                                    )
+                                                )}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                    <Grid item xs={12} sm={4}>
+                                        <InputLabel
+                                            style={{
+                                                display: 'flex',
+                                                fontWeight: 700,
+                                            }}
+                                        >
+                                            Use room alias to select sites
+                                        </InputLabel>
+                                    </Grid>
+                                    <Grid item xs={12} sm={8}>
+                                        <FormControl
+                                            fullWidth
+                                            size="small"
+                                            variant="outlined"
+                                        >
+                                            <InputLabel id="use-room-alias-label">
+                                                {i18n.t('alias_select_site')}
+                                            </InputLabel>
+                                            <Select
+                                                label={i18n.t(
+                                                    'alias_select_site'
+                                                )}
+                                                labelId="select-room-alias-label"
+                                                id="select-room-alias"
+                                                value={inputField.alias}
+                                                name="alias"
+                                                onChange={updateField}
+                                                variant="outlined"
+                                            >
+                                                {alias_list.map(
+                                                    (item, index) => (
+                                                        <MenuItem
+                                                            key={index}
+                                                            value={item}
+                                                        >
+                                                            {item}
+                                                        </MenuItem>
+                                                    )
+                                                )}
+                                            </Select>
+                                        </FormControl>
+                                    </Grid>
+                                </Grid>
+                            </Box>
+                        </Paper>
+                    </Grid>
 
-  return (
-    <>
-      {surveys && (
-        <TableContainer
-          component={Paper}
-          style={{ marginTop: "2rem", borderRadius: "5px" }}
-        >
-          <Table data-testid="schedule-table" role="table" size="small">
-            <TableHead>
-              <TableRow role="rowheader">
-                <StyledTableCell role="columnheader">
-                  <Typography style={{ fontWeight: "bold" }}>
-                    {i18n.t("survey_name")}
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell role="columnheader" align="center">
-                  <Typography style={{ fontWeight: "bold" }}>
-                    {i18n.t("expiry_date")}
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell role="columnheader">
-                  <Typography style={{ fontWeight: "bold" }}>
-                    {i18n.t("link")}
-                  </Typography>
-                </StyledTableCell>
-                <StyledTableCell role="columnheader">
-                  <Typography style={{ fontWeight: "bold" }}>
-                    {i18n.t("for")}
-                  </Typography>
-                </StyledTableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {surveys &&
-                surveys
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => (
-                    <StyledTableRow key={index}>
-                      <StyledTableCell>
-                        <Link
-                          to={`/checklists/surveys/${index}`}
-                          style={{
-                            textDecoration: "none",
-                            color: "blue",
-                          }}
-                        >
-                          {row.name}
-                        </Link>
-                      </StyledTableCell>
-                      <StyledTableCell align="center">
-                        {formatDate(row.expiry_date)}
-                      </StyledTableCell>
-
-                      <StyledTableCell
-                        style={{
-                          maxWidth: "80px",
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "space-between",
-                          }}
-                          padding={1}
-                          bgcolor={"#0000001a"}
-                        >
-                          <Box
-                            sx={{
-                              width: "100%",
-                              maxWidth: "calc(100% - 92px)",
-                            }}
-                          >
-                            <Typography
-                              style={{
-                                textOverflow: "ellipsis",
-                                overflow: "hidden",
-                                whiteSpace: "nowrap",
-                              }}
+                    <Grid item xs={12} sm={2} style={{ alignSelf: 'end' }}>
+                        <ThemeProvider theme={blueTheme}>
+                            <Box
+                                style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '1rem',
+                                }}
                             >
-                              {`${silentCheckUrl}/pa/${row.path}`}
-                            </Typography>
-                          </Box>
-                          <CopyButton
-                            value={`${silentCheckUrl}/pa/${row.path}`}
-                          />
-                        </Box>
-                        <LinkQRDialog
-                          details={{
-                            ...row,
-                            qrValue: `${silentCheckUrl}/pa/${row.path}`,
-                          }}
-                        />
-                      </StyledTableCell>
-                      <StyledTableCell>
-                        <ul
-                          style={{
-                            border: "1px black solid",
-                            padding: "1rem",
-                            borderRadius: "5px",
-                            backgroundColor: "white",
-                          }}
-                        >
-                          {row.for_user.map((user, index) => (
-                            <li
-                              key={index}
-                              style={{
-                                marginLeft: "1rem",
-                              }}
-                            >
-                              {user}
-                            </li>
-                          ))}
-                        </ul>
-                      </StyledTableCell>
-                    </StyledTableRow>
-                  ))}
-            </TableBody>
-          </Table>
-          {surveys && (
-            <TablePagination
-              rowsPerPageOptions={[10, 25]}
-              component="div"
-              count={surveys.length}
-              page={page}
-              onPageChange={handleChangePage}
-              rowsPerPage={rowsPerPage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          )}
-        </TableContainer>
-      )}
-      {/* <Loading loading={loading} /> */}
-    </>
-  );
-};
-const StyledTableCell = withStyles((theme: Theme) =>
-  createStyles({
-    head: {
-      backgroundColor: "white",
-    },
-    body: {
-      fontSize: 14,
-      verticalAlign: "top",
-    },
-  })
-)(TableCell);
-
-const StyledTableRow = withStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      "&:nth-of-type(odd)": {
-        backgroundColor: theme.palette.action.hover,
-      },
-      height: "44px",
-    },
-  })
-)(TableRow);
-
-export default Survey;
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    style={{ width: '100%' }}
+                                    onClick={handleSubmit}
+                                >
+                                    {i18n.t('save')}
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    size="small"
+                                    style={{ width: '100%' }}
+                                >
+                                    {i18n.t('save_and_new_sched')}
+                                </Button>
+                            </Box>
+                        </ThemeProvider>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </React.Fragment>
+    )
+}
