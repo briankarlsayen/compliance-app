@@ -234,11 +234,7 @@ const SurveyTable = () => {
                     component={Paper}
                     style={{ marginTop: '2rem', borderRadius: '5px' }}
                 >
-                    <Table
-                        data-testid="schedule-table"
-                        role="table"
-                        size="small"
-                    >
+                    <Table data-testid="survey-table" role="table" size="small">
                         <TableHead>
                             <TableRow role="rowheader">
                                 <StyledTableCell role="columnheader">
