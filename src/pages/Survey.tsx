@@ -166,7 +166,7 @@ const SurveyTable = () => {
 
     const isServer = typeof window === 'undefined'
 
-    const processEnv = isServer ? process.env : {}
+    const processEnv: any = isServer ? process.env : {}
 
     const silentCheckUrl =
         processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'

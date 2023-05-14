@@ -1,6 +1,4 @@
 import { i18n } from '../i18n'
-import Recurrence from '../components/Recurrence'
-import SelectFranchisee from '../components/SelectFranchisee'
 
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
@@ -23,7 +21,6 @@ import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
-import QRCode from 'react-qr-code'
 import CopyButton from '../components/CopyButton'
 import SurveyQRCode from '../common/SurveyQRCode'
 import MultiSelectField from '../components/MultiSelectField'
@@ -55,7 +52,7 @@ export interface IInputField {
 export default function SurveyForm() {
     const isServer = typeof window === 'undefined'
 
-    const processEnv = isServer ? process.env : {}
+    const processEnv: any = isServer ? process.env : {}
     const silentCheckUrl =
         processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'
 

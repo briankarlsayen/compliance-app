@@ -167,6 +167,8 @@ export class I18nHelper implements Ii18nHelper {
                                 edit_survey: 'Edit Survey',
                                 new_survey: 'New Survey',
                                 surveys: 'Surveys',
+                                expiry_date: 'Expiry Date',
+                                link: 'Link',
                             },
                         },
                     },
