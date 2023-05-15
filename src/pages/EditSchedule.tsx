@@ -47,13 +47,14 @@ export default function EditSchedule() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
-        sched_for: '',
+        sched_for: 'Franchisee',
         alias: '',
         franchisees: [],
         startDate: null,
         every_x: '',
         rrule: '',
     })
+    const [isSchedAlias, setSchedAlias] = useState(false)
 
     const blueTheme = createTheme({
         palette: {
@@ -63,11 +64,22 @@ export default function EditSchedule() {
         },
     })
 
+    const checkIsSchedAlias = (str: string) => {
+        const strArr = str.toLocaleLowerCase().split(' ')
+        console.log('strArr', strArr)
+        const idx = strArr.findIndex((e) => e === 'alias')
+        return idx > -1 ? true : false
+    }
+
     const updateField = (e: any) => {
         setInputField({
             ...inputField,
             [e.target.name]: e.target.value,
         })
+
+        if (e.target.name === 'sched_for') {
+            setSchedAlias(checkIsSchedAlias(e.target.value))
+        }
     }
 
     const handleSubmit = (e: any) => {
@@ -76,15 +88,30 @@ export default function EditSchedule() {
     }
 
     const sched_for = [
-        'user1',
-        'user2',
-        'user3',
-        'user4',
-        'user5',
-        'user6',
-        'user7',
-        'user8',
+        {
+            name: 'Franchisee',
+            type: 'Franchisee',
+        },
+        {
+            name: 'Franchisee Alias',
+            type: 'Franchisee',
+        },
+        {
+            name: 'Site',
+            type: 'Site',
+        },
+        {
+            name: 'Site Alias',
+            type: 'Site',
+        },
     ]
+
+    const dynamicLabel = () => {
+        const pickedFor =
+            sched_for.find((item) => item.name === inputField?.sched_for)
+                ?.type ?? null
+        return `Use ${pickedFor} Alias to Select ${pickedFor}`
+    }
 
     const franchisees = [
         'franchisee 1',
@@ -173,9 +200,9 @@ export default function EditSchedule() {
                                                     (item, index) => (
                                                         <MenuItem
                                                             key={index}
-                                                            value={item}
+                                                            value={item.name}
                                                         >
-                                                            {item}
+                                                            {item.name}
                                                         </MenuItem>
                                                     )
                                                 )}
@@ -189,7 +216,8 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            {i18n.t('use_franchisee_alias')}
+                                            {/* {i18n.t('use_franchisee_alias')} */}
+                                            {dynamicLabel()}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -214,9 +242,9 @@ export default function EditSchedule() {
                                                     (item, index) => (
                                                         <MenuItem
                                                             key={index}
-                                                            value={item}
+                                                            value={item.name}
                                                         >
-                                                            {item}
+                                                            {item.name}
                                                         </MenuItem>
                                                     )
                                                 )}

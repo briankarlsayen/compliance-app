@@ -5,7 +5,6 @@ import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
-    TextField,
     Box,
     Paper,
     InputLabel,
@@ -37,10 +36,6 @@ export interface IInputField {
     startDate?: Date | null
     every_x: string
     rrule: string
-}
-
-interface ParamTypes {
-    id: string
 }
 
 export default function EditScheduleFrequency() {
@@ -77,7 +72,20 @@ export default function EditScheduleFrequency() {
 
     const schedule = {
         name: 'Document1',
-        sched_for: 'User1',
+        for_user: [
+            'User 1',
+            'User 2',
+            'User 3',
+            'User 4',
+            'User 5',
+            'User 6',
+            'User 7',
+            'User 8',
+            'User 9',
+            'User 10',
+            'User 11',
+            'User 12',
+        ],
     }
 
     return (
@@ -112,19 +120,9 @@ export default function EditScheduleFrequency() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <TextField
-                                            required
-                                            id="name"
-                                            name="name"
-                                            label="name"
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
-                                            value={schedule?.name}
-                                            onChange={updateField}
-                                            disabled
-                                        />
+                                        <Typography>
+                                            {schedule?.name}
+                                        </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
@@ -137,19 +135,30 @@ export default function EditScheduleFrequency() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <TextField
-                                            required
-                                            id="sched_for"
-                                            name="sched_for"
-                                            label="Schedule for"
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
-                                            value={schedule?.sched_for}
-                                            onChange={updateField}
-                                            disabled
-                                        />
+                                        <Typography>
+                                            <ul
+                                                style={{
+                                                    border: '1px black solid',
+                                                    padding: '1rem',
+                                                    borderRadius: '5px',
+                                                    backgroundColor: 'white',
+                                                }}
+                                            >
+                                                {schedule?.for_user.map(
+                                                    (user, index) => (
+                                                        <li
+                                                            key={index}
+                                                            style={{
+                                                                marginLeft:
+                                                                    '1rem',
+                                                            }}
+                                                        >
+                                                            {user}
+                                                        </li>
+                                                    )
+                                                )}
+                                            </ul>
+                                        </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel

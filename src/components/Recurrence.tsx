@@ -12,7 +12,7 @@ const Recurrence = ({ setInputField, inputField }: PRecurrence) => {
         <div id="recurrence-input">
             <RRuleGenerator
                 config={{
-                    repeat: ['Yearly', 'Monthly', 'Weekly', 'Hourly'],
+                    repeat: ['Monthly', 'Weekly'],
                 }}
                 value={inputField.rrule}
                 onChange={(e: string) =>
