@@ -169,6 +169,7 @@ export class I18nHelper implements Ii18nHelper {
                                 surveys: 'Surveys',
                                 expiry_date: 'Expiry Date',
                                 link: 'Link',
+                                edit_sched_freq: 'Edit Schedule Frequency',
                             },
                         },
                     },
