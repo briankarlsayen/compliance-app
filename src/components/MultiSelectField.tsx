@@ -27,6 +27,7 @@ export interface PMultiSelectField {
     setInputField: any
     inputField: any
     name: string
+    disable?: boolean
 }
 
 const MultiSelectField = ({
@@ -35,6 +36,7 @@ const MultiSelectField = ({
     list,
     setInputField,
     inputField,
+    disable,
 }: PMultiSelectField) => {
     const [leftSide, setLeftSide] = useState(list)
     const [rightSide, setRightSide] = useState(selectedList)
@@ -159,6 +161,7 @@ const MultiSelectField = ({
                         variant="outlined"
                         value={leftFilter}
                         onChange={handleFilter}
+                        disabled={disable}
                         style={{
                             marginBottom: '1rem',
                         }}
@@ -187,6 +190,7 @@ const MultiSelectField = ({
                                 name="left-select"
                                 value={selected}
                                 onChange={handleChangeMultiple}
+                                disabled={disable}
                                 inputProps={{
                                     id: 'select-multiple-native',
                                 }}
@@ -227,6 +231,7 @@ const MultiSelectField = ({
                             <Button
                                 variant="contained"
                                 color="primary"
+                                disabled={disable}
                                 size="small"
                                 style={{
                                     width: '100%',
@@ -238,6 +243,7 @@ const MultiSelectField = ({
                             <Button
                                 variant="contained"
                                 color="primary"
+                                disabled={disable}
                                 size="small"
                                 style={{
                                     width: '100%',
@@ -251,6 +257,7 @@ const MultiSelectField = ({
                             <Button
                                 variant="contained"
                                 color="primary"
+                                disabled={disable}
                                 size="small"
                                 style={{
                                     width: '100%',
@@ -264,6 +271,7 @@ const MultiSelectField = ({
                             <Button
                                 variant="contained"
                                 color="primary"
+                                disabled={disable}
                                 size="small"
                                 style={{
                                     width: '100%',
@@ -289,6 +297,7 @@ const MultiSelectField = ({
                         variant="outlined"
                         value={rightFilter}
                         onChange={handleFilter}
+                        disabled={disable}
                         style={{
                             marginBottom: '1rem',
                         }}
@@ -317,6 +326,7 @@ const MultiSelectField = ({
                                 value={selected}
                                 onChange={handleChangeMultiple}
                                 name="right-select"
+                                disabled={disable}
                                 inputProps={{
                                     id: 'select-multiple-native',
                                 }}

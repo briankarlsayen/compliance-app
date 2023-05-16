@@ -1,6 +1,7 @@
 import { i18n } from '../i18n'
 import Recurrence from '../components/Recurrence'
 import SelectFranchisee from '../components/SelectFranchisee'
+import aliasDatas from '../api/pickAlias.json'
 
 import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
@@ -23,6 +24,8 @@ import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
+import MultiSelectField from '../components/MultiSelectField'
+import { CatchingPokemonSharp } from '@mui/icons-material'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -43,18 +46,25 @@ export interface IInputField {
     rrule: string
 }
 
+interface IAlias {
+    id: number
+    name: string
+    for_user: string[]
+}
+
 export default function EditSchedule() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
         sched_for: 'Franchisee',
         alias: '',
-        franchisees: [],
+        franchisees: ['jaja'],
         startDate: null,
         every_x: '',
         rrule: '',
     })
     const [isSchedAlias, setSchedAlias] = useState(false)
+    const [aliasList, setPickAliasList] = useState<IAlias[]>()
 
     const blueTheme = createTheme({
         palette: {
@@ -66,20 +76,39 @@ export default function EditSchedule() {
 
     const checkIsSchedAlias = (str: string) => {
         const strArr = str.toLocaleLowerCase().split(' ')
-        console.log('strArr', strArr)
         const idx = strArr.findIndex((e) => e === 'alias')
         return idx > -1 ? true : false
     }
 
+    const getAlias = (value: string) => {
+        const schedType = sched_for
+            .find((sched) => sched.name.toLowerCase() === value.toLowerCase())
+            ?.type.toLowerCase()
+        const schedAlias = aliasDatas.find(
+            (item) => item.name === schedType
+        )?.alias
+        setPickAliasList(schedAlias ?? [])
+    }
+
+    const getUserList = (value: string) => {
+        const schedUsers =
+            aliasList && aliasList.find((item) => item.name === value)?.for_user
+        setInputField({ ...inputField, franchisees: schedUsers ?? [] })
+    }
+
     const updateField = (e: any) => {
+        if (e.target.name === 'sched_for') {
+            const isAlias = checkIsSchedAlias(e.target.value)
+            setSchedAlias(isAlias)
+            getAlias(e.target.value)
+        }
+        if (e.target.name === 'alias') {
+            getUserList(e.target.value)
+        }
         setInputField({
             ...inputField,
             [e.target.name]: e.target.value,
         })
-
-        if (e.target.name === 'sched_for') {
-            setSchedAlias(checkIsSchedAlias(e.target.value))
-        }
     }
 
     const handleSubmit = (e: any) => {
@@ -122,6 +151,8 @@ export default function EditSchedule() {
     ]
 
     const selected_franchisee = ['franchisee 4']
+
+    console.log('input', inputField)
 
     return (
         <React.Fragment>
@@ -238,16 +269,19 @@ export default function EditSchedule() {
                                                 onChange={updateField}
                                                 variant="outlined"
                                             >
-                                                {sched_for.map(
-                                                    (item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item.name}
-                                                        >
-                                                            {item.name}
-                                                        </MenuItem>
-                                                    )
-                                                )}
+                                                {aliasList &&
+                                                    aliasList.map(
+                                                        (item, index) => (
+                                                            <MenuItem
+                                                                key={item.id}
+                                                                value={
+                                                                    item.name
+                                                                }
+                                                            >
+                                                                {item.name}
+                                                            </MenuItem>
+                                                        )
+                                                    )}
                                             </Select>
                                         </FormControl>
                                     </Grid>
@@ -262,13 +296,15 @@ export default function EditSchedule() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <SelectFranchisee
-                                            selected_franchisee={
-                                                selected_franchisee
+                                        <MultiSelectField
+                                            name="franchisees"
+                                            list={franchisees}
+                                            selectedList={
+                                                inputField.franchisees
                                             }
-                                            franchisees={franchisees}
-                                            setInputField={setInputField}
                                             inputField={inputField}
+                                            setInputField={setInputField}
+                                            disable={isSchedAlias}
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
