@@ -3,7 +3,7 @@ import Recurrence from '../components/Recurrence'
 import SelectFranchisee from '../components/SelectFranchisee'
 import aliasDatas from '../api/pickAlias.json'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
@@ -53,18 +53,33 @@ interface IAlias {
 }
 
 export default function EditSchedule() {
+    const defaultSelectList = [
+        'User1',
+        'User2',
+        'User3',
+        'User4',
+        'User5',
+        'User6',
+        'User7',
+        'User8',
+        'User9',
+        'User10',
+        'User11',
+        'User12',
+    ]
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
         sched_for: 'Franchisee',
         alias: '',
-        franchisees: ['jaja'],
+        franchisees: [''],
         startDate: null,
         every_x: '',
         rrule: '',
     })
     const [isSchedAlias, setSchedAlias] = useState(false)
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
+    const [selectList, setSelectList] = useState<string[]>(defaultSelectList)
 
     const blueTheme = createTheme({
         palette: {
@@ -90,25 +105,38 @@ export default function EditSchedule() {
         setPickAliasList(schedAlias ?? [])
     }
 
+    const updateSelectList = (list: string[] = []) => {
+        const difference = list.length
+            ? defaultSelectList.filter((item) => !list.includes(item))
+            : defaultSelectList
+        setSelectList(difference)
+    }
+
     const getUserList = (value: string) => {
         const schedUsers =
             aliasList && aliasList.find((item) => item.name === value)?.for_user
-        setInputField({ ...inputField, franchisees: schedUsers ?? [] })
+        const newData = {
+            ...inputField,
+            alias: value,
+            franchisees: schedUsers ?? [],
+        }
+        setInputField(newData)
+        updateSelectList(schedUsers ?? [])
     }
 
     const updateField = (e: any) => {
+        setInputField({
+            ...inputField,
+            [e.target.name]: e.target.value,
+        })
+        if (e.target.name === 'alias') {
+            getUserList(e.target.value)
+        }
         if (e.target.name === 'sched_for') {
             const isAlias = checkIsSchedAlias(e.target.value)
             setSchedAlias(isAlias)
             getAlias(e.target.value)
         }
-        if (e.target.name === 'alias') {
-            getUserList(e.target.value)
-        }
-        setInputField({
-            ...inputField,
-            [e.target.name]: e.target.value,
-        })
     }
 
     const handleSubmit = (e: any) => {
@@ -139,20 +167,15 @@ export default function EditSchedule() {
         const pickedFor =
             sched_for.find((item) => item.name === inputField?.sched_for)
                 ?.type ?? null
-        return `Use ${pickedFor} Alias to Select ${pickedFor}`
+        return {
+            alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
+            select: `Select ${pickedFor}`,
+        }
     }
 
-    const franchisees = [
-        'franchisee 1',
-        'franchisee 2',
-        'franchisee 3',
-        'franchisee 5',
-        'franchisee 6',
-    ]
-
-    const selected_franchisee = ['franchisee 4']
-
-    console.log('input', inputField)
+    useEffect(() => {
+        getAlias('Franchisee')
+    }, [])
 
     return (
         <React.Fragment>
@@ -248,7 +271,7 @@ export default function EditSchedule() {
                                             }}
                                         >
                                             {/* {i18n.t('use_franchisee_alias')} */}
-                                            {dynamicLabel()}
+                                            {dynamicLabel().alias}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -292,13 +315,13 @@ export default function EditSchedule() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            {i18n.t('select_franchisees')}
+                                            {dynamicLabel().select}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <MultiSelectField
                                             name="franchisees"
-                                            list={franchisees}
+                                            list={selectList}
                                             selectedList={
                                                 inputField.franchisees
                                             }

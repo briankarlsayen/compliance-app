@@ -50,6 +50,16 @@ const MultiSelectField = ({
         setInputField({ ...inputField, [name]: rightSide })
     }, [rightSide, rightFilter])
 
+    useEffect(() => {
+        setRightSide(selectedList)
+        setFilteredRight(selectedList)
+    }, [selectedList])
+
+    useEffect(() => {
+        setLeftSide(list)
+        setFilteredLeft(list)
+    }, [list])
+
     const handleChangeMultiple = (event: any) => {
         const { options } = event.target
         const value = [] as any
@@ -60,7 +70,6 @@ const MultiSelectField = ({
         }
         setSelected(value)
     }
-
     const handleMove = ({ position }: PMove) => {
         let rightArr = []
         let leftArr = []
