@@ -27,6 +27,7 @@ import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
 import { CatchingPokemonSharp } from '@mui/icons-material'
 import FeatureFlagsContext from '../feature/featureContext'
+import { fetchFranchisee } from '../api/checklist'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -54,20 +55,20 @@ interface IAlias {
 }
 
 export default function EditSchedule() {
-    const defaultSelectList = [
-        'User1',
-        'User2',
-        'User3',
-        'User4',
-        'User5',
-        'User6',
-        'User7',
-        'User8',
-        'User9',
-        'User10',
-        'User11',
-        'User12',
-    ]
+    // const franchiseeList = [
+    //     'User1',
+    //     'User2',
+    //     'User3',
+    //     'User4',
+    //     'User5',
+    //     'User6',
+    //     'User7',
+    //     'User8',
+    //     'User9',
+    //     'User10',
+    //     'User11',
+    //     'User12',
+    // ]
     const featureFlags = useContext(FeatureFlagsContext).features
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
@@ -81,7 +82,8 @@ export default function EditSchedule() {
     })
     const [isSchedAlias, setSchedAlias] = useState(false)
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
-    const [selectList, setSelectList] = useState<string[]>(defaultSelectList)
+    const [selectList, setSelectList] = useState<string[]>([])
+    const [franchiseeList, setFranchiseeList] = useState<string[]>([])
 
     const blueTheme = createTheme({
         palette: {
@@ -109,8 +111,8 @@ export default function EditSchedule() {
 
     const updateSelectList = (list: string[] = []) => {
         const difference = list.length
-            ? defaultSelectList.filter((item) => !list.includes(item))
-            : defaultSelectList
+            ? franchiseeList.filter((item) => !list.includes(item))
+            : franchiseeList
         setSelectList(difference)
     }
 
@@ -186,8 +188,15 @@ export default function EditSchedule() {
         }
     }
 
+    const getFranchisees = async () => {
+        const franchisees = await fetchFranchisee()
+        setFranchiseeList(franchisees)
+        setSelectList(franchisees)
+    }
+
     useEffect(() => {
         getAlias('Franchisee')
+        getFranchisees()
     }, [])
 
     return (
