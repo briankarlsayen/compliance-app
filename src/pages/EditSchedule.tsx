@@ -3,7 +3,7 @@ import Recurrence from '../components/Recurrence'
 import SelectFranchisee from '../components/SelectFranchisee'
 import aliasDatas from '../api/pickAlias.json'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
@@ -26,6 +26,7 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
 import { CatchingPokemonSharp } from '@mui/icons-material'
+import FeatureFlagsContext from '../feature/featureContext'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -67,6 +68,7 @@ export default function EditSchedule() {
         'User11',
         'User12',
     ]
+    const featureFlags = useContext(FeatureFlagsContext).features
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
@@ -144,24 +146,35 @@ export default function EditSchedule() {
         alert(JSON.stringify(inputField))
     }
 
-    const sched_for = [
-        {
-            name: 'Franchisee',
-            type: 'Franchisee',
-        },
-        {
-            name: 'Franchisee Alias',
-            type: 'Franchisee',
-        },
-        {
-            name: 'Site',
-            type: 'Site',
-        },
-        {
-            name: 'Site Alias',
-            type: 'Site',
-        },
-    ]
+    const sched_for = featureFlags.retailOrganisation
+        ? [
+              {
+                  name: 'Franchisee',
+                  type: 'Franchisee',
+              },
+              {
+                  name: 'Franchisee Alias',
+                  type: 'Franchisee',
+              },
+              {
+                  name: 'Site',
+                  type: 'Site',
+              },
+              {
+                  name: 'Site Alias',
+                  type: 'Site',
+              },
+          ]
+        : [
+              {
+                  name: 'Franchisee',
+                  type: 'Franchisee',
+              },
+              {
+                  name: 'Franchisee Alias',
+                  type: 'Franchisee',
+              },
+          ]
 
     const dynamicLabel = () => {
         const pickedFor =

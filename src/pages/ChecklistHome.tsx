@@ -20,7 +20,6 @@ const ChecklistHome = () => {
     }, [])
 
     if (response) {
-        console.log('response', response)
         return (
             <FeatureFlagProvider
                 features={{ features: { ...defaultFeatures.features } }}
