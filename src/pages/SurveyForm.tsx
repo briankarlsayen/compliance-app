@@ -19,7 +19,11 @@ import {
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
+import {
+    MuiPickersUtilsProvider,
+    DatePicker,
+    KeyboardDatePicker,
+} from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import CopyButton from '../components/CopyButton'
 import SurveyQRCode from '../common/SurveyQRCode'
@@ -62,7 +66,7 @@ export default function SurveyForm() {
     let maxChar = 500
     const [inputField, setInputField] = useState<IInputField>({
         alias: '',
-        expiry_date: null,
+        expiry_date: new Date('2014-08-18T21:11:54'),
         link: dummyLink,
         name: '',
         selected_sites: [],
@@ -72,6 +76,14 @@ export default function SurveyForm() {
         welcome_msg: '',
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
+    const [sites, setSites] = useState([
+        'Site1',
+        'Site4',
+        'Site5',
+        'Site6',
+        'Site7',
+    ])
+    const [selectedSites, setSelectedSites] = useState(['Site2', 'Site3'])
 
     const qrData = {
         name: 'Survey 15',
@@ -121,7 +133,6 @@ export default function SurveyForm() {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        console.log('hahaha')
         alert(JSON.stringify(inputField))
     }
 
@@ -135,11 +146,10 @@ export default function SurveyForm() {
     ]
     const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
-    const sites = ['Site1', 'Site4', 'Site5', 'Site6', 'Site7']
-    const selectedSites = ['Site2', 'Site3']
+    console.log('DateFnsUtils', DateFnsUtils)
 
     return (
-        <React.Fragment>
+        <div>
             <Paper
                 className={classes.root}
                 elevation={3}
@@ -245,6 +255,24 @@ export default function SurveyForm() {
                                         <MuiPickersUtilsProvider
                                             utils={DateFnsUtils}
                                         >
+                                            {/* <KeyboardDatePicker
+                                                variant="inline"
+                                                inputVariant="outlined"
+                                                margin="normal"
+                                                id="date-picker-dialog"
+                                                label="Select expiry date"
+                                                format="MM/dd/yyyy"
+                                                value={inputField.expiry_date}
+                                                onChange={(e: any) =>
+                                                    setInputField({
+                                                        ...inputField,
+                                                        expiry_date: e,
+                                                    })
+                                                }
+                                                KeyboardButtonProps={{
+                                                    'aria-label': 'change date',
+                                                }}
+                                            /> */}
                                             <DatePicker
                                                 variant="inline"
                                                 inputVariant="outlined"
@@ -276,7 +304,7 @@ export default function SurveyForm() {
                                                                 })
                                                             }}
                                                         >
-                                                            {inputField.expiry_date ? (
+                                                            {inputField?.expiry_date ? (
                                                                 <ClearIcon />
                                                             ) : null}
                                                         </InputAdornment>
@@ -349,35 +377,11 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        {/* <TextField
-                                            required
-                                            id="survey_to"
-                                            name="survey_to"
-                                            label="to"
-                                            fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
-                                            value={inputField.survey_to}
-                                            onChange={updateField}
-                                        /> */}
-
                                         <AutoComplete
                                             fieldLabel="to"
                                             itemKey="id"
                                             itemLabel="name"
                                             items={surveyTo_list}
-                                            // onChange={(
-                                            //     _event: any,
-                                            //     newValue: IIDAndName[]
-                                            // ) => {
-                                            //     setEmailTemplate({
-                                            //         ...emailTemplate,
-                                            //         incidentTypes: [
-                                            //             ...newValue,
-                                            //         ],
-                                            //     })
-                                            // }}
                                             onChange={(
                                                 _event: any,
                                                 newValue: any
@@ -548,6 +552,6 @@ export default function SurveyForm() {
                     </Grid>
                 </Grid>
             </Paper>
-        </React.Fragment>
+        </div>
     )
 }

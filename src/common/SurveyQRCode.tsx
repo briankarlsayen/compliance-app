@@ -1,7 +1,7 @@
-import React from 'react'
 import QRCode from 'react-qr-code'
 import { ISurvey } from '../pages/Survey'
 import { Box, Button, Typography } from '@mui/material'
+import { useRef } from 'react'
 
 interface IDetails extends ISurvey {
     qrValue: string
@@ -12,7 +12,7 @@ interface ISurveyQRCode {
 }
 
 function SurveyQRCode({ details }: ISurveyQRCode) {
-    const qrRef = React.useRef<any>(null)
+    const qrRef = useRef<any>(null)
     const downloadQR = () => {
         if (typeof window === undefined) {
             return

@@ -19,7 +19,10 @@ const ChecklistHome = () => {
         getUser()
     }, [])
 
-    if (response) {
+    console.log('response', response)
+    console.log('defaultFeatures', defaultFeatures.features)
+
+    if (response !== undefined) {
         return (
             <FeatureFlagProvider
                 features={{ features: { ...defaultFeatures.features } }}
