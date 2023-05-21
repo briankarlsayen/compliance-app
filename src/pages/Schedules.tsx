@@ -282,7 +282,15 @@ const ScheduleTable = () => {
                                                 {row.show_over_due.toString()}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                {row.sched_freq}
+                                                <Link
+                                                    to={`/checklists/schedules/frequency/${index}`}
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                        color: 'blue',
+                                                    }}
+                                                >
+                                                    {row.sched_freq}
+                                                </Link>
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 <ul

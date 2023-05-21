@@ -7,6 +7,7 @@ import { FeatureFlagProvider } from '../feature/featureflag'
 import { defaultFeatures } from '../feature/featureContext'
 import Survey from './Survey'
 import SurveyForm from './SurveyForm'
+import EditScheduleFrequency from './EditScheduleFrequency'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -19,7 +20,6 @@ const ChecklistHome = () => {
     }, [])
 
     if (response) {
-        console.log('response', response)
         return (
             <FeatureFlagProvider
                 features={{ features: { ...defaultFeatures.features } }}
@@ -29,6 +29,11 @@ const ChecklistHome = () => {
                         exact
                         path="/checklists/schedules/:id"
                         component={EditSchedule}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/schedules/frequency/:id"
+                        component={EditScheduleFrequency}
                     />
                     <Route
                         exact
