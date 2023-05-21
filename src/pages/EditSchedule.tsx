@@ -1,7 +1,7 @@
 import { i18n } from '../i18n'
 import Recurrence from '../components/Recurrence'
 import SelectFranchisee from '../components/SelectFranchisee'
-import aliasDatas from '../api/pickAlias.json'
+import aliasDatas from '../api/alias'
 
 import React, { useState, useEffect, useContext } from 'react'
 import Grid from '@mui/material/Grid'

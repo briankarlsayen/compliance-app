@@ -2,7 +2,9 @@ import { fetchWithErrorHandling } from '../common'
 import { ICheckListData } from '../pages/Checklists'
 import { IScheduleData } from '../pages/Schedules'
 import { ISurvey } from '../pages/Survey'
-import franchisees from '../api/franchisees.json'
+import franchisees from './franchisees'
+import alias from './alias'
+
 function wait<T>(ms: number, value: T) {
     return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
 }
@@ -631,6 +633,10 @@ export const mockFranchisee = async () => {
     return await wait(0, franchisees)
 }
 
+export const mockAlias = async () => {
+    return await wait(0, alias)
+}
+
 export async function updateChecklist(checklist: any): Promise<any> {
     return fetchWithErrorHandling<any>(
         'PUT',
@@ -656,5 +662,8 @@ export async function fetchSurvey(): Promise<any> {
 
 export async function fetchFranchisee(): Promise<any> {
     return mockFranchisee()
-    return fetchWithErrorHandling<any>('GET', 'schedules')
+}
+
+export async function fetchAlias(): Promise<any> {
+    return mockAlias()
 }
