@@ -626,7 +626,7 @@ export const mockSurvey = async () => {
         },
     ]
 
-    return await wait(0, mockSchedules)
+    return await wait(1000, mockSchedules)
 }
 
 export const mockFranchisee = async () => {

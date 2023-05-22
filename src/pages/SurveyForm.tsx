@@ -252,27 +252,9 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <MuiPickersUtilsProvider
+                                        {/* <MuiPickersUtilsProvider
                                             utils={DateFnsUtils}
                                         >
-                                            {/* <KeyboardDatePicker
-                                                variant="inline"
-                                                inputVariant="outlined"
-                                                margin="normal"
-                                                id="date-picker-dialog"
-                                                label="Select expiry date"
-                                                format="MM/dd/yyyy"
-                                                value={inputField.expiry_date}
-                                                onChange={(e: any) =>
-                                                    setInputField({
-                                                        ...inputField,
-                                                        expiry_date: e,
-                                                    })
-                                                }
-                                                KeyboardButtonProps={{
-                                                    'aria-label': 'change date',
-                                                }}
-                                            /> */}
                                             <DatePicker
                                                 variant="inline"
                                                 inputVariant="outlined"
@@ -311,7 +293,7 @@ export default function SurveyForm() {
                                                     ),
                                                 }}
                                             />
-                                        </MuiPickersUtilsProvider>
+                                        </MuiPickersUtilsProvider> */}
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
