@@ -1,5 +1,5 @@
 import React from 'react'
-import ChecklistStepper from '../components/ChecklistStepper'
+import ChecklistStepper from '../components/SimpleStepper'
 import {
     Checkbox,
     FormControl,
@@ -22,7 +22,6 @@ const ChecklistBuilder = () => {
 
     return (
         <div>
-            <h1>Settings</h1>
             <Paper
                 className={classes.root}
                 elevation={3}
