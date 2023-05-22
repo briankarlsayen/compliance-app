@@ -8,6 +8,7 @@ import { defaultFeatures } from '../feature/featureContext'
 import Survey from './Survey'
 import SurveyForm from './SurveyForm'
 import EditScheduleFrequency from './EditScheduleFrequency'
+import ChecklistBuilder from './ChecklistBuilder'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -44,6 +45,11 @@ const ChecklistHome = () => {
                         component={SurveyForm}
                     />
                     <Route exact path="/checklists" component={CheckLists} />
+                    <Route
+                        exact
+                        path="/checklists/builder"
+                        component={ChecklistBuilder}
+                    />
                     <Route
                         exact
                         path="/checklists/surveys"
