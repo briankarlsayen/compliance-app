@@ -29,7 +29,7 @@ function getSteps() {
     return ['General', 'Access', 'PDF Report', 'Schedule/Survey']
 }
 
-export default function ChecklistStepper({
+export default function SimpleStepper({
     children,
     activeStep,
     setActiveStep,
