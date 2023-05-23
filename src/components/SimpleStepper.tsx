@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+
+interface ISimpleStepper {
+    children: any
+    activeStep: number
+    setActiveStep: Dispatch<SetStateAction<number>>
+}
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,15 +29,14 @@ function getSteps() {
     return ['General', 'Access', 'PDF Report', 'Schedule/Survey']
 }
 
-export default function ChecklistStepper({ children }: any) {
+export default function ChecklistStepper({
+    children,
+    activeStep,
+    setActiveStep,
+}: ISimpleStepper) {
     const classes = useStyles()
-    const [activeStep, setActiveStep] = React.useState(0)
     const [skipped, setSkipped] = React.useState(new Set())
     const steps = getSteps()
-
-    const isStepOptional = (step: number) => {
-        return step === 1
-    }
 
     const isStepSkipped = (step: number) => {
         return skipped.has(step)
@@ -90,7 +95,7 @@ export default function ChecklistStepper({ children }: any) {
                         </Button>
                     </div>
                 ) : (
-                    <div>
+                    <div style={{ paddingTop: '2rem' }}>
                         <div
                             style={{
                                 display: 'flex',
