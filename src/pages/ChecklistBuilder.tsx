@@ -1,15 +1,18 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
+import Grid from '@mui/material/Grid'
 import {
     Checkbox,
     FormControl,
     FormControlLabel,
     Paper,
     makeStyles,
+    InputLabel,
+    MenuItem,
+    Select,
+    Box,
 } from '@material-ui/core'
 import MultiSelectField from '../components/MultiSelectField'
-import SurveyForm from './SurveyForm'
-import EditSchedule from './EditSchedule'
-import EditScheduleForm from './EditScheduleForm'
+import EditScheduleForm, { IInputField } from './EditScheduleForm'
 import SimpleStepper from '../components/SimpleStepper'
 
 const useStyles = makeStyles((theme) => ({
@@ -123,7 +126,7 @@ const StepOne = () => {
 }
 
 const StepTwo = () => {
-    const [selectList, selectedList] = useState([
+    const [selectList, setSelectedList] = useState([
         'User1',
         'User2',
         'User3',
@@ -131,9 +134,11 @@ const StepTwo = () => {
         'User5',
     ])
     const [inputField, setInputField] = useState({ users: [] })
+
     return (
         <div>
             <p>Select Profiles</p>
+
             <MultiSelectField
                 name="users"
                 list={selectList}
@@ -156,6 +161,8 @@ const StepThree = () => {
         hideInfo: false,
         printPDF: false,
     })
+    const [inputField, setInputField] = useState({ logo: '', layout: '' })
+
     const classes = useStyles()
     const handleChange = (event: any) => {
         setChecklist({
@@ -163,97 +170,215 @@ const StepThree = () => {
             [event.target.name]: event.target.checked,
         })
     }
+    const updateField = (e: any) => {
+        setInputField({
+            ...inputField,
+            [e.target.name]: e.target.value,
+        })
+    }
+    const logoList = [
+        {
+            name: 'Franchisee/Site logo',
+        },
+        {
+            name: 'Default logo',
+        },
+        {
+            name: 'Web logo',
+        },
+    ]
+
+    const layoutList = [
+        {
+            name: 'Portrait',
+        },
+        {
+            name: 'Landscape',
+        },
+        {
+            name: 'A4',
+        },
+    ]
 
     return (
-        <div className={classes.root}>
-            <FormControl component="fieldset" className={classes.formControl}>
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.scoring}
-                            onChange={handleChange}
-                            name="scoring"
-                        />
-                    }
-                    label="Show scoring"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.anwserOpt}
-                            onChange={handleChange}
-                            name="anwserOpt"
-                        />
-                    }
-                    label="Show all answer options"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.charts}
-                            onChange={handleChange}
-                            name="charts"
-                        />
-                    }
-                    label="Show charts"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.tickets}
-                            onChange={handleChange}
-                            name="tickets"
-                        />
-                    }
-                    label="Show tickets (based on user's profile)"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.photos}
-                            onChange={handleChange}
-                            name="photos"
-                        />
-                    }
-                    label="Show photos at the bottom of each group"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.hideUnaswered}
-                            onChange={handleChange}
-                            name="hideUnaswered"
-                        />
-                    }
-                    label="Hide unanswered questions/groups"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.hideInfo}
-                            onChange={handleChange}
-                            name="hideInfo"
-                        />
-                    }
-                    label="Hide information panel questions"
-                />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={checkList.printPDF}
-                            onChange={handleChange}
-                            name="printPDF"
-                        />
-                    }
-                    label="Print PDF report in landscape mode"
-                />
-            </FormControl>
+        <div>
+            <Box
+                style={{
+                    padding: '2rem',
+                }}
+            >
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={4}>
+                        <InputLabel
+                            style={{
+                                display: 'flex',
+                                fontWeight: 700,
+                            }}
+                        >
+                            Logo
+                        </InputLabel>
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                        <FormControl fullWidth size="small" variant="outlined">
+                            <InputLabel id="sched-for-label">
+                                Select options
+                            </InputLabel>
+                            <Select
+                                label="Select options"
+                                labelId="select-sched-for"
+                                id="select-sched-for"
+                                value={inputField.logo}
+                                name="logo"
+                                onChange={updateField}
+                                variant="outlined"
+                            >
+                                {logoList.map((item, index) => (
+                                    <MenuItem key={index} value={item.name}>
+                                        {item.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <InputLabel
+                            style={{
+                                display: 'flex',
+                                fontWeight: 700,
+                            }}
+                        >
+                            Layout
+                        </InputLabel>
+                    </Grid>
+                    <Grid item xs={12} sm={8}>
+                        <FormControl fullWidth size="small" variant="outlined">
+                            <InputLabel id="sched-for-label">
+                                Select options
+                            </InputLabel>
+                            <Select
+                                label="Select options"
+                                labelId="select-sched-for"
+                                id="select-sched-for"
+                                value={inputField.layout}
+                                name="layout"
+                                onChange={updateField}
+                                variant="outlined"
+                            >
+                                {layoutList.map((item, index) => (
+                                    <MenuItem key={index} value={item.name}>
+                                        {item.name}
+                                    </MenuItem>
+                                ))}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+                <FormControl
+                    component="fieldset"
+                    className={classes.formControl}
+                >
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.scoring}
+                                onChange={handleChange}
+                                name="scoring"
+                            />
+                        }
+                        label="Show scoring"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.anwserOpt}
+                                onChange={handleChange}
+                                name="anwserOpt"
+                            />
+                        }
+                        label="Show all answer options"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.charts}
+                                onChange={handleChange}
+                                name="charts"
+                            />
+                        }
+                        label="Show charts"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.tickets}
+                                onChange={handleChange}
+                                name="tickets"
+                            />
+                        }
+                        label="Show tickets (based on user's profile)"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.photos}
+                                onChange={handleChange}
+                                name="photos"
+                            />
+                        }
+                        label="Show photos at the bottom of each group"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.hideUnaswered}
+                                onChange={handleChange}
+                                name="hideUnaswered"
+                            />
+                        }
+                        label="Hide unanswered questions/groups"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.hideInfo}
+                                onChange={handleChange}
+                                name="hideInfo"
+                            />
+                        }
+                        label="Hide information panel questions"
+                    />
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                checked={checkList.printPDF}
+                                onChange={handleChange}
+                                name="printPDF"
+                            />
+                        }
+                        label="Print PDF report in landscape mode"
+                    />
+                </FormControl>
+            </Box>
         </div>
     )
 }
 
 const StepFour = () => {
-    return <p>Step four</p>
+    const [inputField, setInputField] = useState<IInputField>({
+        name: '',
+        sched_for: 'Franchisee',
+        alias: '',
+        franchisees: [''],
+        startDate: null,
+        every_x: '',
+        rrule: '',
+    })
+    return (
+        <EditScheduleForm
+            inputField={inputField}
+            setInputField={setInputField}
+        />
+    )
 }
 
 export default ChecklistBuilder

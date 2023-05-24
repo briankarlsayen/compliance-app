@@ -1,42 +1,26 @@
 import { i18n } from '../i18n'
 import Recurrence from '../components/Recurrence'
-import SelectFranchisee from '../components/SelectFranchisee'
 import aliasDatas from '../api/alias'
 
-import React, { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Grid from '@mui/material/Grid'
 import {
-    Typography,
     TextField,
     Box,
-    Paper,
     InputLabel,
     MenuItem,
     FormControl,
     Select,
-    Button,
-    createTheme,
-    ThemeProvider,
     makeStyles,
     InputAdornment,
 } from '@material-ui/core'
-import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
-import { CatchingPokemonSharp } from '@mui/icons-material'
 import FeatureFlagsContext from '../feature/featureContext'
 import { fetchFranchisee } from '../api/checklist'
 i18n.initialise()
-
-const useStyles = makeStyles({
-    root: {
-        '& .MuiFormControl-root': {
-            marginTop: 0,
-        },
-    },
-})
 
 export interface IInputField {
     name: string
@@ -54,30 +38,20 @@ interface IAlias {
     for_user: string[]
 }
 
-export default function EditScheduleForm() {
+interface PEditScheduleForm {
+    inputField: IInputField
+    setInputField: any
+}
+
+export default function EditScheduleForm({
+    inputField,
+    setInputField,
+}: PEditScheduleForm) {
     const featureFlags = useContext(FeatureFlagsContext).features
-    const classes = useStyles()
-    const [inputField, setInputField] = useState<IInputField>({
-        name: '',
-        sched_for: 'Franchisee',
-        alias: '',
-        franchisees: [''],
-        startDate: null,
-        every_x: '',
-        rrule: '',
-    })
     const [isSchedAlias, setSchedAlias] = useState(false)
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
     const [selectList, setSelectList] = useState<string[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
-
-    const blueTheme = createTheme({
-        palette: {
-            primary: {
-                main: blue[500],
-            },
-        },
-    })
 
     const checkIsSchedAlias = (str: string) => {
         const strArr = str.toLocaleLowerCase().split(' ')
@@ -127,11 +101,6 @@ export default function EditScheduleForm() {
             setSchedAlias(isAlias)
             getAlias(e.target.value)
         }
-    }
-
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        alert(JSON.stringify(inputField))
     }
 
     const sched_for = featureFlags.retailOrganisation

@@ -18,6 +18,7 @@ import { Search, Add } from '@material-ui/icons'
 import { i18n } from '../i18n'
 import { useContext, useState } from 'react'
 import FeatureFlagsContext from '../feature/featureContext'
+import { Link } from 'react-router-dom'
 i18n.initialise()
 
 const useStyles = makeStyles((theme) => ({
@@ -223,7 +224,15 @@ const ChecklistFilter = ({ checklist, processRows }: PChecklistFilter) => {
                                     style={{ fontWeight: 'bold' }}
                                     variant="body2"
                                 >
-                                    {i18n.t('new_temp')}
+                                    <Link
+                                        to={`/checklists/builder`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        {i18n.t('new_temp')}
+                                    </Link>
                                 </Typography>
                             </Button>
                         </ThemeProvider>
