@@ -5,6 +5,7 @@ import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
+import { Link } from 'react-router-dom'
 
 interface ISimpleStepper {
     children: any
@@ -57,10 +58,6 @@ export default function SimpleStepper({
         setActiveStep((prevActiveStep) => prevActiveStep - 1)
     }
 
-    const handleReset = () => {
-        setActiveStep(0)
-    }
-
     return (
         <div className={classes.root}>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -82,19 +79,7 @@ export default function SimpleStepper({
             </div>
             {children}
             <div>
-                {activeStep === steps.length ? (
-                    <div>
-                        <Typography className={classes.instructions}>
-                            All steps completed - you&apos;re finished
-                        </Typography>
-                        <Button
-                            onClick={handleReset}
-                            className={classes.button}
-                        >
-                            Reset
-                        </Button>
-                    </div>
-                ) : (
+                {activeStep !== steps.length && (
                     <div style={{ paddingTop: '2rem' }}>
                         <div
                             style={{
@@ -116,9 +101,19 @@ export default function SimpleStepper({
                                 onClick={handleNext}
                                 className={classes.button}
                             >
-                                {activeStep === steps.length - 1
-                                    ? 'Finish'
-                                    : 'Next'}
+                                {activeStep === steps.length - 1 ? (
+                                    <Link
+                                        to={`/checklists/settings`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'white',
+                                        }}
+                                    >
+                                        Finish
+                                    </Link>
+                                ) : (
+                                    'Next'
+                                )}
                             </Button>
                         </div>
                     </div>

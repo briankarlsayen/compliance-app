@@ -371,7 +371,15 @@ function CheckListsTable({ setTab }: any) {
                                 )}
                                 {!featureFlags?.hideCreateChecklistTemplate && (
                                     <MenuItem onClick={handleClose}>
-                                        {i18n.t('settings')}
+                                        <Link
+                                            to={`/checklists/settings`}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'black',
+                                            }}
+                                        >
+                                            {i18n.t('settings')}
+                                        </Link>
                                     </MenuItem>
                                 )}
                                 {!featureFlags?.hideCreateChecklistTemplate && (

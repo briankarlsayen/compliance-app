@@ -136,16 +136,17 @@ export const StepTwo = () => {
     const [inputField, setInputField] = useState({ users: [] })
 
     return (
-        <div>
+        <div style={{ padding: '2rem' }}>
             <p>Select Profiles</p>
-
-            <MultiSelectField
-                name="users"
-                list={selectList}
-                selectedList={inputField.users}
-                inputField={inputField}
-                setInputField={setInputField}
-            />
+            <div>
+                <MultiSelectField
+                    name="users"
+                    list={selectList}
+                    selectedList={inputField.users}
+                    inputField={inputField}
+                    setInputField={setInputField}
+                />
+            </div>
         </div>
     )
 }
