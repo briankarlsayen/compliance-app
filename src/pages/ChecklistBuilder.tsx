@@ -63,7 +63,7 @@ const ChecklistBuilder = () => {
     )
 }
 
-const StepOne = () => {
+export const StepOne = () => {
     const [checkList, setChecklist] = useState({
         restrict: true,
         groupings: false,
@@ -125,7 +125,7 @@ const StepOne = () => {
     )
 }
 
-const StepTwo = () => {
+export const StepTwo = () => {
     const [selectList, setSelectedList] = useState([
         'User1',
         'User2',
@@ -150,7 +150,7 @@ const StepTwo = () => {
     )
 }
 
-const StepThree = () => {
+export const StepThree = () => {
     const [checkList, setChecklist] = useState({
         scoring: false,
         anwserOpt: false,
@@ -363,7 +363,7 @@ const StepThree = () => {
     )
 }
 
-const StepFour = () => {
+export const StepFour = () => {
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
         sched_for: 'Franchisee',

@@ -9,6 +9,7 @@ import Survey from './Survey'
 import SurveyForm from './SurveyForm'
 import EditScheduleFrequency from './EditScheduleFrequency'
 import ChecklistBuilder from './ChecklistBuilder'
+import Settings from './Setting'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -49,6 +50,11 @@ const ChecklistHome = () => {
                         exact
                         path="/checklists/builder"
                         component={ChecklistBuilder}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/settings"
+                        component={Settings}
                     />
                     <Route
                         exact
