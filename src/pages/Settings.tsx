@@ -1,3 +1,5 @@
+import { i18n } from '../i18n'
+
 import React from 'react'
 import { StepFour, StepOne, StepThree, StepTwo } from './ChecklistBuilder'
 import {
@@ -11,6 +13,7 @@ import {
 } from '@material-ui/core'
 import { grey, blue } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
+i18n.initialise()
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -54,7 +57,7 @@ export default function Settings() {
             className={classes.root}
         >
             <Typography style={{ fontWeight: 'bold' }} variant="h2">
-                Settings
+                {i18n.t('settings')}
             </Typography>
             <Paper
                 elevation={3}
@@ -68,7 +71,7 @@ export default function Settings() {
                         style={{ fontWeight: 'bold', paddingTop: '.5rem' }}
                         variant="h1"
                     >
-                        General
+                        {i18n.t('general')}
                     </Typography>
                     <StepOne />
                 </Box>
@@ -78,7 +81,7 @@ export default function Settings() {
                         style={{ fontWeight: 'bold', paddingTop: '.5rem' }}
                         variant="h1"
                     >
-                        Access
+                        {i18n.t('access')}
                     </Typography>
                     <StepTwo />
                 </Box>
@@ -88,7 +91,7 @@ export default function Settings() {
                         style={{ fontWeight: 'bold', paddingTop: '.5rem' }}
                         variant="h1"
                     >
-                        PDF Report
+                        {i18n.t('pdf_report')}
                     </Typography>
                     <StepThree />
                 </Box>
@@ -98,7 +101,7 @@ export default function Settings() {
                         style={{ fontWeight: 'bold', paddingTop: '.5rem' }}
                         variant="h1"
                     >
-                        Schedule Survey
+                        {i18n.t('schedule')}/{i18n.t('survey')}
                     </Typography>
                     <StepFour />
                 </Box>

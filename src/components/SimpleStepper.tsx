@@ -1,16 +1,19 @@
+import { i18n } from '../i18n'
+
 import React, { Dispatch, SetStateAction } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
 import StepLabel from '@material-ui/core/StepLabel'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import { Link } from 'react-router-dom'
+i18n.initialise()
 
 interface ISimpleStepper {
     children: any
     activeStep: number
     setActiveStep: Dispatch<SetStateAction<number>>
+    steps: string[]
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -26,18 +29,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-function getSteps() {
-    return ['General', 'Access', 'PDF Report', 'Schedule/Survey']
-}
-
 export default function SimpleStepper({
     children,
     activeStep,
     setActiveStep,
+    steps,
 }: ISimpleStepper) {
     const classes = useStyles()
     const [skipped, setSkipped] = React.useState(new Set())
-    const steps = getSteps()
 
     const isStepSkipped = (step: number) => {
         return skipped.has(step)
@@ -92,7 +91,7 @@ export default function SimpleStepper({
                                 onClick={handleBack}
                                 className={classes.button}
                             >
-                                Back
+                                {i18n.t('back')}
                             </Button>
 
                             <Button
@@ -109,10 +108,10 @@ export default function SimpleStepper({
                                             color: 'white',
                                         }}
                                     >
-                                        Finish
+                                        {i18n.t('finish')}
                                     </Link>
                                 ) : (
-                                    'Next'
+                                    i18n.t('next')
                                 )}
                             </Button>
                         </div>

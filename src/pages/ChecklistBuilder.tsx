@@ -1,3 +1,8 @@
+import { i18n } from '../i18n'
+import MultiSelectField from '../components/MultiSelectField'
+import EditScheduleForm, { IInputField } from './EditScheduleForm'
+import SimpleStepper from '../components/SimpleStepper'
+
 import { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import {
@@ -10,10 +15,9 @@ import {
     MenuItem,
     Select,
     Box,
+    Typography,
 } from '@material-ui/core'
-import MultiSelectField from '../components/MultiSelectField'
-import EditScheduleForm, { IInputField } from './EditScheduleForm'
-import SimpleStepper from '../components/SimpleStepper'
+i18n.initialise()
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const ChecklistBuilder = () => {
     const classes = useStyles()
     const [activeStep, setActiveStep] = useState(0)
+    const steps = ['General', 'Access', 'PDF Report', 'Schedule/Survey']
 
     const showStepComponent = () => {
         switch (activeStep) {
@@ -55,6 +60,7 @@ const ChecklistBuilder = () => {
                 <SimpleStepper
                     activeStep={activeStep}
                     setActiveStep={setActiveStep}
+                    steps={steps}
                 >
                     {showStepComponent()}
                 </SimpleStepper>
@@ -137,7 +143,7 @@ export const StepTwo = () => {
 
     return (
         <div style={{ padding: '2rem' }}>
-            <p>Select Profiles</p>
+            <Typography>{i18n.t('select_profiles')}</Typography>
             <div>
                 <MultiSelectField
                     name="users"
@@ -216,7 +222,7 @@ export const StepThree = () => {
                                 fontWeight: 700,
                             }}
                         >
-                            Logo
+                            {i18n.t('logo')}
                         </InputLabel>
                     </Grid>
                     <Grid item xs={12} sm={8}>
@@ -248,7 +254,7 @@ export const StepThree = () => {
                                 fontWeight: 700,
                             }}
                         >
-                            Layout
+                            {i18n.t('layout')}
                         </InputLabel>
                     </Grid>
                     <Grid item xs={12} sm={8}>
