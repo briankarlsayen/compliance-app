@@ -362,7 +362,6 @@ function CheckListsTable({ setTab }: any) {
                                     >
                                         {i18n.t('survey')}
                                     </Link>
-                                    {/* {i18n.t('survey')} */}
                                 </MenuItem>
                                 {!featureFlags?.hideCreateChecklistTemplate && (
                                     <MenuItem onClick={handleClose}>

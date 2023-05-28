@@ -9,7 +9,7 @@ import Survey from './Survey'
 import SurveyForm from './SurveyForm'
 import EditScheduleFrequency from './EditScheduleFrequency'
 import ChecklistBuilder from './ChecklistBuilder'
-import Settings from './Setting'
+import Settings from './Settings'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
