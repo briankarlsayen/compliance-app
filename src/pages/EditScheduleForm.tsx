@@ -15,6 +15,7 @@ import {
     InputAdornment,
 } from '@material-ui/core'
 import DateFnsUtils from '@date-io/date-fns'
+// import * as DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
@@ -299,7 +300,7 @@ export default function EditScheduleForm({
                             variant="inline"
                             inputVariant="outlined"
                             label="Select start date"
-                            defaultValue={null}
+                            // defaultValue={null}
                             name="startDate"
                             value={inputField.startDate}
                             onChange={(e: any) =>
@@ -325,7 +326,9 @@ export default function EditScheduleForm({
                                     >
                                         {inputField.startDate ? (
                                             <ClearIcon />
-                                        ) : null}
+                                        ) : (
+                                            <></>
+                                        )}
                                     </InputAdornment>
                                 ),
                             }}

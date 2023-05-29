@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent, screen } from '@testing-library/react'
+import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import ChecklistBuilder from '../../../pages/ChecklistBuilder'
 import { MemoryRouter } from 'react-router-dom'
 
@@ -11,32 +11,60 @@ describe('ChecklistBuilder', () => {
             </MemoryRouter>
         )
 
-        // Replace the following example steps with your actual step labels
-
         expect(screen.getByText('General')).toBeInTheDocument
         expect(screen.getByText('Access')).toBeInTheDocument
         expect(screen.getByText('PDF Report')).toBeInTheDocument
         expect(screen.getByText('Schedule/Survey')).toBeInTheDocument
+        expect(screen.getByText('Next')).not.toBeDisabled
+        expect(screen.getByText('Back')).toBeDisabled
     })
 
-    // it('should navigate to the next step when the "Next" button is clicked', () => {
-    //     const { getByText } = render(<ChecklistBuilder />)
+    it('should navigate to the next step when the "Next" button is clicked', async () => {
+        render(
+            <MemoryRouter>
+                <ChecklistBuilder />
+            </MemoryRouter>
+        )
 
-    //     const nextButton = getByText('Next')
-    //     fireEvent.click(nextButton)
+        // step 2
+        const nextButton = screen.getByText('Next')
+        fireEvent.click(nextButton)
+        expect(screen.getByText('Select Profiles')).toBeInTheDocument
+        expect(screen.getByText('Next')).not.toBeDisabled
+        expect(screen.getByText('Back')).not.toBeDisabled
 
-    //     // Replace the following example assertion with your actual logic for the next step
-    //     expect(getByText('Select Profiles')).toBeInTheDocument()
-    // })
+        // step 3
+        fireEvent.click(nextButton)
+        expect(screen.getByText('Logo')).toBeInTheDocument
+        expect(screen.getByText('Layout')).toBeInTheDocument
+        expect(screen.getByText('Next')).not.toBeDisabled
+        expect(screen.getByText('Back')).not.toBeDisabled
 
-    // it('should navigate to the previous step when the "Back" button is clicked', () => {
-    //     const { getByText } = render(<ChecklistBuilder />)
+        // step 4
+        screen.getByText('Next')
+        fireEvent.click(nextButton)
+        expect(screen.getByText('Finish')).not.toBeDisabled
+        expect(screen.getByText('Back')).not.toBeDisabled
+    })
 
-    //     // Assuming you have already navigated to the second step
-    //     const backButton = getByText('Back')
-    //     fireEvent.click(backButton)
+    it('should navigate to the previous step when the "Back" button is clicked', () => {
+        render(
+            <MemoryRouter>
+                <ChecklistBuilder />
+            </MemoryRouter>
+        )
 
-    //     // Replace the following example assertion with your actual logic for the previous step
-    //     expect(getByText('Step 1 Content')).toBeInTheDocument()
-    // })
+        // step 2
+        const nextButton = screen.getByText('Next')
+        fireEvent.click(nextButton)
+        expect(screen.getByText('Select Profiles')).toBeInTheDocument
+        expect(screen.getByText('Next')).not.toBeDisabled
+        expect(screen.getByText('Back')).not.toBeDisabled
+
+        // step 1
+        const backButton = screen.getByText('Back')
+        fireEvent.click(backButton)
+        expect(screen.getByText('Next')).not.toBeDisabled
+        expect(screen.getByText('Back')).toBeDisabled
+    })
 })

@@ -1,6 +1,6 @@
 import { i18n } from '../i18n'
 
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
 import Step from '@material-ui/core/Step'
@@ -36,7 +36,7 @@ export default function SimpleStepper({
     steps,
 }: ISimpleStepper) {
     const classes = useStyles()
-    const [skipped, setSkipped] = React.useState(new Set())
+    const [skipped, setSkipped] = useState(new Set())
 
     const isStepSkipped = (step: number) => {
         return skipped.has(step)

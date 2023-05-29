@@ -252,7 +252,7 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        {/* <MuiPickersUtilsProvider
+                                        <MuiPickersUtilsProvider
                                             utils={DateFnsUtils}
                                         >
                                             <DatePicker
@@ -293,7 +293,7 @@ export default function SurveyForm() {
                                                     ),
                                                 }}
                                             />
-                                        </MuiPickersUtilsProvider> */}
+                                        </MuiPickersUtilsProvider>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
