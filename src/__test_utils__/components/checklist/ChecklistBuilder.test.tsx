@@ -3,7 +3,7 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react'
 import ChecklistBuilder from '../../../pages/ChecklistBuilder'
 import { MemoryRouter } from 'react-router-dom'
 
-describe('ChecklistBuilder', () => {
+describe('<ChecklistBuilder />', () => {
     it('should render all steps in the Stepper', () => {
         render(
             <MemoryRouter>

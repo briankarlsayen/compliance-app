@@ -1,6 +1,6 @@
 import { i18n } from '../i18n'
 
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
@@ -19,18 +19,14 @@ import {
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
-import {
-    MuiPickersUtilsProvider,
-    DatePicker,
-    KeyboardDatePicker,
-} from '@material-ui/pickers'
+import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import CopyButton from '../components/CopyButton'
-import SurveyQRCode from '../common/SurveyQRCode'
 import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
 import AutoComplete from '../common/AutoComplete'
+import { fetchSurveyDetails } from '../api/checklist'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -42,6 +38,7 @@ const useStyles = makeStyles({
 })
 
 export interface IInputField {
+    id?: number
     alias: string
     expiry_date?: Date | null
     name: string
@@ -51,6 +48,12 @@ export interface IInputField {
     text_form_name: string
     welcome_msg: string
     link: string
+    qr_image: string
+}
+
+interface PDownloadButton {
+    imageBase64: string
+    fileName: string
 }
 
 export default function SurveyForm() {
@@ -66,7 +69,7 @@ export default function SurveyForm() {
     let maxChar = 500
     const [inputField, setInputField] = useState<IInputField>({
         alias: '',
-        expiry_date: new Date('2014-08-18T21:11:54'),
+        expiry_date: null,
         link: dummyLink,
         name: '',
         selected_sites: [],
@@ -74,6 +77,7 @@ export default function SurveyForm() {
         survey_to: [],
         text_form_name: '',
         welcome_msg: '',
+        qr_image: '',
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [sites, setSites] = useState([
@@ -84,24 +88,29 @@ export default function SurveyForm() {
         'Site7',
     ])
     const [selectedSites, setSelectedSites] = useState(['Site2', 'Site3'])
+    const [qrImage, setQrImage] = useState('')
 
-    const qrData = {
-        name: 'Survey 15',
-        expiry_date: '04-21-2023',
-        qr_image: 'https://picsum.photos/200',
-        path: '3KFNLztllSbTlXckrVE9Kx',
-        for_user: [
-            'User 1',
-            'User 2',
-            'User 3',
-            'User 4',
-            'User 5',
-            'User 9',
-            'User 10',
-            'User 11',
-            'User 12',
-        ],
+    const fetchData = async () => {
+        const response = await fetchSurveyDetails()
+        setQrImage(response.qrCode)
+        setInputField({
+            id: response.id,
+            alias: '',
+            expiry_date: response.expiryDate,
+            link: response.surveyUrl,
+            name: '',
+            selected_sites: [],
+            survey_for: '',
+            survey_to: [],
+            text_form_name: '',
+            welcome_msg: '',
+            qr_image: response.qrCode,
+        })
     }
+
+    useEffect(() => {
+        fetchData()
+    }, [])
 
     const blueTheme = createTheme({
         palette: {
@@ -145,8 +154,6 @@ export default function SurveyForm() {
         { id: 5, name: 'Email5' },
     ]
     const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
-
-    console.log('DateFnsUtils', DateFnsUtils)
 
     return (
         <div>
@@ -210,12 +217,20 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <SurveyQRCode
+                                        <img
+                                            src={`data:image/png;base64,${qrImage}`}
+                                            alt="survey-qr"
+                                        />
+                                        <DownloadImageButton
+                                            fileName="survey-qr"
+                                            imageBase64={qrImage}
+                                        />
+                                        {/* <SurveyQRCode
                                             details={{
                                                 ...qrData,
                                                 qrValue: inputField.link,
                                             }}
-                                        />
+                                        /> */}
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
@@ -535,5 +550,23 @@ export default function SurveyForm() {
                 </Grid>
             </Paper>
         </div>
+    )
+}
+
+const DownloadImageButton = ({ imageBase64, fileName }: PDownloadButton) => {
+    const downloadImage = () => {
+        const element = document.createElement('a')
+        element.href = `data:image/png;base64,${imageBase64}`
+        element.download = fileName
+        element.click()
+    }
+
+    return (
+        <Typography
+            style={{ color: 'blue', cursor: 'pointer' }}
+            onClick={downloadImage}
+        >
+            Download QR Code
+        </Typography>
     )
 }

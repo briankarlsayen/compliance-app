@@ -40,10 +40,6 @@ const blueTheme = createTheme({
     },
 })
 
-const handleSubmit = (e: any) => {
-    e.preventDefault()
-}
-
 export default function Settings() {
     const classes = useStyles()
 
@@ -115,21 +111,11 @@ export default function Settings() {
                 }}
             >
                 <ThemeProvider theme={blueTheme}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={handleSubmit}
-                    >
-                        Save
+                    <Button variant="contained" color="primary" size="small">
+                        {i18n.t('save')}
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={handleSubmit}
-                    >
-                        Save and Copy
+                    <Button variant="contained" color="primary" size="small">
+                        {i18n.t('save_and_copy')}
                     </Button>
                 </ThemeProvider>
                 <ThemeProvider theme={greyTheme}>
@@ -141,7 +127,7 @@ export default function Settings() {
                                 color: 'white',
                             }}
                         >
-                            Cancel
+                            {i18n.t('cancel')}
                         </Link>
                     </Button>
                 </ThemeProvider>
