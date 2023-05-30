@@ -365,7 +365,15 @@ function CheckListsTable({ setTab }: any) {
                                 </MenuItem>
                                 {!featureFlags?.hideCreateChecklistTemplate && (
                                     <MenuItem onClick={handleClose}>
-                                        {i18n.t('versions')}
+                                        <Link
+                                            to={`/checklists/versions`}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'black',
+                                            }}
+                                        >
+                                            {i18n.t('versions')}
+                                        </Link>
                                     </MenuItem>
                                 )}
                                 {!featureFlags?.hideCreateChecklistTemplate && (

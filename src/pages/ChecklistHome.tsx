@@ -10,6 +10,7 @@ import SurveyForm from './SurveyForm'
 import EditScheduleFrequency from './EditScheduleFrequency'
 import ChecklistBuilder from './ChecklistBuilder'
 import Settings from './Settings'
+import Versions from './Versions'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -60,6 +61,11 @@ const ChecklistHome = () => {
                         exact
                         path="/checklists/surveys"
                         component={Survey}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/versions"
+                        component={Versions}
                     />
                     <Route component={CheckLists} />
                 </Switch>

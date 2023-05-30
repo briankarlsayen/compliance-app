@@ -650,6 +650,24 @@ export const mockSurveyDetails = async () => {
     }
 }
 
+export const mockVersion = async () => {
+    const mockVersions = [
+        {
+            createdDate: '10/05/2023 9:36:27AM',
+            version: '1-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '10/05/2023 9:36:27AM',
+            version: '1-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+    ]
+    return await wait(0, mockVersions)
+}
+
 export async function updateChecklist(checklist: any): Promise<any> {
     return fetchWithErrorHandling<any>(
         'PUT',
@@ -683,4 +701,7 @@ export async function fetchAlias(): Promise<any> {
 
 export async function fetchSurveyDetails(): Promise<any> {
     return mockSurveyDetails()
+}
+export async function fetchVersions(): Promise<any> {
+    return mockVersion()
 }
