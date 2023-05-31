@@ -26,6 +26,7 @@ import {
 } from '@material-ui/core/styles'
 import { Add as AddIcon } from '@material-ui/icons'
 import { blue, lightGreen, grey } from '@material-ui/core/colors'
+import { Link } from 'react-router-dom'
 
 i18n.initialise()
 
@@ -238,7 +239,15 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                Publish
+                                <Link
+                                    to={`/checklists/versions/promote/1`}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: '#2196f3',
+                                    }}
+                                >
+                                    Publish
+                                </Link>
                             </Button>
                         </ThemeProvider>
                     </div>

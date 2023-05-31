@@ -11,6 +11,7 @@ import EditScheduleFrequency from './EditScheduleFrequency'
 import ChecklistBuilder from './ChecklistBuilder'
 import Settings from './Settings'
 import Versions from './Versions'
+import Promotion from './Promotion'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -21,9 +22,6 @@ const ChecklistHome = () => {
     useEffect(() => {
         getUser()
     }, [])
-
-    console.log('response', response)
-    console.log('defaultFeatures', defaultFeatures.features)
 
     if (response !== undefined) {
         return (
@@ -64,9 +62,15 @@ const ChecklistHome = () => {
                     />
                     <Route
                         exact
+                        path="/checklists/versions/promote/:id"
+                        component={Promotion}
+                    />
+                    <Route
+                        exact
                         path="/checklists/versions"
                         component={Versions}
                     />
+
                     <Route component={CheckLists} />
                 </Switch>
             </FeatureFlagProvider>

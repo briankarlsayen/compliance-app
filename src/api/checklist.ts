@@ -660,12 +660,86 @@ export const mockVersion = async () => {
         },
         {
             createdDate: '10/05/2023 9:36:27AM',
-            version: '1-draft',
+            version: '1-draft-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '09/05/2023 9:36:27AM',
+            version: '2-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '10/05/2023 9:36:27AM',
+            version: '3-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '10/05/2023 9:36:27AM',
+            version: '4-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '01/05/2023 9:36:27AM',
+            version: '5-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '10/01/2023 9:36:27AM',
+            version: '6-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '11/01/2023 9:36:27AM',
+            version: '7-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '11/25/2023 9:36:27AM',
+            version: '8-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '09/01/2023 9:36:27AM',
+            version: '9-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '10/22/2023 9:36:27AM',
+            version: '10-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '11/05/2023 9:36:27AM',
+            version: '11-draft',
+            status: 'Draft',
+            creator: '1Place User',
+        },
+        {
+            createdDate: '01/11/2023 9:36:27AM',
+            version: '12-draft',
             status: 'Draft',
             creator: '1Place User',
         },
     ]
     return await wait(0, mockVersions)
+}
+
+export const mockPromotionDetails = async () => {
+    const promotionDetails = {
+        name: 'Final Draft',
+        commission: '',
+    }
+    return await wait(0, promotionDetails)
 }
 
 export async function updateChecklist(checklist: any): Promise<any> {
@@ -702,6 +776,11 @@ export async function fetchAlias(): Promise<any> {
 export async function fetchSurveyDetails(): Promise<any> {
     return mockSurveyDetails()
 }
+
 export async function fetchVersions(): Promise<any> {
     return mockVersion()
+}
+
+export async function fetchPromotionDetails(): Promise<any> {
+    return mockPromotionDetails()
 }
