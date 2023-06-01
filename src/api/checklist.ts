@@ -731,7 +731,7 @@ export const mockVersion = async () => {
             creator: '1Place User',
         },
     ]
-    return await wait(0, mockVersions)
+    return await wait(1000, mockVersions)
 }
 
 export const mockPromotionDetails = async () => {
@@ -739,7 +739,7 @@ export const mockPromotionDetails = async () => {
         name: 'Final Draft',
         commission: '',
     }
-    return await wait(0, promotionDetails)
+    return await wait(1000, promotionDetails)
 }
 
 export async function updateChecklist(checklist: any): Promise<any> {

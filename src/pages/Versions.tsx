@@ -257,25 +257,8 @@ function VersionTable() {
         setVersions(createdRows)
     }
     const DEFAULT_ROWS_PAGE = 10
-    const menuRef = useRef(null)
-
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-    const [open, setOpen] = useState(false)
-    const [activeBtn, setActiveBtn] = useState(false)
-    const handleClick = (
-        event: React.MouseEvent<HTMLButtonElement>,
-        status: string
-    ) => {
-        setAnchorEl(event.currentTarget)
-        setOpen(true)
-        status === 'active' ? setActiveBtn(true) : setActiveBtn(false)
-    }
     const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
     const [page, setPage] = useState(0)
-    const handleClose = () => {
-        setAnchorEl(null)
-        setOpen(false)
-    }
     const [loading, setLoading] = useState(false)
 
     const [checklist, setChecklist] = useState([])
@@ -316,7 +299,7 @@ function VersionTable() {
             {versions && (
                 <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
                     <Table
-                        data-testid="checklist-table"
+                        data-testid="version-table"
                         role="table"
                         size="small"
                     >
