@@ -105,45 +105,6 @@ const VersionHeader = () => {
                     &nbsp;/ {i18n.t('customLabel_checklist')}
                 </Typography>
             </div>
-            <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'flex-end',
-                }}
-            >
-                <div
-                    style={{
-                        display: 'flex',
-                        flex: 1,
-                        flexDirection: 'column',
-                        alignItems: 'flex-end',
-                    }}
-                >
-                    <Typography variant="caption">
-                        {i18n.t('new_sched_caption')}:
-                    </Typography>
-                    <div>
-                        <ThemeProvider theme={buttonTheme}>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                style={{
-                                    color: 'white',
-                                }}
-                            >
-                                <AddIcon fontSize="small" />
-                                <Typography
-                                    style={{ fontWeight: 'bold' }}
-                                    variant="body2"
-                                >
-                                    {i18n.t('new_version')}
-                                </Typography>
-                            </Button>
-                        </ThemeProvider>
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }
@@ -164,7 +125,7 @@ function createData(
     }
 }
 
-interface IChecklist {
+interface IVersion {
     createdDate: string
     version: string
     status: string
@@ -172,17 +133,9 @@ interface IChecklist {
     actions: any
 }
 
-export interface ICheckListData {
-    title: string
-    schedules: number
-    template?: string
-    status: string
-    adhoc: boolean
-}
-
 function VersionTable() {
-    const [versions, setVersions] = useState<IChecklist[]>()
-    const processRows = (data: IChecklist[]) => {
+    const [versions, setVersions] = useState<IVersion[]>()
+    const processRows = (data: IVersion[]) => {
         setPage(0)
         const createdRows = data.map(
             ({ createdDate, version, status, creator }) => {
@@ -193,14 +146,16 @@ function VersionTable() {
                     creator,
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <ThemeProvider theme={blueTheme}>
-                            <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
-                                style={{ textTransform: 'none' }}
-                            >
-                                Edit
-                            </Button>
+                            {status === 'Draft' && (
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    size="small"
+                                    style={{ textTransform: 'none' }}
+                                >
+                                    Edit
+                                </Button>
+                            )}
                             <Button
                                 variant="outlined"
                                 color="primary"
@@ -239,15 +194,19 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                <Link
-                                    to={`/checklists/versions/promote/1`}
-                                    style={{
-                                        textDecoration: 'none',
-                                        color: '#2196f3',
-                                    }}
-                                >
-                                    Publish
-                                </Link>
+                                {status === 'Published' ? (
+                                    'Change Status'
+                                ) : (
+                                    <Link
+                                        to={`/checklists/versions/promote/1`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: '#2196f3',
+                                        }}
+                                    >
+                                        Publish
+                                    </Link>
+                                )}
                             </Button>
                         </ThemeProvider>
                     </div>

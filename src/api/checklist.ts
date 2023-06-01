@@ -673,7 +673,7 @@ export const mockVersion = async () => {
         {
             createdDate: '10/05/2023 9:36:27AM',
             version: '3-draft',
-            status: 'Draft',
+            status: 'Published',
             creator: '1Place User',
         },
         {
@@ -685,13 +685,13 @@ export const mockVersion = async () => {
         {
             createdDate: '01/05/2023 9:36:27AM',
             version: '5-draft',
-            status: 'Draft',
+            status: 'Archived',
             creator: '1Place User',
         },
         {
             createdDate: '10/01/2023 9:36:27AM',
             version: '6-draft',
-            status: 'Draft',
+            status: 'Archived',
             creator: '1Place User',
         },
         {
@@ -703,7 +703,7 @@ export const mockVersion = async () => {
         {
             createdDate: '11/25/2023 9:36:27AM',
             version: '8-draft',
-            status: 'Draft',
+            status: 'Published',
             creator: '1Place User',
         },
         {
