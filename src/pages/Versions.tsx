@@ -2,7 +2,7 @@ import { i18n } from '../i18n'
 import { fetchVersions } from '../api/checklist'
 import Loading from '../components/Loading'
 
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
     TableContainer,
     Table,
@@ -24,8 +24,7 @@ import {
     makeStyles,
     withStyles,
 } from '@material-ui/core/styles'
-import { Add as AddIcon } from '@material-ui/icons'
-import { blue, lightGreen, grey } from '@material-ui/core/colors'
+import { blue } from '@material-ui/core/colors'
 import { Link } from 'react-router-dom'
 
 i18n.initialise()
@@ -65,14 +64,6 @@ export default function Versions() {
         </Box>
     )
 }
-
-const buttonTheme = createTheme({
-    palette: {
-        primary: {
-            main: lightGreen[600],
-        },
-    },
-})
 
 const blueTheme = createTheme({
     palette: {
@@ -153,7 +144,7 @@ function VersionTable() {
                                     size="small"
                                     style={{ textTransform: 'none' }}
                                 >
-                                    Edit
+                                    {i18n.t('edit')}
                                 </Button>
                             )}
                             <Button
@@ -162,7 +153,7 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                History
+                                {i18n.t('history')}
                             </Button>
                             <Button
                                 variant="outlined"
@@ -170,7 +161,7 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                Copy
+                                {i18n.t('copy')}
                             </Button>
                             <Button
                                 variant="outlined"
@@ -178,7 +169,7 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                Delete
+                                {i18n.t('delete')}
                             </Button>
                             <Button
                                 variant="outlined"
@@ -186,7 +177,7 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                Export
+                                {i18n.t('export')}
                             </Button>
                             <Button
                                 variant="outlined"
@@ -204,7 +195,7 @@ function VersionTable() {
                                             color: '#2196f3',
                                         }}
                                     >
-                                        Publish
+                                        {i18n.t('publish')}
                                     </Link>
                                 )}
                             </Button>
@@ -220,18 +211,14 @@ function VersionTable() {
     const [page, setPage] = useState(0)
     const [loading, setLoading] = useState(false)
 
-    const [checklist, setChecklist] = useState([])
-
     const fetchData = async () => {
         try {
             setLoading(true)
             const lists = await fetchVersions()
-            setChecklist(lists)
             processRows(lists)
-            // processRows(mockData)
             setLoading(false)
         } catch (error) {
-            console.log('failed to get checklist')
+            console.log('failed to get versions')
         }
     }
 
@@ -266,7 +253,7 @@ function VersionTable() {
                             <TableRow role="rowheader">
                                 <StyledTableCell role="columnheader">
                                     <Typography style={{ fontWeight: 'bold' }}>
-                                        Created Date
+                                        {i18n.t('created_date')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -278,7 +265,7 @@ function VersionTable() {
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        Version
+                                        {i18n.t('version')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -286,7 +273,7 @@ function VersionTable() {
                                     align="center"
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
-                                        Checklist Status
+                                        {i18n.t('checklist_status')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
@@ -294,7 +281,7 @@ function VersionTable() {
                                     align="center"
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
-                                        Creator
+                                        {i18n.t('creator')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell role="columnheader">

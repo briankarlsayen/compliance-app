@@ -97,7 +97,7 @@ export default function Promotion() {
                 <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
-                    Promote Template: {templateName}
+                    {i18n.t('promote_template')}: {templateName}
                 </Typography>
                 <Typography style={{ paddingBottom: '1rem' }}>
                     You are about to promote Template: {templateName} version
@@ -115,7 +115,7 @@ export default function Promotion() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Enter a Version Name
+                                            {i18n.t('enter_version_name')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -141,7 +141,7 @@ export default function Promotion() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Enter Comment
+                                            {i18n.t('enter_comment')}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
