@@ -182,7 +182,7 @@ export class I18nHelper implements Ii18nHelper {
                                 history: 'History',
                                 export: 'Export',
                                 publish: 'Publish',
-                                version: 'version',
+                                version: 'Version',
                                 checklist_status: 'Checklist Status',
                                 creator: 'Creator',
                                 promote_template: 'Promote Template',

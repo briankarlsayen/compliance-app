@@ -29,22 +29,6 @@ import { Link } from 'react-router-dom'
 
 i18n.initialise()
 
-export interface IScheduleData {
-    name: string
-    start_date: string
-    show_over_due: boolean
-    sched_freq: string
-    for_user: string[]
-}
-
-export interface ISurvey {
-    name: string
-    expiry_date: string
-    qr_image: string
-    path: string
-    actions: any
-}
-
 const useStyles = makeStyles({
     root: {
         '& .MuiTableCell-head': {
