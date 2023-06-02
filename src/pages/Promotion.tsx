@@ -76,11 +76,6 @@ export default function Promotion() {
         })
     }
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        alert(JSON.stringify(inputField))
-    }
-
     const templateName = 'NQR-PW V1'
 
     return (
@@ -97,7 +92,7 @@ export default function Promotion() {
                 <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
-                    {i18n.t('promote_template')}: {templateName}
+                    {i18n.t('promote_template')}
                 </Typography>
                 <Typography style={{ paddingBottom: '1rem' }}>
                     You are about to promote Template: {templateName} version
@@ -199,7 +194,6 @@ export default function Promotion() {
                                     variant="contained"
                                     color="primary"
                                     size="small"
-                                    onClick={handleSubmit}
                                 >
                                     {i18n.t('save')}
                                 </Button>
