@@ -15,11 +15,6 @@ describe('<Promotion />', () => {
             </MemoryRouter>
         )
 
-        // expect(screen.queryByAltText('Loading')).toBeInTheDocument
-        // await waitForElementToBeRemoved(screen.queryByAltText('Loading'), {
-        //     timeout: 10000,
-        // })
-
         expect(screen.getByText('Promote Template')).toBeInTheDocument
 
         expect(screen.getByText('Cancel')).not.toBeDisabled
