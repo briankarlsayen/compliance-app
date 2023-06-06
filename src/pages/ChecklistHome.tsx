@@ -12,6 +12,7 @@ import ChecklistBuilder from './ChecklistBuilder'
 import Settings from './Settings'
 import Versions from './Versions'
 import Promotion from './Promotion'
+import Register from './Register'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -69,6 +70,11 @@ const ChecklistHome = () => {
                         exact
                         path="/checklists/versions"
                         component={Versions}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/register"
+                        component={Register}
                     />
 
                     <Route component={CheckLists} />
