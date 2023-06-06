@@ -71,11 +71,6 @@ const ChecklistHome = () => {
                         path="/checklists/versions"
                         component={Versions}
                     />
-                    <Route
-                        exact
-                        path="/checklists/register"
-                        component={Register}
-                    />
 
                     <Route component={CheckLists} />
                 </Switch>
