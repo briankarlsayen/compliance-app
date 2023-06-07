@@ -188,6 +188,12 @@ export class I18nHelper implements Ii18nHelper {
                                 promote_template: 'Promote Template',
                                 enter_version_name: 'Enter a version name',
                                 enter_comment: 'Enter comment',
+                                template: "Template",
+                                centre: "Centre",
+                                room: "Room",
+                                ticket: "Ticket",
+                                score: "Score",
+                                completed: "Completed"
                             },
                         },
                     },
