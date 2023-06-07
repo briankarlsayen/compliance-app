@@ -375,6 +375,7 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <AutoComplete
+                                            id="survey_to"
                                             fieldLabel="to"
                                             itemKey="id"
                                             itemLabel="name"

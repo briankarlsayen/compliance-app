@@ -505,12 +505,9 @@ function CenteredTabs() {
                     <Typography>To-Do List</Typography>
                 </TabPanel>
                 <TabPanel value={value} index={2}>
-                    {/* <Typography>Schedules & Surveys</Typography> */}
                     <Schedules />
-                    {/* <ScheduleForm /> */}
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                    <Typography>Register</Typography>
                     <Register />
                 </TabPanel>
                 <TabPanel value={value} index={4}>

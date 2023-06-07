@@ -742,6 +742,100 @@ export const mockPromotionDetails = async () => {
     return await wait(1000, promotionDetails)
 }
 
+export const mockRegister = async () => {
+    const registerDetails = [
+        {
+            centre: '1Place  User',
+            room: 'Room1',
+            name: 'User 1',
+            template: 'Template 1',
+            createdDate: '5/06/2023',
+            creator: 'User 1',
+            ticket: '743',
+            score: '0/6',
+            complete: false,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room2',
+            name: 'User 2',
+            template: 'Template 2',
+            createdDate: '5/06/2023',
+            creator: 'User 2',
+            ticket: '743',
+            score: '0/12',
+            complete: false,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room3',
+            name: 'User 3',
+            template: 'Template 3',
+            createdDate: '5/06/2023',
+            creator: 'User 3',
+            ticket: '713',
+            score: '0/3',
+            complete: true,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room4',
+            name: 'User 4',
+            template: 'Template 4',
+            createdDate: '5/06/2023',
+            creator: 'User 4',
+            ticket: '723',
+            score: '0/3',
+            complete: false,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room5',
+            name: 'User 5',
+            template: 'Template 5',
+            createdDate: '5/06/2023',
+            creator: 'User 5',
+            ticket: '865',
+            score: '0/6',
+            complete: false,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room6',
+            name: 'User 6',
+            template: 'Template 6',
+            createdDate: '5/06/2023',
+            creator: 'User 6',
+            ticket: '111',
+            score: '0/11',
+            complete: false,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room7',
+            name: 'User 7',
+            template: 'Template 7',
+            createdDate: '5/06/2023',
+            creator: 'User 7',
+            ticket: '753',
+            score: '0/2',
+            complete: true,
+        },
+        {
+            centre: '1Place  User',
+            room: 'Room8',
+            name: 'User 8',
+            template: 'Template 8',
+            createdDate: '5/06/2023',
+            creator: 'User 8',
+            ticket: '512',
+            score: '0/8',
+            complete: false,
+        },
+    ]
+    return await wait(1000, registerDetails)
+}
+
 export async function updateChecklist(checklist: any): Promise<any> {
     return fetchWithErrorHandling<any>(
         'PUT',
@@ -752,17 +846,14 @@ export async function updateChecklist(checklist: any): Promise<any> {
 
 export async function fetchChecklist(): Promise<any> {
     return mockChecklist()
-    return fetchWithErrorHandling<any>('GET', 'checklists')
 }
 
 export async function fetchSchedule(): Promise<any> {
     return mockSchedule()
-    return fetchWithErrorHandling<any>('GET', 'schedules')
 }
 
 export async function fetchSurvey(): Promise<any> {
     return mockSurvey()
-    return fetchWithErrorHandling<any>('GET', 'schedules')
 }
 
 export async function fetchFranchisee(): Promise<any> {
@@ -783,4 +874,7 @@ export async function fetchVersions(): Promise<any> {
 
 export async function fetchPromotionDetails(): Promise<any> {
     return mockPromotionDetails()
+}
+export async function fetchRegisters(): Promise<any> {
+    return mockRegister()
 }
