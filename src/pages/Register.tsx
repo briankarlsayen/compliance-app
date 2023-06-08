@@ -4,7 +4,6 @@ import { fetchRegisters } from '../api/checklist'
 
 import React, { useEffect, useState } from 'react'
 import {
-    TextField,
     Box,
     TableContainer,
     Table,
@@ -17,7 +16,7 @@ import {
 } from '@material-ui/core'
 import Grid from '@mui/material/Grid'
 import { Button, Paper, Typography } from '@mui/material'
-import { grey, lightGreen } from '@material-ui/core/colors'
+import { grey } from '@material-ui/core/colors'
 import { Search } from '@material-ui/icons'
 import {
     Theme,
@@ -104,14 +103,6 @@ const datePickertheme = createTheme({
             root: {
                 marginTop: '15.5px',
             },
-        },
-    },
-})
-
-const buttonTheme = createTheme({
-    palette: {
-        primary: {
-            main: lightGreen[600],
         },
     },
 })
@@ -239,29 +230,7 @@ export default function Register() {
     }
 
     const handleFilter = () => {
-        console.log('filteredList 1', registerList)
         alert(JSON.stringify(inputField))
-        const selectedCentre = inputField.centre.map((e: any) => e.name)
-        const selectedCreator = inputField.creator.map((e: any) => e.name)
-        const selectedRoom = inputField.room.map((e: any) => e.name)
-        const selectedTemplate = inputField.checklistTemplate.map(
-            (e: any) => e.name
-        )
-        const filteredList = registerList.filter(
-            (obj: any) =>
-                (selectedCentre.length
-                    ? selectedCentre?.includes(obj.centre)
-                    : []) &&
-                (selectedCreator.length
-                    ? selectedCreator?.includes(obj.creator)
-                    : []) &&
-                (selectedRoom.length ? selectedRoom?.includes(obj.room) : []) &&
-                (selectedTemplate.length
-                    ? selectedTemplate?.includes(obj.template)
-                    : [])
-        )
-        setFilteredRegisterList(filteredList)
-        console.log('filteredList 2', filteredList)
     }
 
     const processRows = (data: IRegisterList[]) => {
@@ -331,20 +300,6 @@ export default function Register() {
             </Paper>
         </div>
     )
-}
-
-function convertArrayToObjects(
-    array: string[]
-): { id: number; name: string }[] {
-    let idCounter = 1
-
-    const result = array.map((value) => {
-        const object = { id: idCounter, name: value }
-        idCounter++
-        return object
-    })
-
-    return result
 }
 
 function createData(
@@ -489,20 +444,15 @@ const RegisterTable = ({ registerList }: IRegisterTblProps) => {
                                             index
                                         ) => (
                                             <StyledTableRow key={index}>
-                                                <StyledTableCell>
-                                                    {/* <Link
-                      to={`/checklists/surveys/${row.name}`}
-                      style={{
-                        textDecoration: "none",
-                        color: "blue",
-                      }}
-                    >
-                      asdasdasd
-                    </Link> */}
+                                                <StyledTableCell
+                                                    style={{
+                                                        textDecoration: 'none',
+                                                        color: 'blue',
+                                                    }}
+                                                >
                                                     {name}
                                                 </StyledTableCell>
                                                 <StyledTableCell>
-                                                    {/* {formatDate(row.expiry_date)} */}
                                                     {template}
                                                 </StyledTableCell>
                                                 <StyledTableCell>
@@ -609,94 +559,119 @@ const RegisterFilter = ({
         createdDateRange,
         checklistDateRange,
     } = filters
-    const classes = useStyles()
-    const centreList = convertArrayToObjects(centre)
-    const roomList = convertArrayToObjects(room)
-    const creatorList = convertArrayToObjects(creator)
-    const checklistTemplateList = convertArrayToObjects(template)
+    const centreList = [
+        {
+            id: 1,
+            name: '1Place User',
+        },
+        {
+            id: 2,
+            name: 'Head Office',
+        },
+    ]
+    const roomList = [
+        {
+            id: 1,
+            name: 'Room1',
+        },
+        {
+            id: 2,
+            name: 'Room2',
+        },
+        {
+            id: 3,
+            name: 'Room3',
+        },
+    ]
+    const creatorList = [
+        {
+            id: 1,
+            name: 'User 1',
+        },
+        {
+            id: 2,
+            name: 'User 2',
+        },
+        {
+            id: 3,
+            name: 'User 3',
+        },
+    ]
+    const checklistTemplateList = [
+        {
+            id: 1,
+            name: 'Template 1',
+        },
+        {
+            id: 2,
+            name: 'Template 2',
+        },
+        {
+            id: 3,
+            name: 'Template 3',
+        },
+    ]
 
     const centreAliasList = [
         {
             id: 1,
-            name: 'one',
+            name: '1Place User',
         },
         {
             id: 2,
-            name: 'two',
-        },
-        {
-            id: 3,
-            name: 'three',
+            name: 'Head Office',
         },
     ]
     const roomAliasList = [
         {
             id: 1,
-            name: 'one',
+            name: 'Room1',
         },
         {
             id: 2,
-            name: 'two',
+            name: 'Room2',
         },
         {
             id: 3,
-            name: 'three',
+            name: 'Room3',
         },
     ]
     const personTypeList = [
         {
             id: 1,
-            name: 'one',
+            name: 'User',
         },
         {
             id: 2,
-            name: 'two',
+            name: 'Admin',
         },
         {
             id: 3,
-            name: 'three',
+            name: '1Place',
         },
     ]
     const peopleList = [
         {
             id: 1,
-            name: 'one',
+            name: 'User 1',
         },
         {
             id: 2,
-            name: 'two',
+            name: 'User 2',
         },
         {
             id: 3,
-            name: 'three',
+            name: 'User 3',
         },
     ]
-    // const checklistTemplateList = [
-    //     {
-    //         id: 1,
-    //         name: 'one',
-    //     },
-    //     {
-    //         id: 2,
-    //         name: 'two',
-    //     },
-    //     {
-    //         id: 3,
-    //         name: 'three',
-    //     },
-    // ]
     const tagList = [
         {
             id: 1,
-            name: 'one',
+            name: 'Ongoing',
         },
         {
             id: 2,
-            name: 'two',
-        },
-        {
-            id: 3,
-            name: 'three',
+            name: 'Completed',
         },
     ]
 
@@ -792,18 +767,6 @@ const RegisterFilter = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    {/* <TextField
-                        required
-                        id="createdDateRange"
-                        name="createdDateRange"
-                        label="Created Date Range"
-                        fullWidth
-                        size="small"
-                        autoComplete="off"
-                        variant="outlined"
-                        value={inputField.createdDateRange}
-                        onChange={updateField}
-                    /> */}
                     <Box style={{ display: 'flex', gap: '1rem' }}>
                         <ThemeProvider theme={datePickertheme}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -918,18 +881,6 @@ const RegisterFilter = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    {/* <TextField
-                        required
-                        id="checklistDateRange"
-                        name="checklistDateRange"
-                        label="Checklist Date Range"
-                        fullWidth
-                        size="small"
-                        autoComplete="off"
-                        variant="outlined"
-                        value={inputField.checklistDateRange}
-                        onChange={updateField}
-                    /> */}
                     <Box style={{ display: 'flex', gap: '1rem' }}>
                         <ThemeProvider theme={datePickertheme}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -937,7 +888,6 @@ const RegisterFilter = ({
                                     variant="inline"
                                     inputVariant="outlined"
                                     label="Checklist Start date"
-                                    // defaultValue={null}
                                     name="checklistStart"
                                     value={inputField.checklistStart}
                                     onChange={(e: any) =>
