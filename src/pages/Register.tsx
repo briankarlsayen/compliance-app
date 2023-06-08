@@ -13,6 +13,7 @@ import {
     TableBody,
     TablePagination,
     TableCell,
+    InputAdornment,
 } from '@material-ui/core'
 import Grid from '@mui/material/Grid'
 import { Button, Paper, Typography } from '@mui/material'
@@ -28,6 +29,9 @@ import {
 } from '@material-ui/core/styles'
 import Loading from '../components/Loading'
 import blue from '@material-ui/core/colors/blue'
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import DateFnsUtils from '@date-io/date-fns'
+import ClearIcon from '@material-ui/icons/Clear'
 
 interface IRegister {
     centre: string[]
@@ -41,6 +45,10 @@ interface IRegister {
     tag: string[]
     createdDateRange: string
     checklistDateRange: string
+    startDate: Date
+    endDate: Date
+    checklistStart: Date
+    checklistEnd: Date
 }
 
 interface IRegisterList {
@@ -73,6 +81,29 @@ const useStyles = makeStyles({
             color: 'white',
             backgroundColor: '#223d79',
             padding: '1rem',
+        },
+    },
+    customDatePicker: {
+        height: '2.5rem', // Adjust the height value as per your requirement
+    },
+})
+
+const datePickertheme = createTheme({
+    overrides: {
+        MuiOutlinedInput: {
+            input: {
+                padding: '10px 14px',
+            },
+        },
+        MuiInputLabel: {
+            outlined: {
+                transform: 'translate(14px, 10px) scale(1)',
+            },
+        },
+        MuiFormControl: {
+            root: {
+                marginTop: '15.5px',
+            },
         },
     },
 })
@@ -154,6 +185,10 @@ export default function Register() {
         tag: [],
         createdDateRange: '',
         checklistDateRange: '',
+        startDate: new Date(),
+        endDate: new Date(),
+        checklistStart: new Date(),
+        checklistEnd: new Date(),
     })
     const [registerList, setRegisterList] = useState<IRegisterList[]>([])
     const [filteredRegisterList, setFilteredRegisterList] = useState<
@@ -574,7 +609,7 @@ const RegisterFilter = ({
         createdDateRange,
         checklistDateRange,
     } = filters
-
+    const classes = useStyles()
     const centreList = convertArrayToObjects(centre)
     const roomList = convertArrayToObjects(room)
     const creatorList = convertArrayToObjects(creator)
@@ -757,7 +792,7 @@ const RegisterFilter = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <TextField
+                    {/* <TextField
                         required
                         id="createdDateRange"
                         name="createdDateRange"
@@ -768,7 +803,91 @@ const RegisterFilter = ({
                         variant="outlined"
                         value={inputField.createdDateRange}
                         onChange={updateField}
-                    />
+                    /> */}
+                    <Box style={{ display: 'flex', gap: '1rem' }}>
+                        <ThemeProvider theme={datePickertheme}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    variant="inline"
+                                    inputVariant="outlined"
+                                    label="Start date"
+                                    // defaultValue={null}
+                                    name="startDate"
+                                    value={inputField.startDate}
+                                    onChange={(e: any) =>
+                                        setInputField({
+                                            ...inputField,
+                                            startDate: e,
+                                        })
+                                    }
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment
+                                                position="end"
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={(e: any) => {
+                                                    e.stopPropagation()
+                                                    setInputField({
+                                                        ...inputField,
+                                                        startDate: null,
+                                                    })
+                                                }}
+                                            >
+                                                {inputField.startDate ? (
+                                                    <ClearIcon />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </ThemeProvider>
+                        <ThemeProvider theme={datePickertheme}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    variant="inline"
+                                    inputVariant="outlined"
+                                    label="End date"
+                                    // defaultValue={null}
+                                    name="endDate"
+                                    value={inputField.endDate}
+                                    onChange={(e: any) =>
+                                        setInputField({
+                                            ...inputField,
+                                            endDate: e,
+                                        })
+                                    }
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment
+                                                position="end"
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={(e: any) => {
+                                                    e.stopPropagation()
+                                                    setInputField({
+                                                        ...inputField,
+                                                        endDate: null,
+                                                    })
+                                                }}
+                                            >
+                                                {inputField.endDate ? (
+                                                    <ClearIcon />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </ThemeProvider>
+                    </Box>
                     <AutoComplete
                         id="personType"
                         fieldLabel="Person Types"
@@ -799,7 +918,7 @@ const RegisterFilter = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <TextField
+                    {/* <TextField
                         required
                         id="checklistDateRange"
                         name="checklistDateRange"
@@ -810,7 +929,91 @@ const RegisterFilter = ({
                         variant="outlined"
                         value={inputField.checklistDateRange}
                         onChange={updateField}
-                    />
+                    /> */}
+                    <Box style={{ display: 'flex', gap: '1rem' }}>
+                        <ThemeProvider theme={datePickertheme}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    variant="inline"
+                                    inputVariant="outlined"
+                                    label="Checklist Start date"
+                                    // defaultValue={null}
+                                    name="checklistStart"
+                                    value={inputField.checklistStart}
+                                    onChange={(e: any) =>
+                                        setInputField({
+                                            ...inputField,
+                                            checklistStart: e,
+                                        })
+                                    }
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment
+                                                position="end"
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={(e: any) => {
+                                                    e.stopPropagation()
+                                                    setInputField({
+                                                        ...inputField,
+                                                        checklistStart: null,
+                                                    })
+                                                }}
+                                            >
+                                                {inputField.checklistStart ? (
+                                                    <ClearIcon />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </ThemeProvider>
+                        <ThemeProvider theme={datePickertheme}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    variant="inline"
+                                    inputVariant="outlined"
+                                    label="Checklist End date"
+                                    // defaultValue={null}
+                                    name="checklistEnd"
+                                    value={inputField.checklistEnd}
+                                    onChange={(e: any) =>
+                                        setInputField({
+                                            ...inputField,
+                                            checklistEnd: e,
+                                        })
+                                    }
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment
+                                                position="end"
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={(e: any) => {
+                                                    e.stopPropagation()
+                                                    setInputField({
+                                                        ...inputField,
+                                                        checklistEnd: null,
+                                                    })
+                                                }}
+                                            >
+                                                {inputField.checklistEnd ? (
+                                                    <ClearIcon />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </ThemeProvider>
+                    </Box>
 
                     <AutoComplete
                         id="people"
