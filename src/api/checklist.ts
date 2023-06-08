@@ -745,7 +745,7 @@ export const mockPromotionDetails = async () => {
 export const mockRegister = async () => {
     const registerDetails = [
         {
-            centre: '1Place  User',
+            centre: '1Place User',
             room: 'Room1',
             name: 'User 1',
             template: 'Template 1',
@@ -756,7 +756,7 @@ export const mockRegister = async () => {
             complete: false,
         },
         {
-            centre: '1Place  User',
+            centre: 'Head Office',
             room: 'Room2',
             name: 'User 2',
             template: 'Template 2',
@@ -767,7 +767,7 @@ export const mockRegister = async () => {
             complete: false,
         },
         {
-            centre: '1Place  User',
+            centre: '1Place User',
             room: 'Room3',
             name: 'User 3',
             template: 'Template 3',
@@ -778,7 +778,7 @@ export const mockRegister = async () => {
             complete: true,
         },
         {
-            centre: '1Place  User',
+            centre: '1Place User',
             room: 'Room4',
             name: 'User 4',
             template: 'Template 4',
@@ -789,7 +789,7 @@ export const mockRegister = async () => {
             complete: false,
         },
         {
-            centre: '1Place  User',
+            centre: '1Place User',
             room: 'Room5',
             name: 'User 5',
             template: 'Template 5',
@@ -800,7 +800,7 @@ export const mockRegister = async () => {
             complete: false,
         },
         {
-            centre: '1Place  User',
+            centre: 'Head Office',
             room: 'Room6',
             name: 'User 6',
             template: 'Template 6',
@@ -811,7 +811,7 @@ export const mockRegister = async () => {
             complete: false,
         },
         {
-            centre: '1Place  User',
+            centre: '1Place User',
             room: 'Room7',
             name: 'User 7',
             template: 'Template 7',
@@ -822,7 +822,7 @@ export const mockRegister = async () => {
             complete: true,
         },
         {
-            centre: '1Place  User',
+            centre: '1Place User',
             room: 'Room8',
             name: 'User 8',
             template: 'Template 8',
