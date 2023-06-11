@@ -1,33 +1,11 @@
-import { i18n } from '../i18n'
 import AutoComplete from '../common/AutoComplete'
-import { fetchRegisters } from '../api/checklist'
 
-import React, { useEffect, useState } from 'react'
-import {
-    Box,
-    TableContainer,
-    Table,
-    TableHead,
-    TableRow,
-    TableBody,
-    TablePagination,
-    TableCell,
-    InputAdornment,
-} from '@material-ui/core'
+import { Box, InputAdornment } from '@material-ui/core'
 import Grid from '@mui/material/Grid'
-import { Button, Paper, Typography } from '@mui/material'
+import { Button, Typography } from '@mui/material'
 import { grey } from '@material-ui/core/colors'
 import { Search } from '@material-ui/icons'
-import {
-    Theme,
-    ThemeProvider,
-    createStyles,
-    createTheme,
-    makeStyles,
-    withStyles,
-} from '@material-ui/core/styles'
-import Loading from '../components/Loading'
-import blue from '@material-ui/core/colors/blue'
+import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import ClearIcon from '@material-ui/icons/Clear'
