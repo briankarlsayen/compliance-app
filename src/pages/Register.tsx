@@ -767,14 +767,14 @@ const RegisterFilter = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <Box style={{ display: 'flex', gap: '1rem' }}>
+                    <Box style={{ display: 'flex', gap: '.5rem' }}>
                         <ThemeProvider theme={datePickertheme}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
+                                    emptyLabel="Start"
                                     variant="inline"
                                     inputVariant="outlined"
                                     label="Start date"
-                                    // defaultValue={null}
                                     name="startDate"
                                     value={inputField.startDate}
                                     onChange={(e: any) =>
@@ -812,10 +812,10 @@ const RegisterFilter = ({
                         <ThemeProvider theme={datePickertheme}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
+                                    emptyLabel="End"
                                     variant="inline"
                                     inputVariant="outlined"
                                     label="End date"
-                                    // defaultValue={null}
                                     name="endDate"
                                     value={inputField.endDate}
                                     onChange={(e: any) =>
@@ -881,10 +881,11 @@ const RegisterFilter = ({
                     />
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <Box style={{ display: 'flex', gap: '1rem' }}>
+                    <Box style={{ display: 'flex', gap: '.5rem' }}>
                         <ThemeProvider theme={datePickertheme}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
+                                    emptyLabel="Start"
                                     variant="inline"
                                     inputVariant="outlined"
                                     label="Checklist Start date"
@@ -922,13 +923,14 @@ const RegisterFilter = ({
                                 />
                             </MuiPickersUtilsProvider>
                         </ThemeProvider>
+
                         <ThemeProvider theme={datePickertheme}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
+                                    emptyLabel="End"
                                     variant="inline"
                                     inputVariant="outlined"
                                     label="Checklist End date"
-                                    // defaultValue={null}
                                     name="checklistEnd"
                                     value={inputField.checklistEnd}
                                     onChange={(e: any) =>
