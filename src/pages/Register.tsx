@@ -26,6 +26,7 @@ import Loading from '../components/Loading'
 import { blue } from '@material-ui/core/colors'
 import RegisterFilter from '../components/RegisterFilter'
 import { Redo, Print, Lock, Add } from '@material-ui/icons'
+import { FormControl } from '@mui/material'
 i18n.initialise()
 
 interface IRegister {
@@ -360,21 +361,21 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                             <TableRow role="rowheader">
                                 <StyledTableCell
                                     role="columnheader"
-                                    padding="checkbox"
                                     align="center"
                                 >
                                     <Checkbox
+                                        role="checkbox-header"
                                         style={{ color: 'white' }}
-                                        indeterminate={
-                                            selectedRows.length > 0 &&
-                                            selectedRows.length <
-                                                registerList.length
-                                        }
+                                        // indeterminate={
+                                        //     selectedRows.length > 0 &&
+                                        //     selectedRows.length <
+                                        //         registerList.length
+                                        // }
                                         checked={
                                             selectedRows.length ===
                                             registerList.length
                                         }
-                                        onChange={handleSelectAllClick}
+                                        onClick={handleSelectAllClick}
                                     />
                                 </StyledTableCell>
                                 <StyledTableCell role="columnheader">
@@ -457,10 +458,9 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                                 onClick={() =>
                                                     handleRowClick(index)
                                                 }
-                                                role="checkbox"
                                                 selected={isSelected(index)}
                                             >
-                                                <StyledTableCell padding="checkbox">
+                                                <StyledTableCell>
                                                     <ThemeProvider
                                                         theme={blueTheme}
                                                     >
@@ -469,12 +469,20 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                                                 display: 'flex',
                                                             }}
                                                         >
-                                                            <Checkbox
-                                                                color="primary"
-                                                                checked={isSelected(
-                                                                    index
-                                                                )}
-                                                            />
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    role="checkbox"
+                                                                    color="primary"
+                                                                    checked={isSelected(
+                                                                        index
+                                                                    )}
+                                                                    inputProps={{
+                                                                        // @ts-ignore
+                                                                        'data-testid':
+                                                                            'checkbox-component',
+                                                                    }}
+                                                                />
+                                                            </FormControl>
                                                         </Box>
                                                     </ThemeProvider>
                                                 </StyledTableCell>
