@@ -210,6 +210,8 @@ export class I18nHelper implements Ii18nHelper {
                                     'Generate Custom Report',
                                 lock_unlock_update: 'Lock/Unlock Update',
                                 complete_checklist: 'Complete Checklist',
+                                reassign_checklist: 'Reassign Checklist',
+                                label: 'Label'
                             },
                         },
                     },

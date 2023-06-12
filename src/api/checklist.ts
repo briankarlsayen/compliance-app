@@ -836,6 +836,60 @@ export const mockRegister = async () => {
     return await wait(1000, registerDetails)
 }
 
+export const mockReasignChecklist = async () => {
+    const reassignChecklist = [
+        {
+            centre: '1Place User',
+            room: 'Room1',
+            label: 'User 1',
+            complete: false,
+        },
+        {
+            centre: 'Head Office',
+            room: 'Room2',
+            label: 'User 2',         
+            complete: false,
+        },
+        {
+            centre: '1Place User',
+            room: 'Room3',
+            label: 'User 3',
+            complete: true,
+        },
+        {
+            centre: '1Place User',
+            room: 'Room4',
+            label: 'User 4',        
+            complete: false,
+        },
+        {
+            centre: '1Place User',
+            room: 'Room5',
+            label: 'User 5',        
+            complete: false,
+        },
+        {
+            centre: 'Head Office',
+            room: 'Room6',
+            label: 'User 6',        
+            complete: false,
+        },
+        {
+            centre: '1Place User',
+            room: 'Room7',
+            label: 'User 7',      
+            complete: true,
+        },
+        {
+            centre: '1Place User',
+            room: 'Room8',
+            label: 'User 8',       
+            complete: false,
+        },
+    ]
+    return await wait(1000, reassignChecklist)
+}
+
 export async function updateChecklist(checklist: any): Promise<any> {
     return fetchWithErrorHandling<any>(
         'PUT',
@@ -877,4 +931,8 @@ export async function fetchPromotionDetails(): Promise<any> {
 }
 export async function fetchRegisters(): Promise<any> {
     return mockRegister()
+}
+
+export async function fetchReassignChecklist(): Promise<any> {
+    return mockReasignChecklist()
 }
