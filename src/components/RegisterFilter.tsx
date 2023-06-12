@@ -1,3 +1,4 @@
+import { i18n } from '../i18n'
 import AutoComplete from '../common/AutoComplete'
 
 import { Box, InputAdornment } from '@material-ui/core'
@@ -9,6 +10,13 @@ import { ThemeProvider, createTheme } from '@material-ui/core/styles'
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import ClearIcon from '@material-ui/icons/Clear'
+i18n.initialise()
+
+// * dont copy
+const t = (key: any) => {
+    const val = i18n.t(key)
+    return val.toString()
+}
 
 const datePickertheme = createTheme({
     overrides: {
@@ -58,6 +66,8 @@ export default function RegisterFilter({
         createdDateRange,
         checklistDateRange,
     } = filters
+    // const ctx = useContext(OneplaceLibraryContext)
+    // const t = ctx.i18next.t
     const centreList = [
         {
             id: 1,
@@ -208,7 +218,7 @@ export default function RegisterFilter({
                     />
                     <AutoComplete
                         id="checklistTemplate"
-                        fieldLabel="Checklist Template"
+                        fieldLabel={t('centre')}
                         itemKey="id"
                         itemLabel="name"
                         items={checklistTemplateList}
@@ -224,7 +234,7 @@ export default function RegisterFilter({
                 <Grid item xs={12} sm={3}>
                     <AutoComplete
                         id="centreAlias"
-                        fieldLabel="Centre Alias"
+                        fieldLabel={t('centre_alias')}
                         itemKey="id"
                         itemLabel="name"
                         items={centreAliasList}
@@ -238,7 +248,7 @@ export default function RegisterFilter({
                     />
                     <AutoComplete
                         id="roomAlias"
-                        fieldLabel="Room Alias"
+                        fieldLabel={t('room_alias')}
                         itemKey="id"
                         itemLabel="name"
                         items={roomAliasList}
@@ -252,7 +262,7 @@ export default function RegisterFilter({
                     />
                     <AutoComplete
                         id="creator"
-                        fieldLabel="Creator"
+                        fieldLabel={t('creator')}
                         itemKey="id"
                         itemLabel="name"
                         items={creatorList}
@@ -272,8 +282,7 @@ export default function RegisterFilter({
                                 <DatePicker
                                     variant="inline"
                                     inputVariant="outlined"
-                                    label="Start date"
-                                    // defaultValue={null}
+                                    label={t('start_date')}
                                     name="startDate"
                                     value={inputField.startDate}
                                     onChange={(e: any) =>
@@ -314,7 +323,6 @@ export default function RegisterFilter({
                                     variant="inline"
                                     inputVariant="outlined"
                                     label="End date"
-                                    // defaultValue={null}
                                     name="endDate"
                                     value={inputField.endDate}
                                     onChange={(e: any) =>
@@ -352,7 +360,7 @@ export default function RegisterFilter({
                     </Box>
                     <AutoComplete
                         id="personType"
-                        fieldLabel="Person Types"
+                        fieldLabel={t('person_types')}
                         itemKey="id"
                         itemLabel="name"
                         items={personTypeList}
@@ -366,7 +374,7 @@ export default function RegisterFilter({
                     />
                     <AutoComplete
                         id="tag"
-                        fieldLabel="Tag"
+                        fieldLabel={t('tag')}
                         itemKey="id"
                         itemLabel="name"
                         items={tagList}
@@ -386,7 +394,7 @@ export default function RegisterFilter({
                                 <DatePicker
                                     variant="inline"
                                     inputVariant="outlined"
-                                    label="Checklist Start date"
+                                    label={t('checklist_start_date')}
                                     name="checklistStart"
                                     value={inputField.checklistStart}
                                     onChange={(e: any) =>
@@ -426,8 +434,7 @@ export default function RegisterFilter({
                                 <DatePicker
                                     variant="inline"
                                     inputVariant="outlined"
-                                    label="Checklist End date"
-                                    // defaultValue={null}
+                                    label={t('checklist_end_date')}
                                     name="checklistEnd"
                                     value={inputField.checklistEnd}
                                     onChange={(e: any) =>
@@ -466,7 +473,7 @@ export default function RegisterFilter({
 
                     <AutoComplete
                         id="people"
-                        fieldLabel="People"
+                        fieldLabel={t('people')}
                         itemKey="id"
                         itemLabel="name"
                         items={peopleList}
@@ -490,14 +497,13 @@ export default function RegisterFilter({
                         }}
                         size="large"
                         type="submit"
-                        // onClick={handleFilter}
                     >
                         <Search fontSize="small" />
                         <Typography
                             style={{ fontWeight: 'bold' }}
                             variant="body2"
                         >
-                            Search
+                            {t('search')}
                         </Typography>
                     </Button>
                 </ThemeProvider>
