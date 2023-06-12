@@ -3,7 +3,7 @@ import AutoComplete from '../common/AutoComplete'
 
 import { Box, InputAdornment } from '@material-ui/core'
 import Grid from '@mui/material/Grid'
-import { Button, Typography } from '@mui/material'
+import { Button, Typography } from '@material-ui/core'
 import { grey } from '@material-ui/core/colors'
 import { Search } from '@material-ui/icons'
 import { ThemeProvider, createTheme } from '@material-ui/core/styles'
@@ -66,8 +66,6 @@ export default function RegisterFilter({
         createdDateRange,
         checklistDateRange,
     } = filters
-    // const ctx = useContext(OneplaceLibraryContext)
-    // const t = ctx.i18next.t
     const centreList = [
         {
             id: 1,
@@ -497,13 +495,14 @@ export default function RegisterFilter({
                         }}
                         size="large"
                         type="submit"
+                        // onClick={handleFilter}
                     >
                         <Search fontSize="small" />
                         <Typography
                             style={{ fontWeight: 'bold' }}
                             variant="body2"
                         >
-                            {t('search')}
+                            Search
                         </Typography>
                     </Button>
                 </ThemeProvider>

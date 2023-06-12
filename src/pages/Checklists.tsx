@@ -47,7 +47,7 @@ const useStyles = makeStyles({
         background: grey[100],
     },
     tab: {
-        margin: '2rem',
+        marginTop: '2rem',
     },
 })
 

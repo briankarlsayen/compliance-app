@@ -11,8 +11,9 @@ import {
     TableBody,
     TablePagination,
     TableCell,
+    Checkbox,
 } from '@material-ui/core'
-import { Button, Paper, Typography } from '@mui/material'
+import { Button, Paper, Typography } from '@material-ui/core'
 import {
     Theme,
     ThemeProvider,
@@ -22,8 +23,9 @@ import {
     withStyles,
 } from '@material-ui/core/styles'
 import Loading from '../components/Loading'
-import blue from '@material-ui/core/colors/blue'
+import { blue } from '@material-ui/core/colors'
 import RegisterFilter from '../components/RegisterFilter'
+import { Redo, Print, Lock, Add } from '@material-ui/icons'
 i18n.initialise()
 
 interface IRegister {
@@ -66,7 +68,11 @@ const useStyles = makeStyles({
         '& .MuiTableCell-head': {
             color: 'white',
             backgroundColor: '#223d79',
-            padding: '1rem',
+            paddingTop: '1rem',
+            paddingBottom: '1rem',
+        },
+        '& .MuiTableRow-root.Mui-selected': {
+            backgroundColor: '#E3EEFA',
         },
     },
     customDatePicker: {
@@ -90,6 +96,7 @@ const StyledTableCell = withStyles((theme: Theme) =>
         body: {
             fontSize: 14,
             verticalAlign: 'top',
+            alignItems: 'center',
         },
     })
 )(TableCell)
@@ -242,6 +249,16 @@ export default function Register() {
                     updateField={updateField}
                     setLoading={setLoading}
                 />
+            </Paper>
+            <Paper
+                elevation={3}
+                style={{
+                    padding: '2rem',
+                    marginTop: '2rem',
+                    marginBottom: '2rem',
+                }}
+            >
+                <RegisterBtns />
                 <RegisterTable
                     registerList={filteredRegisterList}
                     loading={loading}
@@ -295,6 +312,38 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
         setPage(0)
     }
 
+    // * start
+    const [selectedRows, setSelectedRows] = useState<number[]>([])
+    const isAllSelected = selectedRows.length === registerList.length
+
+    const handleRowClick = (rowId: number) => {
+        const selectedIndex = selectedRows.indexOf(rowId)
+        let newSelected: number[] = []
+
+        if (selectedIndex === -1) {
+            newSelected = newSelected.concat(selectedRows, rowId)
+        } else if (selectedIndex === 0) {
+            newSelected = newSelected.concat(selectedRows.slice(1))
+        } else if (selectedIndex === selectedRows.length - 1) {
+            newSelected = newSelected.concat(selectedRows.slice(0, -1))
+        } else if (selectedIndex > 0) {
+            newSelected = newSelected.concat(
+                selectedRows.slice(0, selectedIndex),
+                selectedRows.slice(selectedIndex + 1)
+            )
+        }
+
+        setSelectedRows(newSelected)
+    }
+    const isSelected = (rowId: number) => selectedRows.indexOf(rowId) !== -1
+    const handleSelectAllClick = () => {
+        if (isAllSelected) {
+            setSelectedRows([])
+        } else {
+            const allRowIds = registerList.map((row, index) => index)
+            setSelectedRows(allRowIds)
+        }
+    }
     return (
         <Box className={classes.root}>
             {registerList && (
@@ -309,6 +358,25 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                     >
                         <TableHead>
                             <TableRow role="rowheader">
+                                <StyledTableCell
+                                    role="columnheader"
+                                    padding="checkbox"
+                                    align="center"
+                                >
+                                    <Checkbox
+                                        style={{ color: 'white' }}
+                                        indeterminate={
+                                            selectedRows.length > 0 &&
+                                            selectedRows.length <
+                                                registerList.length
+                                        }
+                                        checked={
+                                            selectedRows.length ===
+                                            registerList.length
+                                        }
+                                        onChange={handleSelectAllClick}
+                                    />
+                                </StyledTableCell>
                                 <StyledTableCell role="columnheader">
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('checklist_name')}
@@ -383,7 +451,33 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                             },
                                             index
                                         ) => (
-                                            <StyledTableRow key={index}>
+                                            <StyledTableRow
+                                                key={index}
+                                                hover
+                                                onClick={() =>
+                                                    handleRowClick(index)
+                                                }
+                                                role="checkbox"
+                                                selected={isSelected(index)}
+                                            >
+                                                <StyledTableCell padding="checkbox">
+                                                    <ThemeProvider
+                                                        theme={blueTheme}
+                                                    >
+                                                        <Box
+                                                            display={{
+                                                                display: 'flex',
+                                                            }}
+                                                        >
+                                                            <Checkbox
+                                                                color="primary"
+                                                                checked={isSelected(
+                                                                    index
+                                                                )}
+                                                            />
+                                                        </Box>
+                                                    </ThemeProvider>
+                                                </StyledTableCell>
                                                 <StyledTableCell
                                                     style={{
                                                         textDecoration: 'none',
@@ -438,7 +532,9 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                                                         'none',
                                                                 }}
                                                             >
-                                                                {i18n.t('edit')}
+                                                                {i18n.t(
+                                                                    'delete'
+                                                                )}
                                                             </Button>
                                                             <Button
                                                                 variant="outlined"
@@ -450,7 +546,31 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                                                 }}
                                                             >
                                                                 {i18n.t(
-                                                                    'delete'
+                                                                    'print'
+                                                                )}
+                                                            </Button>
+                                                            <Button
+                                                                variant="outlined"
+                                                                color="primary"
+                                                                size="small"
+                                                                style={{
+                                                                    textTransform:
+                                                                        'none',
+                                                                }}
+                                                            >
+                                                                {i18n.t('copy')}
+                                                            </Button>
+                                                            <Button
+                                                                variant="outlined"
+                                                                color="primary"
+                                                                size="small"
+                                                                style={{
+                                                                    textTransform:
+                                                                        'none',
+                                                                }}
+                                                            >
+                                                                {i18n.t(
+                                                                    'attachment'
                                                                 )}
                                                             </Button>
                                                         </Box>
@@ -475,6 +595,87 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                 </TableContainer>
             )}
             <Loading loading={loading} />
+        </Box>
+    )
+}
+
+const RegisterBtns = () => {
+    return (
+        <Box style={{ display: 'flex', width: '100%' }}>
+            <ThemeProvider theme={blueTheme}>
+                <Box style={{ display: 'flex', flex: 1, gap: 5 }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{
+                            color: 'white',
+                        }}
+                        size="large"
+                        type="submit"
+                    >
+                        <Redo fontSize="small" style={{ marginRight: 5 }} />
+                        <Typography
+                            style={{ fontWeight: 'bold' }}
+                            variant="body2"
+                        >
+                            {i18n.t('reassign')}
+                        </Typography>
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{
+                            color: 'white',
+                        }}
+                        size="large"
+                        type="submit"
+                    >
+                        <Print fontSize="small" style={{ marginRight: 5 }} />
+                        <Typography
+                            style={{ fontWeight: 'bold' }}
+                            variant="body2"
+                        >
+                            {i18n.t('generate_custom_report')}
+                        </Typography>
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{
+                            color: 'white',
+                        }}
+                        size="large"
+                        type="submit"
+                    >
+                        <Lock fontSize="small" style={{ marginRight: 5 }} />
+                        <Typography
+                            style={{ fontWeight: 'bold' }}
+                            variant="body2"
+                        >
+                            {i18n.t('lock_unlock_update')}
+                        </Typography>
+                    </Button>
+                </Box>
+                <Box>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        style={{
+                            color: 'white',
+                        }}
+                        size="large"
+                        type="submit"
+                    >
+                        <Add fontSize="small" style={{ marginRight: 5 }} />
+                        <Typography
+                            style={{ fontWeight: 'bold' }}
+                            variant="body2"
+                        >
+                            {i18n.t('complete_checklist')}
+                        </Typography>
+                    </Button>
+                </Box>
+            </ThemeProvider>
         </Box>
     )
 }

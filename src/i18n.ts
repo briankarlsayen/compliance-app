@@ -203,6 +203,13 @@ export class I18nHelper implements Ii18nHelper {
                                     'Checklist $t(start_date)',
                                 checklist_end_date: 'Checklist $t(end_date)',
                                 people: 'People',
+                                attachment: 'Attachment',
+                                print: 'Print',
+                                reassign: 'Reassign',
+                                generate_custom_report:
+                                    'Generate Custom Report',
+                                lock_unlock_update: 'Lock/Unlock Update',
+                                complete_checklist: 'Complete Checklist',
                             },
                         },
                     },
