@@ -32,7 +32,6 @@ import blue from "@material-ui/core/colors/blue";
 import { Menu, MenuItem, TablePagination } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import Register from "./Register";
-import ChecklistReassign from "./ChecklistReassign";
 
 i18n.initialise();
 export default function CheckLists() {
@@ -485,8 +484,7 @@ function CenteredTabs() {
           <Register />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          {/* <Typography>Settings</Typography> */}
-          <ChecklistReassign />
+          <Typography>Settings</Typography>
         </TabPanel>
       </Paper>
     </div>

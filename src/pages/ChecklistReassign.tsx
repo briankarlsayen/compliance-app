@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   Typography,
   TextField,
@@ -19,6 +20,7 @@ import {
   TableCell,
   Checkbox,
 } from "@material-ui/core";
+import Grid from "@mui/material/Grid";
 import {
   Theme,
   ThemeProvider,
@@ -31,6 +33,10 @@ import { i18n } from "../i18n";
 import { blue } from "@material-ui/core/colors";
 import { fetchReassignChecklist } from "../api/checklist";
 import Loading from "../components/Loading";
+
+import AutoComplete from "../common/AutoComplete";
+import InputSelect from "../components/InputSelect";
+import { useHistory } from "react-router-dom";
 i18n.initialise();
 
 const useStyles = makeStyles({
@@ -42,10 +48,21 @@ const useStyles = makeStyles({
 });
 
 interface IReassign {
-  label: string;
+  id: number;
   centre: string;
   room: string;
+  name: string;
+  template: string;
+  createdDate: string;
+  creator: string;
+  ticket: string;
+  score: string;
   complete: boolean;
+}
+
+interface ISelectInputProps {
+  type: string;
+  centre: string;
 }
 
 interface IReassignTblProps {
@@ -55,6 +72,7 @@ interface IReassignTblProps {
 
 export default function ChecklistReassign() {
   const classes = useStyles();
+
   const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
       head: {
@@ -86,23 +104,40 @@ export default function ChecklistReassign() {
       },
     },
   });
+  const history = useHistory<IReassign[]>();
+
   const [reassignCheckList, setreassignCheckList] = useState<IReassign[]>([]);
+  const [inputField, setInputField] = useState<ISelectInputProps>({
+    type: "",
+    centre: "",
+  });
+
   const [loading, setLoading] = useState(false);
 
   const processRows = (data: IReassign[]) => {
     const createdRows = data.map(
       ({
+        id,
         centre,
         room,
-        label,
-
+        name,
+        template,
+        createdDate,
+        creator,
+        ticket,
+        score,
         complete,
       }) => {
         return createData(
+          id,
           centre,
           room,
-          label,
-
+          name,
+          template,
+          createdDate,
+          creator,
+          ticket,
+          score,
           complete
         );
       }
@@ -111,17 +146,27 @@ export default function ChecklistReassign() {
   };
 
   function createData(
+    id: number,
     centre: string,
     room: string,
-    label: string,
-
+    name: string,
+    template: string,
+    createdDate: string,
+    creator: string,
+    ticket: string,
+    score: string,
     complete: boolean
   ) {
     return {
+      id,
       centre,
       room,
-      label,
-
+      name,
+      template,
+      createdDate,
+      creator,
+      ticket,
+      score,
       complete,
     };
   }
@@ -129,10 +174,10 @@ export default function ChecklistReassign() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const list = await fetchReassignChecklist();
-      setreassignCheckList(list);
 
-      processRows(list);
+      setreassignCheckList(history.location.state);
+
+      processRows(history.location.state);
       setLoading(false);
     } catch (error) {
       console.log("failed to get reassign checlist");
@@ -162,44 +207,12 @@ export default function ChecklistReassign() {
       setPage(0);
     };
 
-    // * start
-    const [selectedRows, setSelectedRows] = useState<number[]>([]);
-    const isAllSelected = selectedRows.length === reassignCheckList.length;
-
-    const handleRowClick = (rowId: number) => {
-      const selectedIndex = selectedRows.indexOf(rowId);
-      let newSelected: number[] = [];
-
-      if (selectedIndex === -1) {
-        newSelected = newSelected.concat(selectedRows, rowId);
-      } else if (selectedIndex === 0) {
-        newSelected = newSelected.concat(selectedRows.slice(1));
-      } else if (selectedIndex === selectedRows.length - 1) {
-        newSelected = newSelected.concat(selectedRows.slice(0, -1));
-      } else if (selectedIndex > 0) {
-        newSelected = newSelected.concat(
-          selectedRows.slice(0, selectedIndex),
-          selectedRows.slice(selectedIndex + 1)
-        );
-      }
-
-      setSelectedRows(newSelected);
-    };
-    const isSelected = (rowId: number) => selectedRows.indexOf(rowId) !== -1;
-    const handleSelectAllClick = () => {
-      if (isAllSelected) {
-        setSelectedRows([]);
-      } else {
-        const allRowIds = reassignCheckList.map((row, index) => index);
-        setSelectedRows(allRowIds);
-      }
-    };
     return (
       <Box className={classes.root}>
         {reassignCheckList && (
           <TableContainer
             component={Paper}
-            style={{ marginTop: "2rem", borderRadius: "5px" }}
+            style={{ marginTop: "1rem", borderRadius: "5px" }}
           >
             <Table data-testid="register-table" role="table" size="small">
               <TableHead>
@@ -235,27 +248,27 @@ export default function ChecklistReassign() {
                     .map(
                       (
                         {
+                          id,
                           centre,
                           room,
-                          label,
-
+                          name,
+                          template,
+                          createdDate,
+                          creator,
+                          ticket,
+                          score,
                           complete,
                         },
                         index
                       ) => (
-                        <StyledTableRow
-                          key={index}
-                          hover
-                          onClick={() => handleRowClick(index)}
-                          selected={isSelected(index)}
-                        >
+                        <StyledTableRow key={index}>
                           <StyledTableCell
                             style={{
                               textDecoration: "none",
                               color: "blue",
                             }}
                           >
-                            {label}
+                            {name}
                           </StyledTableCell>
 
                           <StyledTableCell>{centre}</StyledTableCell>
@@ -287,6 +300,96 @@ export default function ChecklistReassign() {
     );
   };
 
+  const SelectFields = () => {
+    const typeList = [
+      {
+        id: 1,
+        name: "Centre",
+      },
+      {
+        id: 2,
+        name: "Other",
+      },
+    ];
+
+    const centreList = [
+      {
+        id: 1,
+        name: "Test 1",
+      },
+      {
+        id: 2,
+        name: "Test 2",
+      },
+    ];
+
+    const propsTypeContainer = {
+      setInputField,
+      inputField,
+      isObjectInput: true,
+      inputVal: inputField.type,
+      label: "Type",
+      name: "type",
+      menu: typeList,
+    };
+
+    const propsCentreContainer = {
+      setInputField,
+      inputField,
+      isObjectInput: true,
+      inputVal: inputField.centre,
+      label: "Centre",
+      name: "centre",
+      menu: centreList,
+    };
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={3} md={3}>
+          <InputSelect {...propsTypeContainer} />
+        </Grid>
+        <Grid item xs={3} md={3}>
+          <InputSelect {...propsCentreContainer} />
+        </Grid>
+      </Grid>
+    );
+  };
+
+  const BackAndReassignBtn = () => {
+    return (
+      <ThemeProvider theme={blueTheme}>
+        <Box
+          style={{
+            display: "flex",
+            justifyContent: "end",
+            gap: 5,
+          }}
+        >
+          <Button
+            variant="outlined"
+            color="primary"
+            size="small"
+            style={{
+              textTransform: "none",
+            }}
+            onClick={() => history.goBack()}
+          >
+            {i18n.t("back")}
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            size="small"
+            style={{
+              textTransform: "none",
+            }}
+          >
+            {i18n.t("reassign")}
+          </Button>
+        </Box>
+      </ThemeProvider>
+    );
+  };
+
   return (
     <React.Fragment>
       <Paper
@@ -296,15 +399,27 @@ export default function ChecklistReassign() {
           padding: "2rem",
           marginTop: "2rem",
           marginBottom: "2rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: 10,
         }}
       >
         <Typography style={{ fontWeight: "bold", paddingBottom: "1rem" }}>
           {i18n.t("reassign_checklist")}
         </Typography>
-        <ReassignTable
-          reassignChecklist={reassignCheckList}
-          loading={loading}
-        />
+        <Box
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <SelectFields />
+          <ReassignTable
+            reassignChecklist={reassignCheckList}
+            loading={loading}
+          />
+        </Box>
+        <BackAndReassignBtn />
       </Paper>
     </React.Fragment>
   );

@@ -56,13 +56,12 @@ const ChecklistHome = () => {
             component={Promotion}
           />
           <Route exact path="/checklists/versions" component={Versions} />
-
-          <Route component={CheckLists} />
           <Route
             exact
             path="/checklists/reassign"
             component={ChecklistReassign}
           />
+          <Route component={CheckLists} />
         </Switch>
       </FeatureFlagProvider>
     );
