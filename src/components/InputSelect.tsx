@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     height: "10vh",
   },
   inputLabel: {
-    fontSize: "4vh",
+    fontSize: "3vh",
     alignSelf: "center",
   },
 }));
@@ -63,7 +63,7 @@ export default function InputSelect(props: InputSelectProps) {
     setInputField(isObjectInput ? { ...inputField, [name]: value } : value);
   };
   return (
-    <FormControl variant="standard" className={classes.formControl}>
+    <FormControl variant="outlined" className={classes.formControl}>
       <InputLabel>{label}</InputLabel>
       <Select
         value={inputVal}

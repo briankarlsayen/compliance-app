@@ -41,9 +41,18 @@ i18n.initialise();
 
 const useStyles = makeStyles({
   root: {
-    "& .MuiFormControl-root": {
-      marginTop: 0,
+    "& .MuiTableCell-head": {
+      color: "white",
+      backgroundColor: "#223d79",
+      paddingTop: "1rem",
+      paddingBottom: "1rem",
     },
+    "& .MuiTableRow-root.Mui-selected": {
+      backgroundColor: "#E3EEFA",
+    },
+  },
+  customDatePicker: {
+    height: "2.5rem",
   },
 });
 
@@ -70,40 +79,41 @@ interface IReassignTblProps {
   loading: boolean;
 }
 
+const StyledTableCell = withStyles((theme: Theme) =>
+  createStyles({
+    head: {
+      backgroundColor: "white",
+    },
+    body: {
+      fontSize: 14,
+      verticalAlign: "top",
+      alignItems: "center",
+    },
+  })
+)(TableCell);
+
+const StyledTableRow = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "&:nth-of-type(odd)": {
+        backgroundColor: theme.palette.action.hover,
+      },
+      height: "44px",
+    },
+  })
+)(TableRow);
+
+const blueTheme = createTheme({
+  palette: {
+    primary: {
+      main: blue[500],
+    },
+  },
+});
+
 export default function ChecklistReassign() {
   const classes = useStyles();
 
-  const StyledTableCell = withStyles((theme: Theme) =>
-    createStyles({
-      head: {
-        backgroundColor: "white",
-      },
-      body: {
-        fontSize: 14,
-        verticalAlign: "top",
-        alignItems: "center",
-      },
-    })
-  )(TableCell);
-
-  const StyledTableRow = withStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        "&:nth-of-type(odd)": {
-          backgroundColor: theme.palette.action.hover,
-        },
-        height: "44px",
-      },
-    })
-  )(TableRow);
-
-  const blueTheme = createTheme({
-    palette: {
-      primary: {
-        main: blue[500],
-      },
-    },
-  });
   const history = useHistory<IReassign[]>();
 
   const [reassignCheckList, setreassignCheckList] = useState<IReassign[]>([]);
