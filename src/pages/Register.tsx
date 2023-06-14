@@ -12,8 +12,11 @@ import {
     TablePagination,
     TableCell,
     Checkbox,
+    Button,
+    Paper,
+    Typography,
+    FormControl,
 } from '@material-ui/core'
-import { Button, Paper, Typography } from '@material-ui/core'
 import {
     Theme,
     ThemeProvider,
@@ -26,7 +29,6 @@ import Loading from '../components/Loading'
 import { blue } from '@material-ui/core/colors'
 import RegisterFilter from '../components/RegisterFilter'
 import { Redo, Print, Lock, Add } from '@material-ui/icons'
-import { FormControl } from '@mui/material'
 i18n.initialise()
 
 interface IRegister {
