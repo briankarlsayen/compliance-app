@@ -70,8 +70,9 @@ interface IReassign {
 }
 
 interface ISelectInputProps {
-  type: string;
+  type?: number | null;
   centre: string;
+  room: string;
 }
 
 interface IReassignTblProps {
@@ -118,8 +119,9 @@ export default function ChecklistReassign() {
 
   const [reassignCheckList, setreassignCheckList] = useState<IReassign[]>([]);
   const [inputField, setInputField] = useState<ISelectInputProps>({
-    type: "",
+    type: null,
     centre: "",
+    room: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -224,7 +226,7 @@ export default function ChecklistReassign() {
             component={Paper}
             style={{ marginTop: "1rem", borderRadius: "5px" }}
           >
-            <Table data-testid="register-table" role="table" size="small">
+            <Table data-testid="reassign-table" role="table" size="small">
               <TableHead>
                 <TableRow role="rowheader">
                   <StyledTableCell role="columnheader">
@@ -318,7 +320,7 @@ export default function ChecklistReassign() {
       },
       {
         id: 2,
-        name: "Other",
+        name: "Room",
       },
     ];
 
@@ -330,6 +332,16 @@ export default function ChecklistReassign() {
       {
         id: 2,
         name: "Test 2",
+      },
+    ];
+    const roomList = [
+      {
+        id: 1,
+        name: "Room 1",
+      },
+      {
+        id: 2,
+        name: "Room 2",
       },
     ];
 
@@ -352,14 +364,29 @@ export default function ChecklistReassign() {
       name: "centre",
       menu: centreList,
     };
+
+    const propsRoomContainer = {
+      setInputField,
+      inputField,
+      isObjectInput: true,
+      inputVal: inputField.room,
+      label: "Room",
+      name: "room",
+      menu: roomList,
+    };
     return (
-      <Grid container spacing={3}>
+      <Grid container>
         <Grid item xs={3} md={3}>
           <InputSelect {...propsTypeContainer} />
         </Grid>
         <Grid item xs={3} md={3}>
           <InputSelect {...propsCentreContainer} />
         </Grid>
+        {inputField.type && inputField.type === 2 && (
+          <Grid item xs={3} md={3}>
+            <InputSelect {...propsRoomContainer} />
+          </Grid>
+        )}
       </Grid>
     );
   };
@@ -392,6 +419,7 @@ export default function ChecklistReassign() {
             style={{
               textTransform: "none",
             }}
+            onClick={() => history.goBack()}
           >
             {i18n.t("reassign")}
           </Button>
