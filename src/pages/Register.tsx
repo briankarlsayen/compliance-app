@@ -25,11 +25,11 @@ import {
     makeStyles,
     withStyles,
 } from '@material-ui/core/styles'
-import Loading from '../components/Loading'
 import { blue } from '@material-ui/core/colors'
-import RegisterFilter from '../components/RegisterFilter'
 import { Redo, Print, Lock, Add } from '@material-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
+import RegisterFilter from '../components/RegisterFilter'
+import Loading from '../components/Loading'
 i18n.initialise()
 
 interface IRegister {
