@@ -29,6 +29,7 @@ import Loading from '../components/Loading'
 import { blue } from '@material-ui/core/colors'
 import RegisterFilter from '../components/RegisterFilter'
 import { Redo, Print, Lock, Add } from '@material-ui/icons'
+import { Link, useHistory } from 'react-router-dom'
 i18n.initialise()
 
 interface IRegister {
@@ -50,6 +51,7 @@ interface IRegister {
 }
 
 interface IRegisterList {
+    id: number
     centre: string
     room: string
     name: string
@@ -64,6 +66,7 @@ interface IRegisterList {
 interface IRegisterTblProps {
     registerList: IRegisterList[]
     loading: boolean
+    setAllSelected?: any
 }
 
 const useStyles = makeStyles({
@@ -141,6 +144,7 @@ const RegisterHeader = () => {
 }
 
 export default function Register() {
+    const history = useHistory()
     const [inputField, setInputField] = useState<IRegister>({
         centre: [],
         centreAlias: [],
@@ -162,6 +166,8 @@ export default function Register() {
     const [filteredRegisterList, setFilteredRegisterList] = useState<
         IRegisterList[]
     >([])
+    const [allSelected, setAllSelected] = useState<IRegisterList[]>([])
+
     const [loading, setLoading] = useState(false)
 
     const updateField = (e: any) => {
@@ -192,6 +198,7 @@ export default function Register() {
     const processRows = (data: IRegisterList[]) => {
         const createdRows = data.map(
             ({
+                id,
                 centre,
                 room,
                 name,
@@ -203,6 +210,7 @@ export default function Register() {
                 complete,
             }) => {
                 return createData(
+                    id,
                     centre,
                     room,
                     name,
@@ -261,10 +269,11 @@ export default function Register() {
                     marginBottom: '2rem',
                 }}
             >
-                <RegisterBtns />
+                <RegisterBtns allSelected={allSelected} />
                 <RegisterTable
                     registerList={filteredRegisterList}
                     loading={loading}
+                    setAllSelected={setAllSelected}
                 />
             </Paper>
         </div>
@@ -272,6 +281,7 @@ export default function Register() {
 }
 
 function createData(
+    id: number,
     centre: string,
     room: string,
     name: string,
@@ -283,6 +293,7 @@ function createData(
     complete: boolean
 ) {
     return {
+        id,
         centre,
         room,
         name,
@@ -295,7 +306,11 @@ function createData(
     }
 }
 
-const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
+const RegisterTable = ({
+    registerList,
+    loading,
+    setAllSelected,
+}: IRegisterTblProps) => {
     const classes = useStyles()
     const DEFAULT_ROWS_PAGE = 10
     const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
@@ -317,9 +332,26 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
 
     // * start
     const [selectedRows, setSelectedRows] = useState<number[]>([])
+    const [selectedList, setSelectedList] = useState<IRegisterList[]>([])
     const isAllSelected = selectedRows.length === registerList.length
 
-    const handleRowClick = (rowId: number) => {
+    useEffect(() => {
+        setAllSelected(selectedList)
+    }, [selectedList])
+
+    const handleRowClick = (rowId: number, data: IRegisterList) => {
+        const findSelectedIfExist = selectedList.findIndex(
+            ({ id }) => id === data.id
+        )
+        let copySelectList = [...selectedList]
+        if (findSelectedIfExist >= 0) {
+            copySelectList.splice(findSelectedIfExist, 1)
+            setSelectedList(copySelectList)
+        } else {
+            copySelectList.push(data)
+            setSelectedList(copySelectList)
+        }
+
         const selectedIndex = selectedRows.indexOf(rowId)
         let newSelected: number[] = []
 
@@ -341,8 +373,10 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
     const isSelected = (rowId: number) => selectedRows.indexOf(rowId) !== -1
     const handleSelectAllClick = () => {
         if (isAllSelected) {
+            setSelectedList([])
             setSelectedRows([])
         } else {
+            setSelectedList(registerList)
             const allRowIds = registerList.map((row, index) => index)
             setSelectedRows(allRowIds)
         }
@@ -439,38 +473,36 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                         page * rowsPerPage,
                                         page * rowsPerPage + rowsPerPage
                                     )
-                                    .map(
-                                        (
-                                            {
-                                                centre,
-                                                room,
-                                                name,
-                                                template,
-                                                createdDate,
-                                                creator,
-                                                ticket,
-                                                score,
-                                                complete,
-                                            },
-                                            index
-                                        ) => (
+                                    .map((data, index) => {
+                                        const {
+                                            centre,
+                                            room,
+                                            name,
+                                            template,
+                                            createdDate,
+                                            creator,
+                                            ticket,
+                                            score,
+                                            complete,
+                                        } = data
+                                        return (
                                             <StyledTableRow
                                                 key={index}
                                                 hover
                                                 onClick={() =>
-                                                    handleRowClick(index)
+                                                    handleRowClick(index, data)
                                                 }
                                                 selected={isSelected(index)}
                                             >
-                                                <StyledTableCell>
+                                                <StyledTableCell
+                                                    style={{
+                                                        textAlignLast: 'center',
+                                                    }}
+                                                >
                                                     <ThemeProvider
                                                         theme={blueTheme}
                                                     >
-                                                        <Box
-                                                            display={{
-                                                                display: 'flex',
-                                                            }}
-                                                        >
+                                                        <Box>
                                                             <FormControl>
                                                                 <Checkbox
                                                                     role="checkbox"
@@ -588,7 +620,7 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
                                                 </StyledTableCell>
                                             </StyledTableRow>
                                         )
-                                    )}
+                                    })}
                         </TableBody>
                     </Table>
                     {registerList && (
@@ -609,28 +641,35 @@ const RegisterTable = ({ registerList, loading }: IRegisterTblProps) => {
     )
 }
 
-const RegisterBtns = () => {
+const RegisterBtns = ({ allSelected }: any) => {
     return (
         <Box style={{ display: 'flex', width: '100%' }}>
             <ThemeProvider theme={blueTheme}>
                 <Box style={{ display: 'flex', flex: 1, gap: 5 }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        style={{
-                            color: 'white',
+                    <Link
+                        to={{
+                            pathname: '/checklists/reassign',
+                            state: allSelected,
                         }}
-                        size="large"
-                        type="submit"
                     >
-                        <Redo fontSize="small" style={{ marginRight: 5 }} />
-                        <Typography
-                            style={{ fontWeight: 'bold' }}
-                            variant="body2"
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            style={{
+                                color: 'white',
+                            }}
+                            size="large"
+                            type="submit"
                         >
-                            {i18n.t('reassign')}
-                        </Typography>
-                    </Button>
+                            <Redo fontSize="small" style={{ marginRight: 5 }} />
+                            <Typography
+                                style={{ fontWeight: 'bold' }}
+                                variant="body2"
+                            >
+                                {i18n.t('reassign')}
+                            </Typography>
+                        </Button>
+                    </Link>
                     <Button
                         variant="contained"
                         color="primary"
