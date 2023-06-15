@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react'
 
 import {
     Typography,
-    TextField,
     Box,
     Paper,
-    InputLabel,
-    MenuItem,
-    FormControl,
-    Select,
     Button,
-    InputAdornment,
     TableContainer,
     Table,
     TableHead,
@@ -18,7 +12,6 @@ import {
     TableBody,
     TablePagination,
     TableCell,
-    Checkbox,
 } from '@material-ui/core'
 import Grid from '@mui/material/Grid'
 import {
@@ -31,10 +24,7 @@ import {
 } from '@material-ui/core/styles'
 import { i18n } from '../i18n'
 import { blue, grey } from '@material-ui/core/colors'
-import { fetchReassignChecklist } from '../api/checklist'
-import Loading from '../components/Loading'
 
-import AutoComplete from '../common/AutoComplete'
 import InputSelect from '../components/InputSelect'
 import { useHistory } from 'react-router-dom'
 i18n.initialise()
@@ -77,7 +67,6 @@ interface ISelectInputProps {
 
 interface IReassignTblProps {
     reassignChecklist: IReassign[]
-    loading: boolean
 }
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -131,8 +120,6 @@ export default function ChecklistReassign() {
         centre: '',
         room: '',
     })
-
-    const [loading, setLoading] = useState(false)
 
     const processRows = (data: IReassign[]) => {
         const createdRows = data.map(
@@ -193,12 +180,10 @@ export default function ChecklistReassign() {
 
     const fetchData = async () => {
         try {
-            setLoading(true)
-
-            setreassignCheckList(history.location.state)
-
-            processRows(history.location.state)
-            setLoading(false)
+            if (history.location.state) {
+                setreassignCheckList(history?.location?.state)
+                processRows(history?.location?.state)
+            }
         } catch (error) {
             console.log('failed to get reassign checlist')
         }
@@ -207,10 +192,7 @@ export default function ChecklistReassign() {
         fetchData()
     }, [])
 
-    const ReassignTable = ({
-        reassignChecklist,
-        loading,
-    }: IReassignTblProps) => {
+    const ReassignTable = ({ reassignChecklist }: IReassignTblProps) => {
         const classes = useStyles()
         const DEFAULT_ROWS_PAGE = 10
         const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
@@ -301,6 +283,7 @@ export default function ChecklistReassign() {
                                             ) => (
                                                 <StyledTableRow key={index}>
                                                     <StyledTableCell
+                                                        role="cell"
                                                         style={{
                                                             textDecoration:
                                                                 'none',
@@ -310,14 +293,14 @@ export default function ChecklistReassign() {
                                                         {name}
                                                     </StyledTableCell>
 
-                                                    <StyledTableCell>
+                                                    <StyledTableCell role="cell">
                                                         {centre}
                                                     </StyledTableCell>
-                                                    <StyledTableCell>
+                                                    <StyledTableCell role="cell">
                                                         {room}
                                                     </StyledTableCell>
 
-                                                    <StyledTableCell>
+                                                    <StyledTableCell role="cell">
                                                         {complete
                                                             ? 'True'
                                                             : 'False'}
@@ -340,7 +323,6 @@ export default function ChecklistReassign() {
                         )}
                     </TableContainer>
                 )}
-                <Loading loading={loading} />
             </Box>
         )
     }
@@ -491,10 +473,7 @@ export default function ChecklistReassign() {
                     }}
                 >
                     <SelectFields />
-                    <ReassignTable
-                        reassignChecklist={reassignCheckList}
-                        loading={loading}
-                    />
+                    <ReassignTable reassignChecklist={reassignCheckList} />
                 </Box>
                 <BackAndReassignBtn />
             </Paper>
