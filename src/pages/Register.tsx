@@ -1,5 +1,7 @@
 import { i18n } from '../i18n'
 import { fetchRegisters } from '../api/checklist'
+import Loading from '../components/Loading'
+import RegisterFilter from '../components/RegisterFilter'
 
 import React, { useEffect, useState } from 'react'
 import {
@@ -25,9 +27,7 @@ import {
     makeStyles,
     withStyles,
 } from '@material-ui/core/styles'
-import Loading from '../components/Loading'
 import { blue } from '@material-ui/core/colors'
-import RegisterFilter from '../components/RegisterFilter'
 import { Redo, Print, Lock, Add } from '@material-ui/icons'
 import { Link, useHistory } from 'react-router-dom'
 i18n.initialise()
