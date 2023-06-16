@@ -27,6 +27,10 @@ import { blue, grey } from "@material-ui/core/colors";
 import InputSelect from "../components/InputSelect";
 import { useHistory } from "react-router-dom";
 import Select from "../common/Select";
+import ReassignBtn from "../components/ReassignBtn";
+import ReassignFilter from "../components/ReassignSelect";
+import ReassignSelect from "../components/ReassignSelect";
+
 i18n.initialise();
 
 const useStyles = makeStyles({
@@ -92,22 +96,6 @@ const StyledTableRow = withStyles((theme: Theme) =>
     },
   })
 )(TableRow);
-
-const blueTheme = createTheme({
-  palette: {
-    primary: {
-      main: blue[500],
-    },
-  },
-});
-
-const greyTheme = createTheme({
-  palette: {
-    primary: {
-      main: grey[600],
-    },
-  },
-});
 
 export default function ChecklistReassign() {
   const classes = useStyles();
@@ -185,7 +173,7 @@ export default function ChecklistReassign() {
         processRows(history?.location?.state);
       }
     } catch (error) {
-      console.log("failed to get reassign checlist");
+      // console.log("failed to get reassign checlist");
     }
   };
   useEffect(() => {
@@ -307,122 +295,6 @@ export default function ChecklistReassign() {
     );
   };
 
-  const SelectFields = () => {
-    const typeList = [
-      {
-        id: 1,
-        name: "Centre",
-      },
-      {
-        id: 2,
-        name: "Room",
-      },
-    ];
-
-    const centreList = [
-      {
-        id: 1,
-        name: "Test 1",
-      },
-      {
-        id: 2,
-        name: "Test 2",
-      },
-    ];
-    const roomList = [
-      {
-        id: 1,
-        name: "Room 1",
-      },
-      {
-        id: 2,
-        name: "Room 2",
-      },
-    ];
-
-    const propsCentreContainer = {
-      label: "Centre",
-      id: "centre",
-      value: inputField.centre!,
-      itemValueKey: "id",
-      items: centreList,
-      onChange: (e: any) => setInputField({ ...inputField, centre: e.id }),
-      itemLabelKey: "name",
-    };
-
-    const propsRoomContainer = {
-      label: "Room",
-      id: "room",
-      value: inputField.room!,
-      itemValueKey: "id",
-      items: roomList,
-      onChange: (e: any) => setInputField({ ...inputField, room: e.id }),
-      itemLabelKey: "name",
-    };
-
-    const propsTypeContainer = {
-      label: "Type",
-      id: "type",
-      value: inputField.type!,
-      itemValueKey: "id",
-      items: typeList,
-      onChange: (e: any) => setInputField({ ...inputField, type: e.id }),
-      itemLabelKey: "name",
-    };
-
-    return (
-      <Grid container gap={2}>
-        <Grid item xs={3} md={3}>
-          <Select {...propsTypeContainer} />
-          {/* <InputSelect {...propsTypeContainer} /> */}
-        </Grid>
-        <Grid item xs={3} md={3}>
-          <Select {...propsCentreContainer} />
-        </Grid>
-        {inputField.type && inputField.type === 2 && (
-          <Grid item xs={3} md={3}>
-            <Select {...propsRoomContainer} />
-          </Grid>
-        )}
-      </Grid>
-    );
-  };
-
-  const BackAndReassignBtn = () => {
-    return (
-      <Box
-        style={{
-          display: "flex",
-          justifyContent: "end",
-          gap: 5,
-        }}
-      >
-        <ThemeProvider theme={greyTheme}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => history.goBack()}
-          >
-            <Typography style={{ fontWeight: "bold" }} variant="body2">
-              {i18n.t("back")}
-            </Typography>
-          </Button>
-        </ThemeProvider>
-        <ThemeProvider theme={blueTheme}>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => history.goBack()}
-          >
-            <Typography style={{ fontWeight: "bold" }} variant="body2">
-              {i18n.t("reassign")}
-            </Typography>
-          </Button>
-        </ThemeProvider>
-      </Box>
-    );
-  };
-
   return (
     <React.Fragment>
       <Paper
@@ -446,10 +318,13 @@ export default function ChecklistReassign() {
             flexDirection: "column",
           }}
         >
-          <SelectFields />
+          <ReassignSelect
+            inputField={inputField}
+            setInputField={setInputField}
+          />
           <ReassignTable reassignChecklist={reassignCheckList} />
         </Box>
-        <BackAndReassignBtn />
+        <ReassignBtn />
       </Paper>
     </React.Fragment>
   );
