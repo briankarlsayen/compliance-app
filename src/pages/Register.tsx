@@ -61,6 +61,7 @@ interface IRegisterList {
     ticket: string
     score: string
     complete: boolean
+    isLocked: boolean
 }
 
 interface IRegisterTblProps {
@@ -177,6 +178,8 @@ export default function Register() {
         })
     }
 
+    console.log('allSelected', allSelected)
+
     let filters = {
         centre: [],
         centreAlias: [],
@@ -208,6 +211,7 @@ export default function Register() {
                 ticket,
                 score,
                 complete,
+                isLocked,
             }) => {
                 return createData(
                     id,
@@ -219,7 +223,8 @@ export default function Register() {
                     creator,
                     ticket,
                     score,
-                    complete
+                    complete,
+                    isLocked
                 )
             }
         )
@@ -241,6 +246,23 @@ export default function Register() {
     useEffect(() => {
         fetchData()
     }, [])
+
+    const handleChangeIsLockStatus = () => {
+        const updatedItems = allSelected?.map((selected) => {
+            selected.isLocked = !selected.isLocked
+            return { ...selected }
+        })
+        const newArr = filteredRegisterList.map((item) => {
+            const updatedItem = updatedItems.find(
+                (updated) => updated.id === item.id
+            )
+            if (updatedItem) {
+                return updatedItem
+            }
+            return item
+        })
+        setFilteredRegisterList(newArr)
+    }
 
     return (
         <div>
@@ -269,7 +291,10 @@ export default function Register() {
                     marginBottom: '2rem',
                 }}
             >
-                <RegisterBtns allSelected={allSelected} />
+                <RegisterBtns
+                    allSelected={allSelected}
+                    handleChangeIsLockStatus={handleChangeIsLockStatus}
+                />
                 <RegisterTable
                     registerList={filteredRegisterList}
                     loading={loading}
@@ -290,7 +315,8 @@ function createData(
     creator: string,
     ticket: string,
     score: string,
-    complete: boolean
+    complete: boolean,
+    isLocked: boolean
 ) {
     return {
         id,
@@ -303,6 +329,7 @@ function createData(
         ticket,
         score,
         complete,
+        isLocked,
     }
 }
 
@@ -381,6 +408,7 @@ const RegisterTable = ({
             setSelectedRows(allRowIds)
         }
     }
+
     return (
         <Box className={classes.root}>
             {registerList && (
@@ -484,6 +512,7 @@ const RegisterTable = ({
                                             ticket,
                                             score,
                                             complete,
+                                            isLocked,
                                         } = data
                                         return (
                                             <StyledTableRow
@@ -523,10 +552,31 @@ const RegisterTable = ({
                                                 <StyledTableCell
                                                     style={{
                                                         textDecoration: 'none',
-                                                        color: 'blue',
                                                     }}
                                                 >
-                                                    {name}
+                                                    <Box
+                                                        style={{
+                                                            display: 'flex',
+                                                        }}
+                                                    >
+                                                        <Typography
+                                                            style={{
+                                                                color: 'blue',
+                                                            }}
+                                                        >
+                                                            {name}
+                                                        </Typography>
+                                                        {isLocked && (
+                                                            <Lock
+                                                                fontSize="small"
+                                                                style={{
+                                                                    marginRight: 5,
+                                                                    alignSelf:
+                                                                        'center',
+                                                                }}
+                                                            />
+                                                        )}
+                                                    </Box>
                                                 </StyledTableCell>
                                                 <StyledTableCell>
                                                     {template}
@@ -641,7 +691,7 @@ const RegisterTable = ({
     )
 }
 
-const RegisterBtns = ({ allSelected }: any) => {
+const RegisterBtns = ({ allSelected, handleChangeIsLockStatus }: any) => {
     return (
         <Box style={{ display: 'flex', width: '100%' }}>
             <ThemeProvider theme={blueTheme}>
@@ -694,7 +744,8 @@ const RegisterBtns = ({ allSelected }: any) => {
                             color: 'white',
                         }}
                         size="large"
-                        type="submit"
+                        // type="submit"
+                        onClick={handleChangeIsLockStatus}
                     >
                         <Lock fontSize="small" style={{ marginRight: 5 }} />
                         <Typography

@@ -745,7 +745,7 @@ export const mockPromotionDetails = async () => {
 export const mockRegister = async () => {
     const registerDetails = [
         {
-            id:1,
+            id: 1,
             centre: '1Place User',
             room: 'Room1',
             name: 'User 1',
@@ -755,9 +755,10 @@ export const mockRegister = async () => {
             ticket: '743',
             score: '0/6',
             complete: false,
+            isLocked: true,
         },
         {
-            id:2,
+            id: 2,
             centre: 'Head Office',
             room: 'Room2',
             name: 'User 2',
@@ -767,9 +768,10 @@ export const mockRegister = async () => {
             ticket: '743',
             score: '0/12',
             complete: false,
+            isLocked: false,
         },
         {
-            id:3,
+            id: 3,
             centre: '1Place User',
             room: 'Room3',
             name: 'User 3',
@@ -779,9 +781,10 @@ export const mockRegister = async () => {
             ticket: '713',
             score: '0/3',
             complete: true,
+            isLocked: true,
         },
         {
-            id:4,
+            id: 4,
             centre: '1Place User',
             room: 'Room4',
             name: 'User 4',
@@ -791,9 +794,10 @@ export const mockRegister = async () => {
             ticket: '723',
             score: '0/3',
             complete: false,
+            isLocked: false,
         },
         {
-            id:5,
+            id: 5,
             centre: '1Place User',
             room: 'Room5',
             name: 'User 5',
@@ -803,9 +807,10 @@ export const mockRegister = async () => {
             ticket: '865',
             score: '0/6',
             complete: false,
+            isLocked: false,
         },
         {
-            id:6,
+            id: 6,
             centre: 'Head Office',
             room: 'Room6',
             name: 'User 6',
@@ -815,9 +820,10 @@ export const mockRegister = async () => {
             ticket: '111',
             score: '0/11',
             complete: false,
+            isLocked: true,
         },
         {
-            id:7,
+            id: 7,
             centre: '1Place User',
             room: 'Room7',
             name: 'User 7',
@@ -827,9 +833,10 @@ export const mockRegister = async () => {
             ticket: '753',
             score: '0/2',
             complete: true,
+            isLocked: false,
         },
         {
-            id:8,
+            id: 8,
             centre: '1Place User',
             room: 'Room8',
             name: 'User 8',
@@ -839,6 +846,7 @@ export const mockRegister = async () => {
             ticket: '512',
             score: '0/8',
             complete: false,
+            isLocked: false,
         },
     ]
     return await wait(1000, registerDetails)
@@ -855,7 +863,7 @@ export const mockReasignChecklist = async () => {
         {
             centre: 'Head Office',
             room: 'Room2',
-            label: 'User 2',         
+            label: 'User 2',
             complete: false,
         },
         {
@@ -867,31 +875,31 @@ export const mockReasignChecklist = async () => {
         {
             centre: '1Place User',
             room: 'Room4',
-            label: 'User 4',        
+            label: 'User 4',
             complete: false,
         },
         {
             centre: '1Place User',
             room: 'Room5',
-            label: 'User 5',        
+            label: 'User 5',
             complete: false,
         },
         {
             centre: 'Head Office',
             room: 'Room6',
-            label: 'User 6',        
+            label: 'User 6',
             complete: false,
         },
         {
             centre: '1Place User',
             room: 'Room7',
-            label: 'User 7',      
+            label: 'User 7',
             complete: true,
         },
         {
             centre: '1Place User',
             room: 'Room8',
-            label: 'User 8',       
+            label: 'User 8',
             complete: false,
         },
     ]
