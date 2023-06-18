@@ -81,4 +81,30 @@ describe('<Register />', () => {
         // Check if the first row is unselected
         expect(firstCheckbox.checked).toBe(true)
     })
+
+    it('should lock and unlock rows when clicked', async () => {
+        render(
+            <MemoryRouter>
+                <Register />
+            </MemoryRouter>
+        )
+
+        expect(screen.queryByAltText('Loading')).toBeInTheDocument
+        await waitForElementToBeRemoved(screen.queryByAltText('Loading'), {
+            timeout: 10000,
+        })
+        expect(screen.getAllByTestId('lock-icon')).toBeInTheDocument
+        expect(screen.getAllByTestId('lock-unlock-btn')).toBeInTheDocument
+
+        expect(screen.getAllByTestId('lock-icon').length).toBe(3)
+
+        const checkboxes = screen.getAllByTestId('checkbox-component')
+        const firstCheckbox = checkboxes[0] as any
+        fireEvent.click(firstCheckbox)
+
+        const lockUnlockBtn = screen.getByTestId('lock-unlock-btn')
+        fireEvent.click(lockUnlockBtn)
+
+        expect(screen.getAllByTestId('lock-icon').length).toBe(2)
+    })
 })

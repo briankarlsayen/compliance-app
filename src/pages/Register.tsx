@@ -178,8 +178,6 @@ export default function Register() {
         })
     }
 
-    console.log('allSelected', allSelected)
-
     let filters = {
         centre: [],
         centreAlias: [],
@@ -516,6 +514,7 @@ const RegisterTable = ({
                                         } = data
                                         return (
                                             <StyledTableRow
+                                                role="row"
                                                 key={index}
                                                 hover
                                                 onClick={() =>
@@ -574,6 +573,7 @@ const RegisterTable = ({
                                                                     alignSelf:
                                                                         'center',
                                                                 }}
+                                                                data-testid="lock-icon"
                                                             />
                                                         )}
                                                     </Box>
@@ -738,13 +738,13 @@ const RegisterBtns = ({ allSelected, handleChangeIsLockStatus }: any) => {
                         </Typography>
                     </Button>
                     <Button
+                        data-testid="lock-unlock-btn"
                         variant="contained"
                         color="primary"
                         style={{
                             color: 'white',
                         }}
                         size="large"
-                        // type="submit"
                         onClick={handleChangeIsLockStatus}
                     >
                         <Lock fontSize="small" style={{ marginRight: 5 }} />
