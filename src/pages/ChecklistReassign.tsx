@@ -96,7 +96,7 @@ export default function ChecklistReassign() {
 
     const [reassignCheckList, setreassignCheckList] = useState<IReassign[]>([])
     const [inputField, setInputField] = useState<ISelectInputProps>({
-        type: null,
+        type: 1,
         centre: '',
         room: '',
     })
