@@ -53,7 +53,6 @@ export default function ChecklistPDFReport() {
   );
   const CustomReport = () => {
     const logoPropsContainer = {
-      label: "",
       id: "logo",
       value: inputField.logo!,
       itemValueKey: "id",
@@ -72,7 +71,6 @@ export default function ChecklistPDFReport() {
     };
 
     const layoutPropsContainer = {
-      label: "",
       id: "layout",
       value: inputField.layout!,
       itemValueKey: "id",
