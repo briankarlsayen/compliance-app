@@ -14,6 +14,7 @@ import Versions from "./Versions";
 import Promotion from "./Promotion";
 import Register from "./Register";
 import ChecklistReassign from "./ChecklistReassign";
+import ChecklistReport from "./ChecklistReport";
 
 const ChecklistHome = () => {
   const [response, setResponse] = useState();
@@ -61,6 +62,7 @@ const ChecklistHome = () => {
             path="/checklists/reassign"
             component={ChecklistReassign}
           />
+          <Route exact path="/checklists/report" component={ChecklistReport} />
           <Route component={CheckLists} />
         </Switch>
       </FeatureFlagProvider>

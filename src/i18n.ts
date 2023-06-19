@@ -211,7 +211,12 @@ export class I18nHelper implements Ii18nHelper {
                                 lock_unlock_update: 'Lock/Unlock Update',
                                 complete_checklist: 'Complete Checklist',
                                 reassign_checklist: 'Reassign Checklist',
-                                label: 'Label'
+                                label: 'Label',
+                                pdf_custom_report: 'Checklist PDF Custom Report',
+                                custom_report: "Custom Report",
+                                title: "Title",
+                                header: "Header",
+                                layout_details: "Layout Details"
                             },
                         },
                     },
