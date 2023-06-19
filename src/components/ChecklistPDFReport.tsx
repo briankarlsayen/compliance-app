@@ -143,10 +143,28 @@ interface ITextFieldProps {
     inputField: IChecklistPDFReportProps
     setInputField: Dispatch<SetStateAction<IChecklistPDFReportProps>>
 }
+interface IExpandProps {
+    header: boolean
+    contact: boolean
+    pdfSettings: boolean
+    groups: boolean
+}
+interface IExpandProps {
+    header: boolean
+    contact: boolean
+    pdfSettings: boolean
+    groups: boolean
+}
 
 const LayoutDetails = (props: ITextFieldProps) => {
     const { name, inputField, value, setInputField } = props ?? {}
-    const [expandHeader, setExpandHeader] = useState<boolean>(false)
+    const defaultExpandVal = {
+        header: false,
+        contact: false,
+        pdfSettings: false,
+        groups: false,
+    }
+    const [expand, setExpand] = useState<IExpandProps>(defaultExpandVal)
     const namePropsContainer = {
         name: 'name',
         inputField: inputField,
@@ -192,6 +210,66 @@ const LayoutDetails = (props: ITextFieldProps) => {
             label: 'Show Version',
         },
     ]
+
+    const contactCheckbox = [
+        {
+            label: 'Show Centre',
+        },
+        {
+            label: 'Show E-mail',
+        },
+        {
+            label: 'Show Room',
+        },
+        {
+            label: 'Show Address',
+        },
+        {
+            label: 'Show Name',
+        },
+        {
+            label: 'Show Phone',
+        },
+    ]
+
+    const pdfSettingsCheckbox = [
+        {
+            label: 'Show scoring',
+        },
+        {
+            label: 'Show all selectable answers',
+        },
+        {
+            label: 'Show charts',
+        },
+        {
+            label: "Show tickets (based on user's profile)",
+        },
+        {
+            label: 'Show photos at the bottom of each group',
+        },
+        {
+            label: 'Hide question numbers',
+        },
+        {
+            label: 'Hide unanswered questions/groups',
+        },
+        {
+            label: 'Hide information panel questions',
+        },
+        {
+            label: 'Print PDF report in landscape mode',
+        },
+    ]
+
+    const groupsRadioBtn = [
+        {
+            label: 'Follow checklist template',
+        },
+        {
+            label: 'Show all (overide template setting)',
+        },
+    ]
     return (
         <Paper
             elevation={3}
@@ -205,7 +283,7 @@ const LayoutDetails = (props: ITextFieldProps) => {
         >
             <Typography> {i18n.t('layout_details')}</Typography>
             <Box style={{ padding: '1rem' }}>
-                <Grid container>
+                <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
                         <Grid container>
                             <Grid
@@ -238,61 +316,223 @@ const LayoutDetails = (props: ITextFieldProps) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item md={12}>
-                        <Box sx={{ py: 5 }}>
-                            <Grid container spacing={2} component={Paper}>
-                                <Grid
-                                    item
-                                    md={12}
-                                    style={{
-                                        backgroundColor: '#223D79',
-                                        display: 'flex',
-                                        justifyContent: 'space-between',
-                                        paddingLeft: 5,
-                                        alignItems: 'center',
-                                    }}
+                    <Grid item xs={12} md={12}>
+                        {/* <Box sx={{ py: 5 }}> */}
+                        <Grid container spacing={2} component={Paper}>
+                            <Grid
+                                item
+                                md={12}
+                                xs={12}
+                                style={{
+                                    backgroundColor: '#9e9e9e',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    paddingLeft: 5,
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography
+                                    style={{ color: 'white', fontWeight: 500 }}
                                 >
-                                    <Typography
-                                        style={{
-                                            color: 'white',
-                                            fontWeight: 500,
-                                        }}
-                                    >
-                                        {i18n.t('header')}
-                                    </Typography>
-                                    <Button
-                                        style={{ color: 'white' }}
-                                        onClick={() =>
-                                            setExpandHeader(!expandHeader)
-                                        }
-                                    >
-                                        {expandHeader ? (
-                                            <ExpandLessOutlined />
-                                        ) : (
-                                            <ExpandMoreOutlined />
-                                        )}
-                                    </Button>
-                                </Grid>
-                                {expandHeader && (
-                                    <Grid item md={12}>
-                                        <Grid container>
-                                            {headerCheckBox?.map(
-                                                ({ label }) => (
-                                                    <Grid item md={6}>
-                                                        <FormControlLabel
-                                                            control={
-                                                                <Checkbox name="showName" />
-                                                            }
-                                                            label={label}
-                                                        />
-                                                    </Grid>
-                                                )
-                                            )}
-                                        </Grid>
-                                    </Grid>
-                                )}
+                                    {i18n.t('header')}
+                                </Typography>
+                                <Button
+                                    style={{ color: 'white' }}
+                                    onClick={() =>
+                                        setExpand({
+                                            ...expand,
+                                            header: !expand.header,
+                                        })
+                                    }
+                                >
+                                    {expand.header ? (
+                                        <ExpandLessOutlinedIcon />
+                                    ) : (
+                                        <ExpandMoreOutlinedIcon />
+                                    )}
+                                </Button>
                             </Grid>
-                        </Box>
+                            {expand.header && (
+                                <Grid item xs={12} md={12}>
+                                    <Grid container>
+                                        {headerCheckBox?.map(({ label }) => (
+                                            <Grid item md={6}>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox name="showName" />
+                                                    }
+                                                    label={label}
+                                                />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            )}
+                        </Grid>
+                        {/* </Box> */}
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        {/* <Box sx={{ py: 5 }}> */}
+                        <Grid container spacing={2} component={Paper}>
+                            <Grid
+                                item
+                                md={12}
+                                xs={12}
+                                style={{
+                                    backgroundColor: '#9e9e9e',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    paddingLeft: 5,
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography
+                                    style={{ color: 'white', fontWeight: 500 }}
+                                >
+                                    {i18n.t('contact_details')}
+                                </Typography>
+                                <Button
+                                    style={{ color: 'white' }}
+                                    onClick={() =>
+                                        setExpand({
+                                            ...expand,
+                                            contact: !expand.contact,
+                                        })
+                                    }
+                                >
+                                    {expand.contact ? (
+                                        <ExpandLessOutlinedIcon />
+                                    ) : (
+                                        <ExpandMoreOutlinedIcon />
+                                    )}
+                                </Button>
+                            </Grid>
+                            {expand.contact && (
+                                <Grid item md={12}>
+                                    <Grid container>
+                                        {contactCheckbox?.map(({ label }) => (
+                                            <Grid item md={6}>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox name="showName" />
+                                                    }
+                                                    label={label}
+                                                />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            )}
+                        </Grid>
+                        {/* </Box> */}
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Grid container spacing={2} component={Paper}>
+                            <Grid
+                                item
+                                md={12}
+                                xs={12}
+                                style={{
+                                    backgroundColor: '#9e9e9e',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    paddingLeft: 5,
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography
+                                    style={{ color: 'white', fontWeight: 500 }}
+                                >
+                                    {i18n.t('pdf_settings')}
+                                </Typography>
+                                <Button
+                                    style={{ color: 'white' }}
+                                    onClick={() =>
+                                        setExpand({
+                                            ...expand,
+                                            pdfSettings: !expand.pdfSettings,
+                                        })
+                                    }
+                                >
+                                    {expand.pdfSettings ? (
+                                        <ExpandLessOutlinedIcon />
+                                    ) : (
+                                        <ExpandMoreOutlinedIcon />
+                                    )}
+                                </Button>
+                            </Grid>
+                            {expand.pdfSettings && (
+                                <Grid item md={12}>
+                                    <Grid container>
+                                        {pdfSettingsCheckbox?.map(
+                                            ({ label }) => (
+                                                <Grid item xs={6} md={4}>
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox name="showName" />
+                                                        }
+                                                        label={label}
+                                                    />
+                                                </Grid>
+                                            )
+                                        )}
+                                    </Grid>
+                                </Grid>
+                            )}
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Grid container spacing={2} component={Paper}>
+                            <Grid
+                                item
+                                md={12}
+                                xs={12}
+                                style={{
+                                    backgroundColor: '#9e9e9e',
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    paddingLeft: 5,
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Typography
+                                    style={{ color: 'white', fontWeight: 500 }}
+                                >
+                                    {i18n.t('groups')}
+                                </Typography>
+                                <Button
+                                    style={{ color: 'white' }}
+                                    onClick={() =>
+                                        setExpand({
+                                            ...expand,
+                                            groups: !expand.groups,
+                                        })
+                                    }
+                                >
+                                    {expand.groups ? (
+                                        <ExpandLessOutlinedIcon />
+                                    ) : (
+                                        <ExpandMoreOutlinedIcon />
+                                    )}
+                                </Button>
+                            </Grid>
+                            {expand.groups && (
+                                <Grid item md={12}>
+                                    <Grid container>
+                                        {groupsRadioBtn?.map(({ label }) => (
+                                            <Grid item xs={6} md={6}>
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox name="showName" />
+                                                    }
+                                                    label={label}
+                                                />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                </Grid>
+                            )}
+                        </Grid>
                     </Grid>
                 </Grid>
             </Box>

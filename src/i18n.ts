@@ -216,7 +216,10 @@ export class I18nHelper implements Ii18nHelper {
                                 custom_report: "Custom Report",
                                 title: "Title",
                                 header: "Header",
-                                layout_details: "Layout Details"
+                                layout_details: "Layout Details",
+                                contact_details: "Contact Details",
+                                pdf_settings: "PDF Settings",
+                                groups: "Groups"
                             },
                         },
                     },
