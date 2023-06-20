@@ -28,7 +28,8 @@ import {
   withStyles,
 } from "@material-ui/core/styles";
 import Select from "../common/Select";
-import { FormControlLabel } from "@mui/material";
+import { FormControlLabel, Radio, RadioGroup } from "@mui/material";
+import ChecklistPDFTable from "./ChecklistPDFTable";
 
 interface IChecklistPDFReportProps {
   logo: string;
@@ -143,6 +144,7 @@ export default function ChecklistPDFReport() {
     <Box style={{ display: "flex", flexDirection: "column", gap: 10 }}>
       <CustomReport />
       <LayoutDetails {...namePropsContainer} />
+      <ChecklistPDFTable />
     </Box>
   );
 }
@@ -158,6 +160,8 @@ interface IExpandProps {
   contact: boolean;
   pdfSettings: boolean;
   groups: boolean;
+  questions: boolean;
+  answerLabels: boolean;
 }
 
 const LayoutDetails = (props: ITextFieldProps) => {
@@ -167,6 +171,8 @@ const LayoutDetails = (props: ITextFieldProps) => {
     contact: false,
     pdfSettings: false,
     groups: false,
+    questions: false,
+    answerLabels: false,
   };
   const [expand, setExpand] = useState<IExpandProps>(defaultExpandVal);
   const namePropsContainer = {
@@ -269,11 +275,14 @@ const LayoutDetails = (props: ITextFieldProps) => {
   const groupsRadioBtn = [
     {
       label: "Follow checklist template",
+      value: "follow_checklist_template",
     },
     {
       label: "Show all (overide template setting)",
+      value: "show_all",
     },
   ];
+
   return (
     <Paper
       elevation={3}
@@ -486,20 +495,141 @@ const LayoutDetails = (props: ITextFieldProps) => {
                   )}
                 </Button>
               </Grid>
-              {expand.groups && (
-                <Grid item md={12}>
-                  <Grid container>
-                    {groupsRadioBtn?.map(({ label }) => (
-                      <Grid item xs={6} md={6}>
-                        <FormControlLabel
-                          control={<Checkbox name="showName" />}
-                          label={label}
-                        />
-                      </Grid>
-                    ))}
+
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                style={{ width: "100%" }}
+              >
+                {expand.groups && (
+                  <Grid item md={12}>
+                    <Grid container style={{ padding: 5 }}>
+                      {groupsRadioBtn?.map(({ label, value }) => (
+                        <Grid item xs={6} md={6}>
+                          <FormControlLabel
+                            value={value}
+                            control={<Radio />}
+                            label={label}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
                   </Grid>
-                </Grid>
-              )}
+                )}
+              </RadioGroup>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={2} component={Paper}>
+              <Grid
+                item
+                md={12}
+                xs={12}
+                style={{
+                  backgroundColor: "#9e9e9e",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  paddingLeft: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Typography style={{ color: "white", fontWeight: 500 }}>
+                  {i18n.t("questions")}
+                </Typography>
+                <Button
+                  style={{ color: "white" }}
+                  onClick={() =>
+                    setExpand({ ...expand, answerLabels: !expand.answerLabels })
+                  }
+                >
+                  {expand.answerLabels ? (
+                    <ExpandLessOutlinedIcon />
+                  ) : (
+                    <ExpandMoreOutlinedIcon />
+                  )}
+                </Button>
+              </Grid>
+
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                style={{ width: "100%" }}
+              >
+                {expand.answerLabels && (
+                  <Grid item md={12}>
+                    <Grid container style={{ padding: 5 }}>
+                      {groupsRadioBtn?.map(({ label, value }) => (
+                        <Grid item xs={6} md={6}>
+                          <FormControlLabel
+                            value={value}
+                            control={<Radio />}
+                            label={label}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
+                )}
+              </RadioGroup>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} md={12}>
+            <Grid container spacing={2} component={Paper}>
+              <Grid
+                item
+                md={12}
+                xs={12}
+                style={{
+                  backgroundColor: "#9e9e9e",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  paddingLeft: 5,
+                  alignItems: "center",
+                }}
+              >
+                <Typography style={{ color: "white", fontWeight: 500 }}>
+                  {i18n.t("answer_labels")}
+                </Typography>
+                <Button
+                  style={{ color: "white" }}
+                  onClick={() =>
+                    setExpand({ ...expand, questions: !expand.questions })
+                  }
+                >
+                  {expand.questions ? (
+                    <ExpandLessOutlinedIcon />
+                  ) : (
+                    <ExpandMoreOutlinedIcon />
+                  )}
+                </Button>
+              </Grid>
+
+              <RadioGroup
+                row
+                aria-labelledby="demo-row-radio-buttons-group-label"
+                name="row-radio-buttons-group"
+                style={{ width: "100%" }}
+              >
+                {expand.questions && (
+                  <Grid item md={12}>
+                    <Grid container style={{ padding: 5 }}>
+                      {groupsRadioBtn?.map(({ label, value }) => (
+                        <Grid item xs={6} md={6}>
+                          <FormControlLabel
+                            value={value}
+                            control={<Radio />}
+                            label={label}
+                          />
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Grid>
+                )}
+              </RadioGroup>
             </Grid>
           </Grid>
         </Grid>

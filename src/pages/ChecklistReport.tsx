@@ -39,7 +39,13 @@ const Header = () => {
 export default function ChecklistReports() {
   const Body = () => {
     return (
-      <Box style={{ display: "flex", flexDirection: "column" }}>
+      <Box
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          paddingBottom: "2rem",
+        }}
+      >
         <ChecklistPDFReport />
       </Box>
     );
