@@ -1,7 +1,32 @@
+import React from 'react'
 import { i18n } from '../i18n'
-import { Box, Typography } from '@material-ui/core'
-
+import {
+    Box,
+    TableContainer,
+    Table,
+    TableHead,
+    TableRow,
+    TableBody,
+    TablePagination,
+    TableCell,
+    Checkbox,
+    Button,
+    Paper,
+    Typography,
+    FormControl,
+} from '@material-ui/core'
+import {
+    Theme,
+    ThemeProvider,
+    createStyles,
+    createTheme,
+    makeStyles,
+    withStyles,
+} from '@material-ui/core/styles'
+import { Grid } from '@mui/material'
 import ChecklistPDFReport from '../components/ChecklistPDFReport'
+
+i18n.initialise()
 
 const Header = () => {
     return (
@@ -16,7 +41,13 @@ const Header = () => {
 export default function ChecklistReports() {
     const Body = () => {
         return (
-            <Box style={{ display: 'flex', flexDirection: 'column' }}>
+            <Box
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    paddingBottom: '2rem',
+                }}
+            >
                 <ChecklistPDFReport />
             </Box>
         )

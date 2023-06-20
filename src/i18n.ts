@@ -219,7 +219,9 @@ export class I18nHelper implements Ii18nHelper {
                                 layout_details: "Layout Details",
                                 contact_details: "Contact Details",
                                 pdf_settings: "PDF Settings",
-                                groups: "Groups"
+                                groups: "Groups",
+                                questions: "Questions",
+                                answer_labels: "Answer Labels"
                             },
                         },
                     },
