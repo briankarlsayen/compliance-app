@@ -20,7 +20,7 @@
     "@material-ui/lab": "^4.0.0-alpha.60",
     "@material-ui/pickers": "^3.3.10",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.1",
+    "@mui/material": "^5.13.5",
     "@mui/x-data-grid": "^4.0.1",
     "babel-jest": "^29.5.0",
     "bootstrap": "^5.2.3",

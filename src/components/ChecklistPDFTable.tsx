@@ -12,6 +12,7 @@ import {
     TableCell,
     Checkbox,
     Button,
+    FormControl,
 } from '@material-ui/core'
 import {
     Theme,
@@ -25,8 +26,7 @@ import { i18n } from '../i18n'
 
 import { useHistory } from 'react-router-dom'
 import Loading from './Loading'
-import { FormControl } from '@mui/material'
-import { blue, grey } from '@mui/material/colors'
+import { blue, grey } from '@material-ui/core/colors'
 
 i18n.initialise()
 

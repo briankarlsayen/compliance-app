@@ -1,7 +1,9 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
-import ExpandLessOutlinedIcon from '@mui/icons-material/ExpandLessOutlined'
 import { i18n } from '../i18n'
+import Select from '../common/Select'
+import ChecklistPDFTable from './ChecklistPDFTable'
+
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { ExpandLessOutlined, ExpandMoreOutlined } from '@material-ui/icons'
 import {
     Box,
     TableContainer,
@@ -18,18 +20,10 @@ import {
     FormControl,
     Grid,
     TextField,
+    FormControlLabel,
+    Radio,
+    RadioGroup,
 } from '@material-ui/core'
-import {
-    Theme,
-    ThemeProvider,
-    createStyles,
-    createTheme,
-    makeStyles,
-    withStyles,
-} from '@material-ui/core/styles'
-import Select from '../common/Select'
-import { FormControlLabel, Radio, RadioGroup } from '@mui/material'
-import ChecklistPDFTable from './ChecklistPDFTable'
 
 i18n.initialise()
 
@@ -359,7 +353,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     {i18n.t('header')}
                                 </Typography>
                                 <Button
-                                    style={{ color: 'white' }}
+                                    style={{
+                                        color: 'white',
+                                        background: '#9E9E9E',
+                                    }}
                                     onClick={() =>
                                         setExpand({
                                             ...expand,
@@ -368,9 +365,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     }
                                 >
                                     {expand.header ? (
-                                        <ExpandLessOutlinedIcon />
+                                        <ExpandMoreOutlined />
                                     ) : (
-                                        <ExpandMoreOutlinedIcon />
+                                        <ExpandLessOutlined />
                                     )}
                                 </Button>
                             </Grid>
@@ -414,7 +411,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     {i18n.t('contact_details')}
                                 </Typography>
                                 <Button
-                                    style={{ color: 'white' }}
+                                    style={{
+                                        color: 'white',
+                                        background: '#9E9E9E',
+                                    }}
                                     onClick={() =>
                                         setExpand({
                                             ...expand,
@@ -423,9 +423,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     }
                                 >
                                     {expand.contact ? (
-                                        <ExpandLessOutlinedIcon />
+                                        <ExpandMoreOutlined />
                                     ) : (
-                                        <ExpandMoreOutlinedIcon />
+                                        <ExpandLessOutlined />
                                     )}
                                 </Button>
                             </Grid>
@@ -468,7 +468,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     {i18n.t('pdf_settings')}
                                 </Typography>
                                 <Button
-                                    style={{ color: 'white' }}
+                                    style={{
+                                        color: 'white',
+                                        background: '#9E9E9E',
+                                    }}
                                     onClick={() =>
                                         setExpand({
                                             ...expand,
@@ -477,9 +480,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     }
                                 >
                                     {expand.pdfSettings ? (
-                                        <ExpandLessOutlinedIcon />
+                                        <ExpandMoreOutlined />
                                     ) : (
-                                        <ExpandMoreOutlinedIcon />
+                                        <ExpandLessOutlined />
                                     )}
                                 </Button>
                             </Grid>
@@ -523,7 +526,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     {i18n.t('groups')}
                                 </Typography>
                                 <Button
-                                    style={{ color: 'white' }}
+                                    style={{
+                                        color: 'white',
+                                        background: '#9E9E9E',
+                                    }}
                                     onClick={() =>
                                         setExpand({
                                             ...expand,
@@ -532,9 +538,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     }
                                 >
                                     {expand.groups ? (
-                                        <ExpandLessOutlinedIcon />
+                                        <ExpandMoreOutlined />
                                     ) : (
-                                        <ExpandMoreOutlinedIcon />
+                                        <ExpandLessOutlined />
                                     )}
                                 </Button>
                             </Grid>
@@ -586,7 +592,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     {i18n.t('questions')}
                                 </Typography>
                                 <Button
-                                    style={{ color: 'white' }}
+                                    style={{
+                                        color: 'white',
+                                        background: '#9E9E9E',
+                                    }}
                                     onClick={() =>
                                         setExpand({
                                             ...expand,
@@ -595,9 +604,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     }
                                 >
                                     {expand.answerLabels ? (
-                                        <ExpandLessOutlinedIcon />
+                                        <ExpandMoreOutlined />
                                     ) : (
-                                        <ExpandMoreOutlinedIcon />
+                                        <ExpandLessOutlined />
                                     )}
                                 </Button>
                             </Grid>
@@ -649,7 +658,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     {i18n.t('answer_labels')}
                                 </Typography>
                                 <Button
-                                    style={{ color: 'white' }}
+                                    style={{
+                                        color: 'white',
+                                        background: '#9E9E9E',
+                                    }}
                                     onClick={() =>
                                         setExpand({
                                             ...expand,
@@ -658,9 +670,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                     }
                                 >
                                     {expand.questions ? (
-                                        <ExpandLessOutlinedIcon />
+                                        <ExpandMoreOutlined />
                                     ) : (
-                                        <ExpandMoreOutlinedIcon />
+                                        <ExpandLessOutlined />
                                     )}
                                 </Button>
                             </Grid>
