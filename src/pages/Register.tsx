@@ -168,6 +168,10 @@ export default function Register() {
         IRegisterList[]
     >([])
     const [allSelected, setAllSelected] = useState<IRegisterList[]>([])
+    console.log(
+        '🚀 ~ file: Register.tsx:171 ~ Register ~ allSelected:',
+        allSelected
+    )
 
     const [loading, setLoading] = useState(false)
 
@@ -723,7 +727,7 @@ const RegisterBtns = ({ allSelected, handleChangeIsLockStatus }: any) => {
                     <Link
                         to={{
                             pathname: '/checklists/report',
-                            state: allSelected,
+                            state: allSelected ?? [],
                         }}
                     >
                         <Button

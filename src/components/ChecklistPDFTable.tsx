@@ -1,4 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React, {
+    useEffect,
+    useRef,
+    useState,
+    forwardRef,
+    ReactNode,
+} from 'react'
 import {
     Typography,
     Box,
@@ -23,10 +29,11 @@ import {
     withStyles,
 } from '@material-ui/core/styles'
 import { i18n } from '../i18n'
-
+import ReactToPrint from 'react-to-print'
 import { useHistory } from 'react-router-dom'
 import Loading from './Loading'
 import { blue, grey } from '@material-ui/core/colors'
+import PrintReportLayout from './PrintReportLayout'
 
 i18n.initialise()
 
@@ -59,14 +66,14 @@ interface IReportTable {
     id: number
     centre: string
     room: string
-    checklist_name: string
+    name: string
     template: string
-}
-
-interface ISelectInputProps {
-    type?: number | null
-    centre: string
-    room: string
+    createdDate?: string | null
+    creator?: string | null
+    ticket?: string | null
+    score?: string | null
+    complete?: boolean | null
+    isLocked?: boolean | null
 }
 
 const StyledTableCell = withStyles((theme: Theme) =>
@@ -102,10 +109,11 @@ const blueTheme = createTheme({
 })
 
 interface IReportTableProps {
-    checklist_name: string
+    name: string
     template: string
     centre: string
     room: string
+    id: number
 }
 
 interface IChecklistReportProps {
@@ -116,16 +124,17 @@ interface IChecklistReportProps {
 
 export default function ChecklistPDFTable() {
     const classes = useStyles()
-    const history = useHistory()
+    const history = useHistory<IReportTable[]>()
+    const { state } = history.location ?? []
+
+    const componentRef = useRef<HTMLDivElement>(null)
     const [reportTable, setReportTable] = useState<IReportTable[]>([])
     const [loading, setLoading] = useState(false)
 
     const processRows = (data: IReportTable[]) => {
-        const createdRows = data.map(
-            ({ id, centre, room, checklist_name, template }) => {
-                return createData(id, centre, room, checklist_name, template)
-            }
-        )
+        const createdRows = data.map(({ id, centre, room, name, template }) => {
+            return createData(id, centre, room, name, template)
+        })
         setReportTable(createdRows)
     }
 
@@ -133,37 +142,28 @@ export default function ChecklistPDFTable() {
         id: number,
         centre: string,
         room: string,
-        checklist_name: string,
+        name: string,
         template: string
     ) {
         return {
             id,
             centre,
             room,
-            checklist_name,
+            name,
             template,
         }
     }
 
     const fetchData = async () => {
-        const list = [
-            {
-                id: 1,
-                checklist_name: 'Juan Dela Cruz',
-                template: 'Conditional question',
-                centre: 'Co working',
-                room: 'Bloom Indoors',
-            },
-        ]
         try {
             setLoading(true)
 
-            setReportTable(list)
+            setReportTable(state ?? [])
 
-            processRows(list)
+            processRows(state ?? [])
             setLoading(false)
         } catch (error) {
-            console.log('failed to get register')
+            console.log('failed to get data')
         }
     }
     useEffect(() => {
@@ -323,7 +323,7 @@ export default function ChecklistPDFTable() {
                                             const {
                                                 centre,
                                                 room,
-                                                checklist_name,
+                                                name,
                                                 template,
                                             } = data
                                             return (
@@ -367,16 +367,27 @@ export default function ChecklistPDFTable() {
                                                         </ThemeProvider>
                                                     </StyledTableCell>
                                                     <StyledTableCell>
-                                                        {checklist_name}
+                                                        <Typography>
+                                                            {name}
+                                                        </Typography>
                                                     </StyledTableCell>
                                                     <StyledTableCell>
-                                                        {template}
+                                                        <Typography>
+                                                            {' '}
+                                                            {template}
+                                                        </Typography>
                                                     </StyledTableCell>
                                                     <StyledTableCell>
-                                                        {centre}
+                                                        <Typography>
+                                                            {' '}
+                                                            {centre}
+                                                        </Typography>
                                                     </StyledTableCell>
                                                     <StyledTableCell>
-                                                        {room}
+                                                        <Typography>
+                                                            {' '}
+                                                            {room}
+                                                        </Typography>
                                                     </StyledTableCell>
                                                     <StyledTableCell>
                                                         <ThemeProvider
@@ -431,6 +442,15 @@ export default function ChecklistPDFTable() {
     function backBtn() {
         return history.goBack()
     }
+
+    const ToPrint = forwardRef(({ props }: any, ref: any) => {
+        return (
+            <div ref={ref}>
+                <PrintReportLayout />
+            </div>
+        )
+    })
+
     return (
         <Box style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <RegisterTable loading={loading} reportDataTable={reportTable} />
@@ -456,19 +476,27 @@ export default function ChecklistPDFTable() {
                     </Button>
                 </ThemeProvider>
                 <ThemeProvider theme={blueTheme}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={backBtn}
-                    >
-                        <Typography
-                            style={{ fontWeight: 'bold' }}
-                            variant="body2"
-                        >
-                            {i18n.t('print')}
-                        </Typography>
-                    </Button>
+                    <ReactToPrint
+                        trigger={() => (
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                // onClick={backBtn}
+                            >
+                                <Typography
+                                    style={{ fontWeight: 'bold' }}
+                                    variant="body2"
+                                >
+                                    {i18n.t('print')}
+                                </Typography>
+                            </Button>
+                        )}
+                        content={() => componentRef?.current}
+                    />
                 </ThemeProvider>
+                <Box style={{ display: 'none' }}>
+                    <ToPrint ref={componentRef} props={'pass_selected_data'} />
+                </Box>
             </Box>
         </Box>
     )

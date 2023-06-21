@@ -44,10 +44,7 @@ export default function ChecklistPDFReport() {
 
     const [inputField, setInputField] =
         useState<IChecklistPDFReportProps>(defaultVal)
-    console.log(
-        '🚀 ~ file: ChecklistPDFReport.tsx:46 ~ ChecklistPDFReport ~ inputField:',
-        inputField
-    )
+
     const CustomReport = () => {
         const logoPropsContainer = {
             id: 'logo',
@@ -378,7 +375,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                             <Grid item md={6}>
                                                 <FormControlLabel
                                                     control={
-                                                        <Checkbox name="showName" />
+                                                        <Checkbox
+                                                            name="showName"
+                                                            color="primary"
+                                                        />
                                                     }
                                                     label={label}
                                                 />
@@ -436,7 +436,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                             <Grid item md={6}>
                                                 <FormControlLabel
                                                     control={
-                                                        <Checkbox name="showName" />
+                                                        <Checkbox
+                                                            name="showName"
+                                                            color="primary"
+                                                        />
                                                     }
                                                     label={label}
                                                 />
@@ -494,7 +497,10 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                                 <Grid item xs={6} md={4}>
                                                     <FormControlLabel
                                                         control={
-                                                            <Checkbox name="showName" />
+                                                            <Checkbox
+                                                                name="showName"
+                                                                color="primary"
+                                                            />
                                                         }
                                                         label={label}
                                                     />
@@ -559,7 +565,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                                     <Grid item xs={6} md={6}>
                                                         <FormControlLabel
                                                             value={value}
-                                                            control={<Radio />}
+                                                            control={
+                                                                <Radio color="primary" />
+                                                            }
                                                             label={label}
                                                         />
                                                     </Grid>
@@ -625,7 +633,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                                     <Grid item xs={6} md={6}>
                                                         <FormControlLabel
                                                             value={value}
-                                                            control={<Radio />}
+                                                            control={
+                                                                <Radio color="primary" />
+                                                            }
                                                             label={label}
                                                         />
                                                     </Grid>
@@ -691,7 +701,9 @@ const LayoutDetails = (props: ITextFieldProps) => {
                                                     <Grid item xs={6} md={6}>
                                                         <FormControlLabel
                                                             value={value}
-                                                            control={<Radio />}
+                                                            control={
+                                                                <Radio color="primary" />
+                                                            }
                                                             label={label}
                                                         />
                                                     </Grid>
