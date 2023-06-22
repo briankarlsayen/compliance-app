@@ -4,6 +4,8 @@ import React, {
     useState,
     forwardRef,
     ReactNode,
+    Dispatch,
+    SetStateAction,
 } from 'react'
 import {
     Typography,
@@ -120,9 +122,73 @@ interface IChecklistReportProps {
     reportDataTable: IReportTableProps[]
     loading: boolean
     setAllSelected?: any
+    inputField: IChecklistPDFReportProps
+    setInputField: Dispatch<SetStateAction<IChecklistPDFReportProps>>
+    setCopySelectedItems: Dispatch<SetStateAction<IReportTableProps[]>>
 }
 
-export default function ChecklistPDFTable() {
+interface IHeader {
+    name: boolean
+    due_date: boolean
+    creator: boolean
+    template: boolean
+    creation_date: boolean
+    version: boolean
+}
+
+interface IContactDetails {
+    centre: boolean
+    email: boolean
+    room: boolean
+    address: boolean
+    name: boolean
+    phone: boolean
+}
+
+interface IPDFSettings {
+    scoring: boolean
+    selectable_answers: boolean
+    charts: boolean
+    tickets: boolean
+    photos: boolean
+    hide_question_num: boolean
+    hide_unanswered_question: boolean
+    hide_info_panel: boolean
+    print_pdf_landscape: boolean
+}
+
+interface IGroup {
+    follow_checklist_template: boolean
+    show_all: boolean
+}
+interface IChecklistPDFReportProps {
+    logo: string
+    layout: string
+    name: string
+    title: string
+    header?: IHeader
+    contact_details?: IContactDetails
+    pdf_settings?: IPDFSettings
+    group?: IGroup
+    questions?: IGroup
+    answer_labels?: IGroup
+    table_data?: IReportTableProps[]
+}
+
+interface ITextFieldProps {
+    name?: string
+    value?: any
+    inputField: IChecklistPDFReportProps
+    setInputField: Dispatch<SetStateAction<IChecklistPDFReportProps>>
+    table_data?: IReportTableProps[]
+}
+
+export default function ChecklistPDFTable(props: ITextFieldProps) {
+    const { inputField, setInputField, table_data } = props ?? {}
+    console.log(
+        '🚀 ~ file: PDFPDFPDFPDFP.tsx:183 ~ ChecklistPDFTable ~ inputField:',
+        inputField
+    )
     const classes = useStyles()
     const history = useHistory<IReportTable[]>()
     const { state } = history.location ?? []
@@ -130,6 +196,17 @@ export default function ChecklistPDFTable() {
     const componentRef = useRef<HTMLDivElement>(null)
     const [reportTable, setReportTable] = useState<IReportTable[]>([])
     const [loading, setLoading] = useState(false)
+    const [copySelectedItems, setCopySelectedItems] = useState<IReportTable[]>(
+        []
+    )
+    console.log(
+        '🚀 ~ file: ChecklistPDFTable.tsx:202 ~ ChecklistPDFTable ~ copySelectedItems:',
+        copySelectedItems
+    )
+
+    // useEffect(() => {
+    //     setInputField({ ...inputField, table_data: copySelectedItems })
+    // }, [copySelectedItems])
 
     const processRows = (data: IReportTable[]) => {
         const createdRows = data.map(({ id, centre, room, name, template }) => {
@@ -173,6 +250,9 @@ export default function ChecklistPDFTable() {
     const RegisterTable = ({
         reportDataTable,
         loading,
+        setInputField,
+        inputField,
+        setCopySelectedItems,
     }: IChecklistReportProps) => {
         const classes = useStyles()
         const DEFAULT_ROWS_PAGE = 10
@@ -195,26 +275,12 @@ export default function ChecklistPDFTable() {
 
         // * start
         const [selectedRows, setSelectedRows] = useState<number[]>([])
-        // const [selectedList, setSelectedList] = useState<IRegisterList[]>([]);
+        const [selectedList, setSelectedList] = useState<IReportTableProps[]>(
+            []
+        )
         const isAllSelected = selectedRows.length === reportDataTable.length
 
-        // useEffect(() => {
-        //   setAllSelected(selectedList);
-        // }, [selectedList]);
-
         const handleRowClick = (rowId: number, data: IReportTableProps) => {
-            // const findSelectedIfExist = selectedList.findIndex(
-            //   ({ id }) => id === data.id
-            // );
-            // let copySelectList = [...selectedList];
-            // if (findSelectedIfExist >= 0) {
-            //   copySelectList.splice(findSelectedIfExist, 1);
-            //   setSelectedList(copySelectList);
-            // } else {
-            //   copySelectList.push(data);
-            //   setSelectedList(copySelectList);
-            // }
-
             const selectedIndex = selectedRows.indexOf(rowId)
             let newSelected: number[] = []
 
@@ -232,14 +298,25 @@ export default function ChecklistPDFTable() {
             }
 
             setSelectedRows(newSelected)
+            const findSelectedIfExist = selectedList.findIndex(
+                ({ id }) => id === data.id
+            )
+            let copySelectList = [...selectedList]
+            if (findSelectedIfExist >= 0) {
+                copySelectList.splice(findSelectedIfExist, 1)
+                setSelectedList(copySelectList)
+            } else {
+                copySelectList.push(data)
+                setSelectedList(copySelectList)
+            }
         }
         const isSelected = (rowId: number) => selectedRows.indexOf(rowId) !== -1
         const handleSelectAllClick = () => {
             if (isAllSelected) {
-                // setSelectedList([]);
+                setSelectedList([])
                 setSelectedRows([])
             } else {
-                // setSelectedList(registerList);
+                setSelectedList(reportDataTable)
                 const allRowIds = reportDataTable.map((row, index) => index)
                 setSelectedRows(allRowIds)
             }
@@ -453,7 +530,13 @@ export default function ChecklistPDFTable() {
 
     return (
         <Box style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            <RegisterTable loading={loading} reportDataTable={reportTable} />
+            <RegisterTable
+                setInputField={setInputField}
+                inputField={inputField}
+                loading={loading}
+                reportDataTable={reportTable}
+                setCopySelectedItems={setCopySelectedItems}
+            />
             <Box
                 style={{
                     display: 'flex',
