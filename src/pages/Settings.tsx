@@ -92,15 +92,6 @@ export default function Settings() {
                     <StepThree />
                 </Box>
                 <hr />
-                <Box className={classes.root}>
-                    <Typography
-                        style={{ fontWeight: 'bold', paddingTop: '.5rem' }}
-                        variant="h1"
-                    >
-                        {i18n.t('schedule')}/{i18n.t('survey')}
-                    </Typography>
-                    <StepFour />
-                </Box>
             </Paper>
             <Box
                 style={{

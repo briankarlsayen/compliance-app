@@ -181,7 +181,7 @@ interface ITextFieldProps {
     table_data?: IReportTableProps[]
 }
 
-export default function ChecklistPDFTable(props: ITextFieldProps) {
+export default function ChecklistPDFTable(props: any) {
     const { inputField, setInputField, table_data } = props ?? {}
 
     const classes = useStyles()

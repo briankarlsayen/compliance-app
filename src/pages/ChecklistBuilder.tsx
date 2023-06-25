@@ -16,7 +16,12 @@ import {
     Select,
     Box,
     Typography,
+    Button,
+    createTheme,
+    ThemeProvider,
 } from '@material-ui/core'
+import { blue } from '@material-ui/core/colors'
+import { Link } from 'react-router-dom'
 i18n.initialise()
 
 const useStyles = makeStyles((theme) => ({
@@ -370,21 +375,30 @@ export const StepThree = () => {
     )
 }
 
+const blueTheme = createTheme({
+    palette: {
+        primary: {
+            main: blue[500],
+        },
+    },
+})
+
 export const StepFour = () => {
-    const [inputField, setInputField] = useState<IInputField>({
-        name: '',
-        sched_for: 'Franchisee',
-        alias: '',
-        franchisees: [''],
-        startDate: null,
-        every_x: '',
-        rrule: '',
-    })
     return (
-        <EditScheduleForm
-            inputField={inputField}
-            setInputField={setInputField}
-        />
+        <ThemeProvider theme={blueTheme}>
+            <Box style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+                <Link to="/checklists">
+                    <Button variant="contained" color="primary">
+                        Create Schedule
+                    </Button>
+                </Link>
+                <Link to="/checklists/surveys">
+                    <Button variant="contained" color="primary">
+                        Create Survery
+                    </Button>
+                </Link>
+            </Box>
+        </ThemeProvider>
     )
 }
 

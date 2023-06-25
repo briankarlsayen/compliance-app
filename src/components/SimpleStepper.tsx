@@ -108,7 +108,7 @@ export default function SimpleStepper({
                                             color: 'white',
                                         }}
                                     >
-                                        {i18n.t('finish')}
+                                        {i18n.t('save')}
                                     </Link>
                                 ) : (
                                     i18n.t('next')
