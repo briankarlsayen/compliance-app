@@ -29,7 +29,7 @@ import {
 import { Add as AddIcon, Done, FileCopyOutlined } from '@material-ui/icons'
 
 import { red, blue, lightGreen, grey } from '@material-ui/core/colors'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import LinkQRDialog from '../common/LinkQRDialog'
 import CopyButton from '../components/CopyButton'
 import { fetchSurvey } from '../api/checklist'
@@ -38,6 +38,7 @@ import Loading from '../components/Loading'
 i18n.initialise()
 
 export interface IScheduleData {
+    id: number
     name: string
     start_date: string
     show_over_due: boolean
@@ -46,6 +47,7 @@ export interface IScheduleData {
 }
 
 export interface ISurvey {
+    id: number
     name: string
     expiry_date: string
     qr_image: string
@@ -149,6 +151,7 @@ const SurveyHeader = () => {
 
 const SurveyTable = () => {
     function createData(
+        id: number,
         name: string,
         expiry_date: string,
         qr_image: string,
@@ -156,6 +159,7 @@ const SurveyTable = () => {
         for_user: string[]
     ) {
         return {
+            id,
             name,
             expiry_date,
             qr_image,
@@ -163,7 +167,7 @@ const SurveyTable = () => {
             for_user,
         }
     }
-
+    let match = useRouteMatch()
     const isServer = typeof window === 'undefined'
 
     const processEnv: any = isServer ? process.env : {}
@@ -173,8 +177,15 @@ const SurveyTable = () => {
     const [surveys, setSurveys] = useState<ISurvey[]>()
     const processRows = (data: ISurvey[]) => {
         const createdRows = data.map(
-            ({ name, expiry_date, qr_image, path, for_user }) => {
-                return createData(name, expiry_date, qr_image, path, for_user)
+            ({ id, name, expiry_date, qr_image, path, for_user }) => {
+                return createData(
+                    id,
+                    name,
+                    expiry_date,
+                    qr_image,
+                    path,
+                    for_user
+                )
             }
         )
         setSurveys(createdRows)
@@ -273,7 +284,7 @@ const SurveyTable = () => {
                                         <StyledTableRow key={index}>
                                             <StyledTableCell>
                                                 <Link
-                                                    to={`/checklists/surveys/${row.name}`}
+                                                    to={`${match.url}/edit/${row.id}`}
                                                     style={{
                                                         textDecoration: 'none',
                                                         color: 'blue',

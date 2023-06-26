@@ -12,120 +12,138 @@ function wait<T>(ms: number, value: T) {
 export const mockChecklist = async () => {
     const mockData: ICheckListData[] = [
         {
-            title: '1Place Standard Centre Closing Procedure // v1.1',
+            name: '1Place Standard Centre Closing Procedure // v1.1',
             schedules: 3,
             template: 'form',
-            status: 'inactive',
+            recStatus: 'inactive',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.2',
+            name: '1Place Standard Centre Closing Procedure // v1.2',
             schedules: 4,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: false,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.3',
+            name: '1Place Standard Centre Closing Procedure // v1.3',
             schedules: 5,
             template: 'partner',
-            status: 'active',
+            recStatus: 'active',
             adhoc: false,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.4',
+            name: '1Place Standard Centre Closing Procedure // v1.4',
             schedules: 1,
             template: 'form',
-            status: 'inactive',
+            recStatus: 'inactive',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.5',
+            name: '1Place Standard Centre Closing Procedure // v1.5',
             schedules: 8,
             template: 'form',
-            status: 'inactive',
+            recStatus: 'inactive',
 
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.6',
+            name: '1Place Standard Centre Closing Procedure // v1.6',
             schedules: 9,
             template: 'partner',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.7',
+            name: '1Place Standard Centre Closing Procedure // v1.7',
             schedules: 11,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.8',
+            name: '1Place Standard Centre Closing Procedure // v1.8',
             schedules: 2,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.9',
+            name: '1Place Standard Centre Closing Procedure // v1.9',
             schedules: 1,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.10',
+            name: '1Place Standard Centre Closing Procedure // v1.10',
             schedules: 8,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.11',
+            name: '1Place Standard Centre Closing Procedure // v1.11',
             schedules: 1,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.12',
+            name: '1Place Standard Centre Closing Procedure // v1.12',
             schedules: 1,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.13',
+            name: '1Place Standard Centre Closing Procedure // v1.13',
             schedules: 6,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.14',
+            name: '1Place Standard Centre Closing Procedure // v1.14',
             schedules: 1,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.15',
+            name: '1Place Standard Centre Closing Procedure // v1.15',
             schedules: 1,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
         {
-            title: '1Place Standard Centre Closing Procedure // v1.16',
+            name: '1Place Standard Centre Closing Procedure // v1.16',
             schedules: 4,
             template: 'form',
-            status: 'active',
+            recStatus: 'active',
             adhoc: true,
         },
     ]
-    return await wait(0, mockData)
+    const newMock = [
+        {
+            id: 1,
+            name: 'Mock',
+            recrecStatus: 'active',
+            schedules: 3,
+            template: 'form',
+            adhoc: true,
+        },
+        {
+            id: 2,
+            name: 'Mock1',
+            recrecStatus: 'active',
+            schedules: 3,
+            template: 'form',
+            adhoc: true,
+        },
+    ]
+    return await wait(0, newMock)
 }
 
 export const mockSchedule = async () => {
@@ -384,6 +402,7 @@ export const mockSchedule = async () => {
 export const mockSurvey = async () => {
     const mockSchedules: ISurvey[] = [
         {
+            id: 1,
             name: 'Survey 1',
             expiry_date: '04-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -404,6 +423,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 2,
             name: 'Survey 2',
             expiry_date: '01-04-2023',
             qr_image: 'https://picsum.photos/200',
@@ -420,6 +440,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 3,
             name: 'Survey 3',
             expiry_date: '05-11-2023',
             qr_image: 'https://picsum.photos/200',
@@ -437,6 +458,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 4,
             name: 'Survey 4',
             expiry_date: '04-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -451,6 +473,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 5,
             name: 'Survey 5',
             expiry_date: '05-14-2023',
             qr_image: 'https://picsum.photos/200',
@@ -468,6 +491,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 6,
             name: 'Survey 6',
             expiry_date: '01-21-2023',
             qr_image: 'https://picsum.photos/200',
@@ -484,6 +508,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 7,
             name: 'Survey 7',
             expiry_date: '04-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -500,6 +525,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 8,
             name: 'Survey 8',
             expiry_date: '01-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -518,6 +544,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 9,
             name: 'Survey 9',
             expiry_date: '03-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -534,6 +561,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 10,
             name: 'Survey 10',
             expiry_date: '04-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -551,6 +579,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 11,
             name: 'Survey 11',
             expiry_date: '01-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -568,6 +597,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 12,
             name: 'Survey 12',
             expiry_date: '01-14-2023',
             qr_image: 'https://picsum.photos/200',
@@ -584,6 +614,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 13,
             name: 'Survey 13',
             expiry_date: '04-04-2023',
             qr_image: 'https://picsum.photos/200',
@@ -601,6 +632,7 @@ export const mockSurvey = async () => {
             ],
         },
         {
+            id: 14,
             name: 'Survey 14',
             expiry_date: '04-24-2023',
             qr_image: 'https://picsum.photos/200',
@@ -608,6 +640,7 @@ export const mockSurvey = async () => {
             for_user: ['User 1'],
         },
         {
+            id: 15,
             name: 'Survey 15',
             expiry_date: '04-21-2023',
             qr_image: 'https://picsum.photos/200',
@@ -655,79 +688,79 @@ export const mockVersion = async () => {
         {
             createdDate: '10/05/2023 9:36:27AM',
             version: '1-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '10/05/2023 9:36:27AM',
             version: '1-draft-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '09/05/2023 9:36:27AM',
             version: '2-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '10/05/2023 9:36:27AM',
             version: '3-draft',
-            status: 'Published',
+            recStatus: 'Published',
             creator: '1Place User',
         },
         {
             createdDate: '10/05/2023 9:36:27AM',
             version: '4-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '01/05/2023 9:36:27AM',
             version: '5-draft',
-            status: 'Archived',
+            recStatus: 'Archived',
             creator: '1Place User',
         },
         {
             createdDate: '10/01/2023 9:36:27AM',
             version: '6-draft',
-            status: 'Archived',
+            recStatus: 'Archived',
             creator: '1Place User',
         },
         {
             createdDate: '11/01/2023 9:36:27AM',
             version: '7-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '11/25/2023 9:36:27AM',
             version: '8-draft',
-            status: 'Published',
+            recStatus: 'Published',
             creator: '1Place User',
         },
         {
             createdDate: '09/01/2023 9:36:27AM',
             version: '9-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '10/22/2023 9:36:27AM',
             version: '10-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '11/05/2023 9:36:27AM',
             version: '11-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
         {
             createdDate: '01/11/2023 9:36:27AM',
             version: '12-draft',
-            status: 'Draft',
+            recStatus: 'Draft',
             creator: '1Place User',
         },
     ]
