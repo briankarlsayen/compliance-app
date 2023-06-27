@@ -1,33 +1,17 @@
 import { i18n } from '../i18n'
-import Recurrence from '../components/Recurrence'
-import SelectFranchisee from '../components/SelectFranchisee'
-import aliasDatas from '../api/alias'
 
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
-    TextField,
     Box,
     Paper,
-    InputLabel,
-    MenuItem,
-    FormControl,
-    Select,
     Button,
     createTheme,
     ThemeProvider,
     makeStyles,
-    InputAdornment,
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
-import DateFnsUtils from '@date-io/date-fns'
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
-import ClearIcon from '@material-ui/icons/Clear'
-import MultiSelectField from '../components/MultiSelectField'
-import { CatchingPokemonSharp } from '@mui/icons-material'
-import FeatureFlagsContext from '../feature/featureContext'
-import { fetchFranchisee } from '../api/checklist'
 import EditScheduleForm from './EditScheduleForm'
 i18n.initialise()
 

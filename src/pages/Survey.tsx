@@ -13,9 +13,6 @@ import {
     TablePagination,
     TableCell,
     Box,
-    TextField,
-    InputAdornment,
-    IconButton,
 } from '@material-ui/core'
 import {
     Theme,
@@ -24,11 +21,10 @@ import {
     createTheme,
     makeStyles,
     withStyles,
-    ThemeOptions,
 } from '@material-ui/core/styles'
-import { Add as AddIcon, Done, FileCopyOutlined } from '@material-ui/icons'
+import { Add as AddIcon } from '@material-ui/icons'
 
-import { red, blue, lightGreen, grey } from '@material-ui/core/colors'
+import { lightGreen } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
 import LinkQRDialog from '../common/LinkQRDialog'
 import CopyButton from '../components/CopyButton'
@@ -167,7 +163,7 @@ const SurveyTable = () => {
             for_user,
         }
     }
-    let match = useRouteMatch()
+    const match = useRouteMatch()
     const isServer = typeof window === 'undefined'
 
     const processEnv: any = isServer ? process.env : {}
@@ -201,7 +197,6 @@ const SurveyTable = () => {
             const lists = await fetchSurvey()
             setSurveys(lists)
             processRows(lists)
-            // processRows(mockData)
             setLoading(false)
         } catch (error) {
             console.log('failed to get surveys')
@@ -284,7 +279,7 @@ const SurveyTable = () => {
                                         <StyledTableRow key={index}>
                                             <StyledTableCell>
                                                 <Link
-                                                    to={`${match.url}/edit/${row.id}`}
+                                                    to={`${match.url}/${row.id}/edit`}
                                                     style={{
                                                         textDecoration: 'none',
                                                         color: 'blue',

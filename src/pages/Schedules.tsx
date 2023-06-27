@@ -25,11 +25,12 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 
 import { lightGreen } from '@material-ui/core/colors'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import { fetchSchedule } from '../api/checklist'
 import Loading from '../components/Loading'
 i18n.initialise()
 export interface IScheduleData {
+    id: number
     name: string
     start_date: string
     show_over_due: boolean
@@ -133,6 +134,7 @@ const ScheduleHeader = () => {
 
 const ScheduleTable = () => {
     function createData(
+        id: number,
         name: string,
         start_date: string,
         show_over_due: boolean,
@@ -140,6 +142,7 @@ const ScheduleTable = () => {
         for_user: string[]
     ) {
         return {
+            id,
             name,
             start_date,
             show_over_due,
@@ -147,12 +150,14 @@ const ScheduleTable = () => {
             for_user,
         }
     }
+    const match = useRouteMatch()
 
     const [schedules, setSchedules] = useState<IScheduleData[]>()
     const processRows = (data: IScheduleData[]) => {
         const createdRows = data.map(
-            ({ name, start_date, show_over_due, sched_freq, for_user }) => {
+            ({ id, name, start_date, show_over_due, sched_freq, for_user }) => {
                 return createData(
+                    id,
                     name,
                     start_date,
                     show_over_due,
@@ -174,7 +179,6 @@ const ScheduleTable = () => {
             const lists = await fetchSchedule()
             setSchedules(lists)
             processRows(lists)
-            // processRows(mockData)
             setLoading(false)
         } catch (error) {
             console.log('failed to get schedules')
@@ -263,10 +267,10 @@ const ScheduleTable = () => {
                                         page * rowsPerPage + rowsPerPage
                                     )
                                     .map((row, index) => (
-                                        <StyledTableRow key={index}>
+                                        <StyledTableRow key={row.id}>
                                             <StyledTableCell>
                                                 <Link
-                                                    to={`/checklists/schedules/${index}`}
+                                                    to={`${match.url}/${row.id}/edit`}
                                                     style={{
                                                         textDecoration: 'none',
                                                         color: 'blue',
@@ -283,7 +287,7 @@ const ScheduleTable = () => {
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 <Link
-                                                    to={`/checklists/schedules/frequency/${index}`}
+                                                    to={`${match.url}/${row.id}/frequency`}
                                                     style={{
                                                         textDecoration: 'none',
                                                         color: 'blue',

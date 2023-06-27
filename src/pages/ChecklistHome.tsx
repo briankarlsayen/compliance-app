@@ -15,6 +15,7 @@ import Promotion from './Promotion'
 import Register from './Register'
 import ChecklistReassign from './ChecklistReassign'
 import ChecklistReport from './ChecklistReport'
+import Schedules from './Schedules'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -34,17 +35,17 @@ const ChecklistHome = () => {
                 <Switch>
                     <Route
                         exact
-                        path="/checklists/schedules/:id"
+                        path="/checklists/:tempid/schedules/:id/edit"
                         component={EditSchedule}
                     />
                     <Route
                         exact
-                        path="/checklists/schedules/frequency/:id"
+                        path="/checklists/:tempid/schedules/:id/frequency"
                         component={EditScheduleFrequency}
                     />
                     <Route
                         exact
-                        path="/checklists/surveys/:tempid/edit/:id"
+                        path="/checklists/:tempid/surveys/:id/edit"
                         component={SurveyForm}
                     />
                     <Route exact path="/checklists" component={CheckLists} />
@@ -60,8 +61,13 @@ const ChecklistHome = () => {
                     />
                     <Route
                         exact
-                        path="/checklists/surveys/:id"
+                        path="/checklists/:tempid/surveys"
                         component={Survey}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/:tempid/schedules"
+                        component={Schedules}
                     />
                     <Route
                         exact

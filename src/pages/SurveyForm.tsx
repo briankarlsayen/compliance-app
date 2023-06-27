@@ -24,7 +24,7 @@ import ClearIcon from '@material-ui/icons/Clear'
 import CopyButton from '../components/CopyButton'
 import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 import AutoComplete from '../common/AutoComplete'
 import { fetchSurveyDetails } from '../api/checklist'
 i18n.initialise()
@@ -56,6 +56,13 @@ interface PDownloadButton {
     fileName: string
 }
 
+interface MatchIds {
+    params: {
+        id: string
+        tempid: string
+    }
+}
+
 export default function SurveyForm() {
     const isServer = typeof window === 'undefined'
 
@@ -80,14 +87,14 @@ export default function SurveyForm() {
         qr_image: '',
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
-    const [sites, setSites] = useState([
+    const [sites, _setSites] = useState([
         'Site1',
         'Site4',
         'Site5',
         'Site6',
         'Site7',
     ])
-    const [selectedSites, setSelectedSites] = useState(['Site2', 'Site3'])
+    const [selectedSites, _setSelectedSites] = useState(['Site2', 'Site3'])
     const [qrImage, setQrImage] = useState('')
 
     const fetchData = async () => {
@@ -127,6 +134,9 @@ export default function SurveyForm() {
             },
         },
     })
+    const match: MatchIds = useRouteMatch()
+    const backUrl = `/checklists/${match?.params?.tempid}/surveys`
+    console.log('match', match?.params?.tempid)
 
     const updateField = (e: any) => {
         if (e.target.name === 'welcome_msg') {
@@ -518,7 +528,7 @@ export default function SurveyForm() {
                                     size="small"
                                 >
                                     <Link
-                                        to={`/checklists/surveys`}
+                                        to={backUrl}
                                         style={{
                                             textDecoration: 'none',
                                             color: 'white',

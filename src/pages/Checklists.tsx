@@ -171,6 +171,7 @@ const greyTheme = createTheme({
 })
 
 export interface ICheckListData {
+    id: number
     name: string
     schedules: number
     template?: string
@@ -181,10 +182,11 @@ export interface ICheckListData {
 function CheckListsTable({ setTab }: any) {
     const featureFlags = useContext(FeatureFlagsContext).features
     const [checkLists, setCheckLists] = useState<IChecklist[]>()
+    const [selectedId, setSelectId] = useState<number | null>(null)
     const processRows = (data: ICheckListData[]) => {
         setPage(0)
         const createdRows = data.map(
-            ({ name, schedules, adhoc, recStatus }) => {
+            ({ id, name, schedules, adhoc, recStatus }) => {
                 return createData(
                     name,
                     <ThemeProvider theme={redTheme}>
@@ -228,7 +230,11 @@ function CheckListsTable({ setTab }: any) {
                                     aria-controls="menu"
                                     aria-haspopup="true"
                                     aria-expanded={open ? 'true' : undefined}
-                                    onClick={(e) => handleClick(e, recStatus)}
+                                    onClick={(e) => {
+                                        console.log('id', id)
+                                        setSelectId(id)
+                                        handleClick(e, recStatus)
+                                    }}
                                     data-testid="btn-more"
                                 >
                                     {i18n.t('more')}
@@ -355,16 +361,23 @@ function CheckListsTable({ setTab }: any) {
                                     horizontal: 'left',
                                 }}
                             >
-                                <MenuItem onClick={() => handleTabChange(2)}>
-                                    {i18n.t('schedule')}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={() =>
-                                        console.log('checklist', checklist)
-                                    }
-                                >
+                                <MenuItem>
                                     <Link
-                                        to={`/checklists/surveys/`}
+                                        to={`/checklists/${selectedId}/schedules`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: 'black',
+                                        }}
+                                    >
+                                        {i18n.t('schedule')}
+                                    </Link>
+                                </MenuItem>
+                                {/* <MenuItem onClick={() => handleTabChange(2)}>
+                                    {i18n.t('schedule')}
+                                </MenuItem> */}
+                                <MenuItem>
+                                    <Link
+                                        to={`/checklists/${selectedId}/surveys`}
                                         style={{
                                             textDecoration: 'none',
                                             color: 'black',
