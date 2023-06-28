@@ -29,13 +29,21 @@ import { Link, useRouteMatch } from 'react-router-dom'
 import { fetchSchedule } from '../api/checklist'
 import Loading from '../components/Loading'
 i18n.initialise()
+
+interface IEvent {
+    id?: number
+    gracePeriod?: number
+    rRule?: string
+    rRuleDescription: string
+    startDate: string
+}
+
 export interface IScheduleData {
     id: number
     name: string
-    start_date: string
-    show_over_due: boolean
-    sched_freq: string
-    for_user: string[]
+    showOverdue: boolean
+    entities: string[]
+    event: IEvent
 }
 
 const useStyles = makeStyles({
@@ -132,38 +140,38 @@ const ScheduleHeader = () => {
     )
 }
 
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+    }
+}
+
 const ScheduleTable = () => {
     function createData(
         id: number,
         name: string,
-        start_date: string,
-        show_over_due: boolean,
-        sched_freq: string,
-        for_user: string[]
+        showOverdue: boolean,
+        entities: string[],
+        event: {
+            rRuleDescription: string
+            startDate: string
+        }
     ) {
         return {
             id,
             name,
-            start_date,
-            show_over_due,
-            sched_freq,
-            for_user,
+            showOverdue,
+            entities,
+            event,
         }
     }
-    const match = useRouteMatch()
 
     const [schedules, setSchedules] = useState<IScheduleData[]>()
     const processRows = (data: IScheduleData[]) => {
         const createdRows = data.map(
-            ({ id, name, start_date, show_over_due, sched_freq, for_user }) => {
-                return createData(
-                    id,
-                    name,
-                    start_date,
-                    show_over_due,
-                    sched_freq,
-                    for_user
-                )
+            ({ id, name, showOverdue, entities, event }) => {
+                return createData(id, name, showOverdue, entities, event)
             }
         )
         setSchedules(createdRows)
@@ -173,10 +181,12 @@ const ScheduleTable = () => {
     const [page, setPage] = useState(0)
     const [loading, setLoading] = useState(false)
 
+    const match: MatchParams = useRouteMatch()
+
     const fetchData = async () => {
         try {
             setLoading(true)
-            const lists = await fetchSchedule()
+            const lists = await fetchSchedule(Number(match.params?.tempid))
             setSchedules(lists)
             processRows(lists)
             setLoading(false)
@@ -280,10 +290,12 @@ const ScheduleTable = () => {
                                                 </Link>
                                             </StyledTableCell>
                                             <StyledTableCell align="center">
-                                                {formatDate(row.start_date)}
+                                                {formatDate(
+                                                    row.event.startDate
+                                                )}
                                             </StyledTableCell>
                                             <StyledTableCell>
-                                                {row.show_over_due.toString()}
+                                                {row.showOverdue.toString()}
                                             </StyledTableCell>
                                             <StyledTableCell>
                                                 <Link
@@ -293,7 +305,7 @@ const ScheduleTable = () => {
                                                         color: 'blue',
                                                     }}
                                                 >
-                                                    {row.sched_freq}
+                                                    {row.event.rRuleDescription}
                                                 </Link>
                                             </StyledTableCell>
                                             <StyledTableCell>
@@ -306,7 +318,7 @@ const ScheduleTable = () => {
                                                             'white',
                                                     }}
                                                 >
-                                                    {row.for_user.map(
+                                                    {row.entities.map(
                                                         (user, index) => (
                                                             <li
                                                                 key={index}

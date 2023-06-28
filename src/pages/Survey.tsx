@@ -39,16 +39,16 @@ export interface IScheduleData {
     start_date: string
     show_over_due: boolean
     sched_freq: string
-    for_user: string[]
+    entities: string[]
 }
 
 export interface ISurvey {
     id: number
     name: string
     expiry_date: string
-    qr_image: string
-    path: string
-    for_user: string[]
+    qrCodeLink: string
+    surveyUrl: string
+    entities: string[]
 }
 
 const useStyles = makeStyles({
@@ -150,17 +150,17 @@ const SurveyTable = () => {
         id: number,
         name: string,
         expiry_date: string,
-        qr_image: string,
-        path: string,
-        for_user: string[]
+        qrCodeLink: string,
+        surveyUrl: string,
+        entities: string[]
     ) {
         return {
             id,
             name,
             expiry_date,
-            qr_image,
-            path,
-            for_user,
+            qrCodeLink,
+            surveyUrl,
+            entities,
         }
     }
     const match = useRouteMatch()
@@ -173,14 +173,14 @@ const SurveyTable = () => {
     const [surveys, setSurveys] = useState<ISurvey[]>()
     const processRows = (data: ISurvey[]) => {
         const createdRows = data.map(
-            ({ id, name, expiry_date, qr_image, path, for_user }) => {
+            ({ id, name, expiry_date, qrCodeLink, surveyUrl, entities }) => {
                 return createData(
                     id,
                     name,
                     expiry_date,
-                    qr_image,
-                    path,
-                    for_user
+                    qrCodeLink,
+                    surveyUrl,
+                    entities
                 )
             }
         )
@@ -324,17 +324,17 @@ const SurveyTable = () => {
                                                                     'nowrap',
                                                             }}
                                                         >
-                                                            {`${silentCheckUrl}/pa/${row.path}`}
+                                                            {row.surveyUrl}
                                                         </Typography>
                                                     </Box>
                                                     <CopyButton
-                                                        value={`${silentCheckUrl}/pa/${row.path}`}
+                                                        value={row.surveyUrl}
                                                     />
                                                 </Box>
                                                 <LinkQRDialog
                                                     details={{
                                                         ...row,
-                                                        qrValue: `${silentCheckUrl}/pa/${row.path}`,
+                                                        qrValue: row.surveyUrl,
                                                     }}
                                                 />
                                             </StyledTableCell>
@@ -348,7 +348,7 @@ const SurveyTable = () => {
                                                             'white',
                                                     }}
                                                 >
-                                                    {row.for_user.map(
+                                                    {row.entities.map(
                                                         (user, index) => (
                                                             <li
                                                                 key={index}

@@ -167,10 +167,8 @@ export const mockSchedule = async () => {
         {
             id: 1,
             name: 'Documentation 1',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: [
+            showOverdue: true,
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -184,250 +182,30 @@ export const mockSchedule = async () => {
                 'User 11',
                 'User 12',
             ],
-        },
-        {
-            id: 2,
-            name: 'Documentation 2',
-            start_date: '01-04-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 3,
-            name: 'Documentation 3',
-            start_date: '05-11-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 4,
-            name: 'Documentation 4',
-            start_date: '04-24-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 12',
-            ],
-        },
-        {
-            id: 5,
-            name: 'Documentation 5',
-            start_date: '05-14-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 6,
-            name: 'Documentation 6',
-            start_date: '01-21-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 7,
-            name: 'Documentation 7',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-            ],
-        },
-        {
-            id: 8,
-            name: 'Documentation 8',
-            start_date: '01-24-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 9,
-            name: 'Documentation 9',
-            start_date: '03-24-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 10,
-            name: 'Documentation 10',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 11,
-            name: 'Documentation 11',
-            start_date: '01-24-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 12,
-            name: 'Documentation 12',
-            start_date: '01-14-2023',
-            show_over_due: false,
-            sched_freq: 'Repeats every 1 week(s) on: Monday, Wednesday',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 13,
-            name: 'Documentation 13',
-            start_date: '04-04-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 4',
-                'User 5',
-                'User 6',
-                'User 7',
-                'User 8',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
-        },
-        {
-            id: 14,
-            name: 'Documentation 14',
-            start_date: '04-24-2023',
-            show_over_due: true,
-            sched_freq: 'Repeats every 1 days, ends on 29 May, 2023',
-            for_user: ['User 1'],
-        },
-        {
-            id: 15,
-            name: 'Documentation 15',
-            start_date: '04-21-2023',
-            show_over_due: true,
-            sched_freq:
-                'Repeats every 1 months(s), on day 1 of the month, end on 31 June, 2023',
-            for_user: [
-                'User 1',
-                'User 2',
-                'User 3',
-                'User 4',
-                'User 5',
-                'User 9',
-                'User 10',
-                'User 11',
-                'User 12',
-            ],
+            event: {
+                startDate: '04-24-2023',
+                rRule: 'FREQ=DAILY;UNTIL=20200524T000000Z',
+                rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
+            },
         },
     ]
 
-    return await wait(0, mockSchedules)
+    const realData = [
+        {
+            entities: ['darrell'],
+            event: {
+                gracePeriod: 0,
+                id: 4602,
+                rRule: 'FREQ=DAILY;UNTIL=20200524T000000Z',
+                rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
+                startDate: '2020-05-24',
+            },
+            id: 4167,
+            name: 'until / test',
+            showOverdue: true,
+        },
+    ]
+    return await wait(0, realData)
 }
 
 export const mockSurvey = async () => {
@@ -436,9 +214,9 @@ export const mockSurvey = async () => {
             id: 1,
             name: 'Survey 1',
             expiry_date: '04-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '0KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '0KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -457,9 +235,9 @@ export const mockSurvey = async () => {
             id: 2,
             name: 'Survey 2',
             expiry_date: '01-04-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '1KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '1KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -474,9 +252,9 @@ export const mockSurvey = async () => {
             id: 3,
             name: 'Survey 3',
             expiry_date: '05-11-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '2KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '2KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 6',
@@ -492,9 +270,9 @@ export const mockSurvey = async () => {
             id: 4,
             name: 'Survey 4',
             expiry_date: '04-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -507,9 +285,9 @@ export const mockSurvey = async () => {
             id: 5,
             name: 'Survey 5',
             expiry_date: '05-14-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 5',
                 'User 6',
@@ -525,9 +303,9 @@ export const mockSurvey = async () => {
             id: 6,
             name: 'Survey 6',
             expiry_date: '01-21-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -542,9 +320,9 @@ export const mockSurvey = async () => {
             id: 7,
             name: 'Survey 7',
             expiry_date: '04-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -559,9 +337,9 @@ export const mockSurvey = async () => {
             id: 8,
             name: 'Survey 8',
             expiry_date: '01-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 3',
                 'User 4',
                 'User 5',
@@ -578,9 +356,9 @@ export const mockSurvey = async () => {
             id: 9,
             name: 'Survey 9',
             expiry_date: '03-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -595,9 +373,9 @@ export const mockSurvey = async () => {
             id: 10,
             name: 'Survey 10',
             expiry_date: '04-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -613,9 +391,9 @@ export const mockSurvey = async () => {
             id: 11,
             name: 'Survey 11',
             expiry_date: '01-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -631,9 +409,9 @@ export const mockSurvey = async () => {
             id: 12,
             name: 'Survey 12',
             expiry_date: '01-14-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -648,9 +426,9 @@ export const mockSurvey = async () => {
             id: 13,
             name: 'Survey 13',
             expiry_date: '04-04-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 4',
                 'User 5',
                 'User 6',
@@ -666,17 +444,17 @@ export const mockSurvey = async () => {
             id: 14,
             name: 'Survey 14',
             expiry_date: '04-24-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: ['User 1'],
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: ['User 1'],
         },
         {
             id: 15,
             name: 'Survey 15',
             expiry_date: '04-21-2023',
-            qr_image: 'https://picsum.photos/200',
-            path: '3KFNLztllSbTlXckrVE9Kx',
-            for_user: [
+            qrCodeLink: 'https://picsum.photos/200',
+            surveyUrl: '3KFNLztllSbTlXckrVE9Kx',
+            entities: [
                 'User 1',
                 'User 2',
                 'User 3',
@@ -689,6 +467,21 @@ export const mockSurvey = async () => {
             ],
         },
     ]
+
+    const data = {
+        entities: [
+            'Henderson Rd',
+            'Andrew Simms Newmarket',
+            'Andrew Simms Botany',
+            'external id 2',
+            'good site',
+        ],
+        id: 57,
+        name: '1',
+        qrCodeLink:
+            'http://localhost:8280/api/checklist-templates/12634620/surveys/57/qrcode.png',
+        surveyUrl: 'http://localhost:3000/pa/D1UodAaOfH8M0Rb7Ovk4I',
+    }
 
     return await wait(1000, mockSchedules)
 }
@@ -982,7 +775,7 @@ export async function fetchChecklist(): Promise<any> {
     return mockChecklist()
 }
 
-export async function fetchSchedule(): Promise<any> {
+export async function fetchSchedule(id: number): Promise<any> {
     return mockSchedule()
 }
 
