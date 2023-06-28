@@ -763,6 +763,32 @@ export const mockReasignChecklist = async () => {
     return await wait(1000, reassignChecklist)
 }
 
+export const mockScheduleDetails = async () => {
+    return {
+        checklistType: 'site',
+        emailNotification: false,
+        entities: ['darrell'],
+        event: {
+            gracePeriod: 0,
+            id: 4602,
+            rRule: 'FREQ=DAILY;UNTIL=20200524T000000Z',
+            rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
+            startDate: '2020-05-24',
+        },
+        id: 4167,
+        name: 'until / test',
+        showOverdue: true,
+        futureDatesOnly: false,
+        historicEvents: [],
+        sites: [
+            {
+                id: 12587549,
+                name: 'darrell wu',
+            },
+        ],
+    }
+}
+
 export async function updateChecklist(checklist: any): Promise<any> {
     return fetchWithErrorHandling<any>(
         'PUT',
@@ -777,6 +803,13 @@ export async function fetchChecklist(): Promise<any> {
 
 export async function fetchSchedule(id: number): Promise<any> {
     return mockSchedule()
+}
+
+export async function fetchScheduleDetails(
+    tempid: number,
+    id: number
+): Promise<any> {
+    return mockScheduleDetails()
 }
 
 export async function fetchSurvey(): Promise<any> {

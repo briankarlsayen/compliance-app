@@ -20,7 +20,8 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
-import { fetchFranchisee } from '../api/checklist'
+import { fetchFranchisee, fetchScheduleDetails } from '../api/checklist'
+import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
 export interface IInputField {
@@ -42,6 +43,14 @@ interface IAlias {
 interface PEditScheduleForm {
     inputField: IInputField
     setInputField: any
+}
+
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+        id: string
+    }
 }
 
 export default function EditScheduleForm({
@@ -144,15 +153,36 @@ export default function EditScheduleForm({
         }
     }
 
+    const match: MatchParams = useRouteMatch()
+
     const getFranchisees = async () => {
         const franchisees = await fetchFranchisee()
         setFranchiseeList(franchisees)
         setSelectList(franchisees)
     }
 
+    const getScheduleDetails = async () => {
+        const details = await fetchScheduleDetails(
+            Number(match.params.tempid),
+            Number(match.params.id)
+        )
+        setInputField({
+            name: details?.name,
+            entities: details?.entities,
+            startDate: details?.event?.startDate,
+            rrule: details?.event?.rRule,
+            sched_for: 'Franchisee',
+            alias: '',
+            every_x: '',
+            franchisees: [''],
+        })
+    }
+
     useEffect(() => {
         getAlias('Franchisee')
         getFranchisees()
+        getScheduleDetails()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
