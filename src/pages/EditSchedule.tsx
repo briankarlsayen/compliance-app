@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 
 export interface IInputField {
     name: string
-    sched_for: string
+    checklistType: string
     alias: string
     franchisees: string[] | []
     startDate?: Date | null
@@ -37,7 +37,7 @@ export default function EditSchedule() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
-        sched_for: 'Franchisee',
+        checklistType: '',
         alias: '',
         franchisees: [''],
         startDate: null,

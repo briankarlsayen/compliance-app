@@ -21,9 +21,14 @@ interface PMove {
     position: string
 }
 
+interface IList {
+    id: number
+    name: string
+}
+
 export interface PMultiSelectField {
-    selectedList: string[]
-    list: string[]
+    selectedList: IList[]
+    list: IList[]
     setInputField: any
     inputField: any
     name: string
@@ -61,6 +66,7 @@ const MultiSelectField = ({
     }, [list])
 
     const handleChangeMultiple = (event: any) => {
+        console.log('event.target', event.target)
         const { options } = event.target
         const value = [] as any
         for (let i = 0, l = options.length; i < l; i += 1) {
@@ -70,14 +76,15 @@ const MultiSelectField = ({
         }
         setSelected(value)
     }
+    console.log('selected', selected)
     const handleMove = ({ position }: PMove) => {
         let rightArr = []
         let leftArr = []
         switch (position) {
             case 'left':
                 const newLeftSide: any = []
-                leftSide.map((el: string) => {
-                    const idx = selected.findIndex((val) => el === val)
+                leftSide.map((el: any) => {
+                    const idx = selected.findIndex((val) => el.id === val)
                     if (idx === -1) newLeftSide.push(el)
                 })
                 rightArr = [...selected, ...rightSide]
@@ -93,10 +100,11 @@ const MultiSelectField = ({
                 break
             case 'right':
                 const newRightSide: any = []
-                rightSide.map((el: string) => {
-                    const idx = selected.findIndex((val) => el === val)
+                rightSide.map((el: IList) => {
+                    const idx = selected.findIndex((val) => el.id === val)
                     if (idx === -1) newRightSide.push(el)
                 })
+                console.log('newRightSide', newRightSide)
                 setLeftFilter('')
                 rightArr = [...newRightSide]
                 leftArr = [...selected, ...leftSide]
@@ -140,7 +148,7 @@ const MultiSelectField = ({
                 setLeftFilter(filterVal)
                 const leftFilterArr = leftSide
                 const filteredLeft = leftFilterArr.filter((x) =>
-                    x.toLocaleLowerCase().includes(filterVal)
+                    x.name.toLocaleLowerCase().includes(filterVal)
                 )
                 setFilteredLeft(filteredLeft)
                 break
@@ -148,7 +156,7 @@ const MultiSelectField = ({
                 setRightFilter(filterVal)
                 const rightFilterArr = rightSide
                 const filteredRight = rightFilterArr.filter((x) =>
-                    x.toLocaleLowerCase().includes(filterVal)
+                    x.name.toLocaleLowerCase().includes(filterVal)
                 )
                 setFilteredRight(filteredRight)
                 break
@@ -205,9 +213,9 @@ const MultiSelectField = ({
                                 }}
                                 variant="outlined"
                             >
-                                {filteredLeft.map((name, index) => (
-                                    <option key={index} value={name}>
-                                        {name}
+                                {filteredLeft.map((el) => (
+                                    <option key={el.id} value={el.id}>
+                                        {el.name}
                                     </option>
                                 ))}
                             </Select>
@@ -341,9 +349,9 @@ const MultiSelectField = ({
                                 }}
                                 variant="outlined"
                             >
-                                {filteredRight.map((name, index) => (
-                                    <option key={index} value={name}>
-                                        {name}
+                                {filteredRight.map((el) => (
+                                    <option key={el.id} value={el.name}>
+                                        {el.name}
                                     </option>
                                 ))}
                             </Select>

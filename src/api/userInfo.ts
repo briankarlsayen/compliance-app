@@ -26,7 +26,7 @@ export const mockUser = async () => {
         superuser: true,
         updateTicketEmailField: true,
         franchiseSettings: true,
-        retailOrganisation: false,
+        retailOrganisation: true,
         usePeople: true,
         peopleReadOnly: false,
         hidePeopleManager: false,

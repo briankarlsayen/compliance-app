@@ -26,9 +26,9 @@ i18n.initialise()
 
 export interface IInputField {
     name: string
-    sched_for: string
+    checklistType: string
     alias: string
-    franchisees: string[] | []
+    franchisees: any[] | []
     startDate?: Date | null
     every_x: string
     rrule: string
@@ -60,7 +60,7 @@ export default function EditScheduleForm({
     const featureFlags = useContext(FeatureFlagsContext).features
     const [isSchedAlias, setSchedAlias] = useState(false)
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
-    const [selectList, setSelectList] = useState<string[]>([])
+    const [selectList, setSelectList] = useState<any[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
 
     const checkIsSchedAlias = (str: string) => {
@@ -70,7 +70,8 @@ export default function EditScheduleForm({
     }
 
     const getAlias = (value: string) => {
-        const schedType = sched_for
+        console.log('value')
+        const schedType = checklistType
             .find((sched) => sched.name.toLowerCase() === value.toLowerCase())
             ?.type.toLowerCase()
         const schedAlias = aliasDatas.find(
@@ -106,47 +107,48 @@ export default function EditScheduleForm({
         if (e.target.name === 'alias') {
             getUserList(e.target.value)
         }
-        if (e.target.name === 'sched_for') {
+        if (e.target.name === 'checklistType') {
             const isAlias = checkIsSchedAlias(e.target.value)
             setSchedAlias(isAlias)
             getAlias(e.target.value)
         }
     }
 
-    const sched_for = featureFlags.retailOrganisation
+    const checklistType = featureFlags.retailOrganisation
         ? [
               {
-                  name: 'Franchisee',
+                  name: 'franchisee',
                   type: 'Franchisee',
               },
               {
-                  name: 'Franchisee Alias',
-                  type: 'Franchisee',
+                  name: 'franchisee',
+                  type: 'Franchisee Alias',
               },
               {
-                  name: 'Site',
+                  name: 'site',
                   type: 'Site',
               },
               {
-                  name: 'Site Alias',
-                  type: 'Site',
+                  name: 'site',
+                  type: 'Site Alias',
               },
           ]
         : [
               {
-                  name: 'Franchisee',
+                  name: 'franchisee',
                   type: 'Franchisee',
               },
               {
-                  name: 'Franchisee Alias',
+                  name: 'franchisee-alias',
                   type: 'Franchisee',
               },
           ]
 
     const dynamicLabel = () => {
         const pickedFor =
-            sched_for.find((item) => item.name === inputField?.sched_for)
-                ?.type ?? null
+            checklistType.find(
+                (item) => item.name === inputField?.checklistType
+            )?.type ?? null
         return {
             alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
             select: `Select ${pickedFor}`,
@@ -167,23 +169,21 @@ export default function EditScheduleForm({
             Number(match.params.id)
         )
         setInputField({
-            name: details?.name,
-            entities: details?.entities,
-            startDate: details?.event?.startDate,
-            rrule: details?.event?.rRule,
-            sched_for: 'Franchisee',
+            ...details,
             alias: '',
             every_x: '',
             franchisees: [''],
         })
+        getAlias(details.checklistType)
     }
 
     useEffect(() => {
-        getAlias('Franchisee')
         getFranchisees()
         getScheduleDetails()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    console.log('inputField.checklistType', inputField.checklistType)
 
     return (
         <Box style={{ padding: '2rem' }}>
@@ -231,14 +231,14 @@ export default function EditScheduleForm({
                             label={i18n.t('select_an_opt')}
                             labelId="select-sched-for"
                             id="select-sched-for"
-                            value={inputField.sched_for}
-                            name="sched_for"
+                            value={inputField.checklistType}
+                            name="checklistType"
                             onChange={updateField}
                             variant="outlined"
                         >
-                            {sched_for.map((item, index) => (
+                            {checklistType.map((item, index) => (
                                 <MenuItem key={index} value={item.name}>
-                                    {item.name}
+                                    {item.type}
                                 </MenuItem>
                             ))}
                         </Select>

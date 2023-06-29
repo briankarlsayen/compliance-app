@@ -487,7 +487,21 @@ export const mockSurvey = async () => {
 }
 
 export const mockFranchisee = async () => {
-    return await wait(0, franchisees)
+    const franchiseeList = [
+        {
+            id: 1,
+            name: 'Norbert',
+        },
+        {
+            id: 2,
+            name: 'Dameon',
+        },
+        {
+            id: 3,
+            name: 'Nicholaus',
+        },
+    ]
+    return await wait(0, franchiseeList)
 }
 
 export const mockAlias = async () => {

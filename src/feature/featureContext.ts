@@ -90,7 +90,7 @@ export const defaultFeatures: IFeatureFlagsProps = {
         dateTimeFormat: 'd/MM/yyyy hh:mm:ss a',
         username: '',
         franchiseeReadOnly: true,
-        retailOrganisation: false,
+        retailOrganisation: true,
         franchiseMytickets: false,
         superuser: false,
         peopleReadOnly: false,
