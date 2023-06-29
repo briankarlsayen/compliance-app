@@ -171,6 +171,7 @@ const SurveyTable = () => {
     const silentCheckUrl =
         processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'
     const [surveys, setSurveys] = useState<ISurvey[]>()
+
     const processRows = (data: ISurvey[]) => {
         const createdRows = data.map(
             ({ id, name, expiry_date, qrCodeLink, surveyUrl, entities }) => {

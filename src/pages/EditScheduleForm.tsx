@@ -159,6 +159,7 @@ export default function EditScheduleForm({
 
     const getFranchisees = async () => {
         const franchisees = await fetchFranchisee()
+
         setFranchiseeList(franchisees)
         setSelectList(franchisees)
     }
@@ -167,6 +168,10 @@ export default function EditScheduleForm({
         const details = await fetchScheduleDetails(
             Number(match.params.tempid),
             Number(match.params.id)
+        )
+        console.log(
+            '🚀 ~ file: EditScheduleForm.tsx:175 ~ getScheduleDetails ~ details:',
+            details
         )
         setInputField({
             ...details,

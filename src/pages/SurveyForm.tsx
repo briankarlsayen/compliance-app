@@ -26,7 +26,7 @@ import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
 import AutoComplete from '../common/AutoComplete'
-import { fetchSurveyDetails } from '../api/checklist'
+import { fetchFranchisee, fetchSurveyDetails } from '../api/checklist'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -88,31 +88,34 @@ export default function SurveyForm() {
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [sites, _setSites] = useState([
-        'Site1',
-        'Site4',
-        'Site5',
-        'Site6',
-        'Site7',
+        { id: 1, name: 'Site1' },
+        { id: 2, name: 'Site4' },
+        { id: 3, name: 'Site5' },
+        { id: 4, name: 'Site6' },
+        { id: 5, name: 'Site7' },
     ])
-    const [selectedSites, _setSelectedSites] = useState(['Site2', 'Site3'])
+    const [selectedSites, _setSelectedSites] = useState([])
     const [qrImage, setQrImage] = useState('')
 
     const fetchData = async () => {
-        const response = await fetchSurveyDetails()
-        setQrImage(response.qrCode)
-        setInputField({
-            id: response.id,
-            alias: '',
-            expiry_date: response.expiryDate,
-            link: response.surveyUrl,
-            name: '',
-            selected_sites: [],
-            survey_for: '',
-            survey_to: [],
-            text_form_name: '',
-            welcome_msg: '',
-            qr_image: response.qrCode,
+        await fetchSurveyDetails().then((res) => {
+            setQrImage(res.qr_image)
+            setInputField(res)
         })
+
+        // setInputField({
+        //     id: response.id,
+        //     alias: '',
+        //     expiry_date: response.expiryDate,
+        //     link: response.surveyUrl,
+        //     name: '',
+        //     selected_sites: [],
+        //     survey_for: '',
+        //     survey_to: [],
+        //     text_form_name: '',
+        //     welcome_msg: '',
+        //     qr_image: response.qrCode,
+        // })
     }
 
     useEffect(() => {
