@@ -1,6 +1,6 @@
 import RRuleGenerator from 'react-rrule-generator'
 import '../styles/Recurrence.css'
-import { IInputField } from '../pages/EditSchedule'
+import { IInputField } from '../pages/ScheduleFormContainer'
 
 interface PRecurrence {
     setInputField: any

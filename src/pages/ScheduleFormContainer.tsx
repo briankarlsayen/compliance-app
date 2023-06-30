@@ -1,6 +1,6 @@
 import { i18n } from '../i18n'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
@@ -12,7 +12,9 @@ import {
     makeStyles,
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
-import EditScheduleForm from './EditScheduleForm'
+import EditScheduleForm from './ScheduleForm'
+import { fetchScheduleDetails } from '../api/checklist'
+import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -27,22 +29,30 @@ export interface IInputField {
     name: string
     checklistType: string
     alias: string
-    franchisees: string[] | []
     startDate?: Date | null
     every_x: string
     rrule: string
+    selectedList?: []
 }
 
-export default function EditSchedule() {
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+        id: string
+    }
+}
+
+export default function ScheduleFormContainer() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
         checklistType: '',
         alias: '',
-        franchisees: [''],
         startDate: null,
         every_x: '',
         rrule: '',
+        selectedList: [],
     })
 
     const blueTheme = createTheme({
@@ -57,6 +67,45 @@ export default function EditSchedule() {
         e.preventDefault()
         alert(JSON.stringify(inputField))
     }
+
+    const match: MatchParams = useRouteMatch()
+
+    const getScheduleDetails = async () => {
+        const defaultInput = {
+            checklistType: 'franchisee',
+            name: '',
+            alias: '',
+            startDate: null,
+            every_x: '',
+            rrule: '',
+            selectedList: [] as [],
+        }
+        try {
+            const details = await fetchScheduleDetails(
+                Number(match.params.tempid),
+                Number(match.params.id)
+            )
+            const selected = []
+            if (details.checklistType === 'site') {
+                details.sites.length && selected.push(...details.sites)
+            } else {
+                details.franchisees.length &&
+                    selected.push(...details.franchisees)
+            }
+            setInputField({
+                ...details,
+                alias: '',
+                every_x: '',
+                selectedList: selected,
+            })
+        } catch (err) {
+            setInputField(defaultInput)
+        }
+    }
+
+    useEffect(() => {
+        getScheduleDetails()
+    }, [])
 
     return (
         <React.Fragment>

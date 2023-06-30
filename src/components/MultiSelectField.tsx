@@ -27,8 +27,8 @@ interface IList {
 }
 
 export interface PMultiSelectField {
-    selectedList: IList[]
-    list: IList[]
+    selectedList: IList[] | any[]
+    list: IList[] | any[]
     setInputField: any
     inputField: any
     name: string
@@ -50,6 +50,7 @@ const MultiSelectField = ({
     const [rightFilter, setRightFilter] = useState('')
     const [filteredLeft, setFilteredLeft] = useState(list)
     const [filteredRight, setFilteredRight] = useState(selectedList)
+    const [allList, setAllList] = useState([...list])
 
     useEffect(() => {
         setInputField({ ...inputField, [name]: rightSide })
@@ -58,15 +59,16 @@ const MultiSelectField = ({
     useEffect(() => {
         setRightSide(selectedList)
         setFilteredRight(selectedList)
+        setAllList([...list, ...selectedList])
     }, [selectedList])
 
     useEffect(() => {
         setLeftSide(list)
         setFilteredLeft(list)
+        setAllList([...list, ...selectedList])
     }, [list])
 
     const handleChangeMultiple = (event: any) => {
-        console.log('event.target', event.target)
         const { options } = event.target
         const value = [] as any
         for (let i = 0, l = options.length; i < l; i += 1) {
@@ -76,18 +78,31 @@ const MultiSelectField = ({
         }
         setSelected(value)
     }
-    console.log('selected', selected)
     const handleMove = ({ position }: PMove) => {
         let rightArr = []
         let leftArr = []
+        if (!selected.length) return
+        const selectedItems = selected.length
+            ? selected.map((el) =>
+                  allList.find((list) => list.id.toString() === el)
+              )
+            : []
+        console.log('selected', selected)
         switch (position) {
             case 'left':
                 const newLeftSide: any = []
                 leftSide.map((el: any) => {
-                    const idx = selected.findIndex((val) => el.id === val)
+                    const idx = selected.findIndex(
+                        (val) => el.id.toString() === val
+                    )
                     if (idx === -1) newLeftSide.push(el)
                 })
-                rightArr = [...selected, ...rightSide]
+                // console.log('newLeftSide', newLeftSide)
+                // const selectedItems = allList.length && allList.filter(el => el.id.toString() === selected)
+
+                // console.log('selectedItems', selectedItems)
+
+                rightArr = [...selectedItems, ...rightSide]
                 leftArr = [...newLeftSide]
 
                 setRightFilter('')
@@ -100,14 +115,17 @@ const MultiSelectField = ({
                 break
             case 'right':
                 const newRightSide: any = []
+                // console.log('selected', selected)
                 rightSide.map((el: IList) => {
-                    const idx = selected.findIndex((val) => el.id === val)
+                    const idx = selected.findIndex(
+                        (val) => el.id.toString() === val
+                    )
                     if (idx === -1) newRightSide.push(el)
                 })
                 console.log('newRightSide', newRightSide)
                 setLeftFilter('')
                 rightArr = [...newRightSide]
-                leftArr = [...selected, ...leftSide]
+                leftArr = [...selectedItems, ...leftSide]
                 setLeftSide(leftArr)
                 setFilteredLeft(leftArr)
 
@@ -117,6 +135,8 @@ const MultiSelectField = ({
                 break
         }
     }
+    console.log('rightSide', rightSide)
+    console.log('leftSide', leftSide)
 
     const handleMoveAll = ({ position }: PMove) => {
         let rightArr = []
@@ -350,7 +370,7 @@ const MultiSelectField = ({
                                 variant="outlined"
                             >
                                 {filteredRight.map((el) => (
-                                    <option key={el.id} value={el.name}>
+                                    <option key={el.id} value={el.id}>
                                         {el.name}
                                     </option>
                                 ))}

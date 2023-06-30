@@ -11,28 +11,16 @@ import {
     MenuItem,
     FormControl,
     Select,
-    makeStyles,
     InputAdornment,
 } from '@material-ui/core'
 import DateFnsUtils from '@date-io/date-fns'
-// import * as DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
-import { fetchFranchisee, fetchScheduleDetails } from '../api/checklist'
-import { useRouteMatch } from 'react-router-dom'
+import { fetchFranchisee } from '../api/checklist'
+import { IInputField } from './ScheduleFormContainer'
 i18n.initialise()
-
-export interface IInputField {
-    name: string
-    checklistType: string
-    alias: string
-    franchisees: any[] | []
-    startDate?: Date | null
-    every_x: string
-    rrule: string
-}
 
 interface IAlias {
     id: number
@@ -45,15 +33,7 @@ interface PEditScheduleForm {
     setInputField: any
 }
 
-interface MatchParams {
-    url: string
-    params: {
-        tempid: string
-        id: string
-    }
-}
-
-export default function EditScheduleForm({
+export default function ScheduleForm({
     inputField,
     setInputField,
 }: PEditScheduleForm) {
@@ -70,7 +50,6 @@ export default function EditScheduleForm({
     }
 
     const getAlias = (value: string) => {
-        console.log('value')
         const schedType = checklistType
             .find((sched) => sched.name.toLowerCase() === value.toLowerCase())
             ?.type.toLowerCase()
@@ -88,15 +67,16 @@ export default function EditScheduleForm({
     }
 
     const getUserList = (value: string) => {
-        const schedUsers =
-            aliasList && aliasList.find((item) => item.name === value)?.for_user
+        const schedUsers = aliasList
+            ? aliasList.find((item) => item.name === value)?.for_user
+            : []
         const newData = {
             ...inputField,
             alias: value,
-            franchisees: schedUsers ?? [],
+            franchisees: schedUsers,
         }
         setInputField(newData)
-        updateSelectList(schedUsers ?? [])
+        updateSelectList(schedUsers)
     }
 
     const updateField = (e: any) => {
@@ -155,8 +135,6 @@ export default function EditScheduleForm({
         }
     }
 
-    const match: MatchParams = useRouteMatch()
-
     const getFranchisees = async () => {
         const franchisees = await fetchFranchisee()
 
@@ -164,31 +142,11 @@ export default function EditScheduleForm({
         setSelectList(franchisees)
     }
 
-    const getScheduleDetails = async () => {
-        const details = await fetchScheduleDetails(
-            Number(match.params.tempid),
-            Number(match.params.id)
-        )
-        console.log(
-            '🚀 ~ file: EditScheduleForm.tsx:175 ~ getScheduleDetails ~ details:',
-            details
-        )
-        setInputField({
-            ...details,
-            alias: '',
-            every_x: '',
-            franchisees: [''],
-        })
-        getAlias(details.checklistType)
-    }
-
     useEffect(() => {
         getFranchisees()
-        getScheduleDetails()
+        getAlias(inputField.checklistType)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    console.log('inputField.checklistType', inputField.checklistType)
 
     return (
         <Box style={{ padding: '2rem' }}>
@@ -256,7 +214,6 @@ export default function EditScheduleForm({
                             fontWeight: 700,
                         }}
                     >
-                        {/* {i18n.t('use_franchisee_alias')} */}
                         {dynamicLabel().alias}
                     </InputLabel>
                 </Grid>
@@ -297,7 +254,7 @@ export default function EditScheduleForm({
                     <MultiSelectField
                         name="franchisees"
                         list={selectList}
-                        selectedList={inputField.franchisees}
+                        selectedList={inputField?.selectedList ?? []}
                         inputField={inputField}
                         setInputField={setInputField}
                         disable={isSchedAlias}

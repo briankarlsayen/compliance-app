@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import CheckLists from './Checklists'
-import EditSchedule from './EditSchedule'
+import EditSchedule from './ScheduleFormContainer'
 import { fetchUserInfo } from '../api/userInfo'
 import { FeatureFlagProvider } from '../feature/featureflag'
 import { defaultFeatures } from '../feature/featureContext'

@@ -1,6 +1,6 @@
 import { i18n } from '../i18n'
 import MultiSelectField from '../components/MultiSelectField'
-import EditScheduleForm, { IInputField } from './EditScheduleForm'
+import EditScheduleForm, { IInputField } from './ScheduleForm'
 import SimpleStepper from '../components/SimpleStepper'
 
 import { useState } from 'react'
