@@ -850,6 +850,16 @@ export async function fetchScheduleDetails(
     return mockScheduleDetails()
 }
 
+interface PUpdate {
+    tempid: number
+    id: number
+}
+
+export async function updateSchedule(tempid: number, id: number): Promise<any> {
+    const url = `/checklist-templates/${tempid}/schedules/${id}`
+    return { message: 'Success' }
+}
+
 export async function fetchSurvey(): Promise<any> {
     return mockSurvey()
 }

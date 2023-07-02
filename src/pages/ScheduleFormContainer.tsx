@@ -12,8 +12,8 @@ import {
     makeStyles,
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
-import EditScheduleForm from './ScheduleForm'
-import { fetchScheduleDetails } from '../api/checklist'
+import ScheduleForm from './ScheduleForm'
+import { fetchScheduleDetails, updateSchedule } from '../api/checklist'
 import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
@@ -29,10 +29,13 @@ export interface IInputField {
     name: string
     checklistType: string
     alias: string
-    startDate?: Date | null
-    every_x: string
-    rrule: string
+    startDate?: Date | null | undefined
+    every_x: string | undefined
+    rrule: string | undefined
     selectedList?: []
+    showOverdue?: boolean
+    futureDatesOnly?: boolean
+    emailNotification?: boolean
 }
 
 interface MatchParams {
@@ -53,6 +56,9 @@ export default function ScheduleFormContainer() {
         every_x: '',
         rrule: '',
         selectedList: [],
+        showOverdue: false,
+        futureDatesOnly: true,
+        emailNotification: true,
     })
 
     const blueTheme = createTheme({
@@ -63,15 +69,21 @@ export default function ScheduleFormContainer() {
         },
     })
 
-    const handleSubmit = (e: any) => {
-        e.preventDefault()
-        alert(JSON.stringify(inputField))
-    }
-
     const match: MatchParams = useRouteMatch()
 
+    const handleSubmit = (e: any) => {
+        e.preventDefault()
+        let selectedListName =
+            inputField.checklistType === 'site' ? 'sites' : 'franchisees'
+        const reqBody = {
+            ...inputField,
+            [selectedListName]: inputField.selectedList,
+        }
+        alert(JSON.stringify(reqBody))
+    }
+
     const getScheduleDetails = async () => {
-        const defaultInput = {
+        const defaultInput: IInputField = {
             checklistType: 'franchisee',
             name: '',
             alias: '',
@@ -79,6 +91,9 @@ export default function ScheduleFormContainer() {
             every_x: '',
             rrule: '',
             selectedList: [] as [],
+            showOverdue: false,
+            futureDatesOnly: true,
+            emailNotification: true,
         }
         try {
             const details = await fetchScheduleDetails(
@@ -126,7 +141,7 @@ export default function ScheduleFormContainer() {
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={10}>
                         <Paper elevation={3}>
-                            <EditScheduleForm
+                            <ScheduleForm
                                 inputField={inputField}
                                 setInputField={setInputField}
                             />

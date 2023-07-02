@@ -43,6 +43,36 @@ export default function ScheduleForm({
     const [selectList, setSelectList] = useState<any[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
 
+    const checklistType = featureFlags.retailOrganisation
+        ? [
+              {
+                  name: 'franchisee',
+                  type: 'Franchisee',
+              },
+              {
+                  name: 'franchisee',
+                  type: 'Franchisee Alias',
+              },
+              {
+                  name: 'site',
+                  type: 'Site',
+              },
+              {
+                  name: 'site',
+                  type: 'Site Alias',
+              },
+          ]
+        : [
+              {
+                  name: 'franchisee',
+                  type: 'Franchisee',
+              },
+              {
+                  name: 'franchisee-alias',
+                  type: 'Franchisee',
+              },
+          ]
+
     const checkIsSchedAlias = (str: string) => {
         const strArr = str.toLocaleLowerCase().split(' ')
         const idx = strArr.findIndex((e) => e === 'alias')
@@ -93,36 +123,6 @@ export default function ScheduleForm({
             getAlias(e.target.value)
         }
     }
-
-    const checklistType = featureFlags.retailOrganisation
-        ? [
-              {
-                  name: 'franchisee',
-                  type: 'Franchisee',
-              },
-              {
-                  name: 'franchisee',
-                  type: 'Franchisee Alias',
-              },
-              {
-                  name: 'site',
-                  type: 'Site',
-              },
-              {
-                  name: 'site',
-                  type: 'Site Alias',
-              },
-          ]
-        : [
-              {
-                  name: 'franchisee',
-                  type: 'Franchisee',
-              },
-              {
-                  name: 'franchisee-alias',
-                  type: 'Franchisee',
-              },
-          ]
 
     const dynamicLabel = () => {
         const pickedFor =
@@ -252,7 +252,7 @@ export default function ScheduleForm({
                 </Grid>
                 <Grid item xs={12} sm={8}>
                     <MultiSelectField
-                        name="franchisees"
+                        name="selectedList"
                         list={selectList}
                         selectedList={inputField?.selectedList ?? []}
                         inputField={inputField}
@@ -292,7 +292,6 @@ export default function ScheduleForm({
                             variant="inline"
                             inputVariant="outlined"
                             label="Select start date"
-                            // defaultValue={null}
                             name="startDate"
                             value={inputField.startDate}
                             onChange={(e: any) =>
