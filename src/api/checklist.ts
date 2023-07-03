@@ -809,7 +809,7 @@ export const mockScheduleDetails = async () => {
         event: {
             gracePeriod: 0,
             id: 4602,
-            rRule: 'FREQ=DAILY;UNTIL=20200524T000000Z',
+            rRule: 'FREQ=DAILY;UNTIL=20200524T000000Z;INTERVAL=2',
             rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
             startDate: '2020-05-24',
         },

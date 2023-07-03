@@ -112,6 +112,8 @@ export default function ScheduleFormContainer() {
                 alias: '',
                 every_x: '',
                 selectedList: selected,
+                startDate: details.event.startDate,
+                rrule: details.event.rRule,
             })
         } catch (err) {
             setInputField(defaultInput)
