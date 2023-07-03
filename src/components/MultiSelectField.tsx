@@ -87,7 +87,6 @@ const MultiSelectField = ({
                   allList.find((list) => list.id.toString() === el)
               )
             : []
-        console.log('selected', selected)
         switch (position) {
             case 'left':
                 const newLeftSide: any = []
@@ -115,14 +114,12 @@ const MultiSelectField = ({
                 break
             case 'right':
                 const newRightSide: any = []
-                // console.log('selected', selected)
                 rightSide.map((el: IList) => {
                     const idx = selected.findIndex(
                         (val) => el.id.toString() === val
                     )
                     if (idx === -1) newRightSide.push(el)
                 })
-                console.log('newRightSide', newRightSide)
                 setLeftFilter('')
                 rightArr = [...newRightSide]
                 leftArr = [...selectedItems, ...leftSide]
@@ -135,8 +132,6 @@ const MultiSelectField = ({
                 break
         }
     }
-    console.log('rightSide', rightSide)
-    console.log('leftSide', leftSide)
 
     const handleMoveAll = ({ position }: PMove) => {
         let rightArr = []

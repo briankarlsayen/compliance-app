@@ -37,18 +37,23 @@ const useStyles = makeStyles({
     },
 })
 
+interface ISelectedSites {
+    id: number
+    name: string
+}
+
 export interface IInputField {
     id?: number
     alias: string
     expiry_date?: Date | null
     name: string
-    selected_sites?: string[]
     survey_for: string
     survey_to: string[]
     text_form_name: string
     welcome_msg: string
     link: string
     qr_image: string
+    selectedSites: ISelectedSites[]
 }
 
 interface PDownloadButton {
@@ -64,59 +69,38 @@ interface MatchIds {
 }
 
 export default function SurveyForm() {
-    const isServer = typeof window === 'undefined'
-
-    const processEnv: any = isServer ? process.env : {}
-    const silentCheckUrl =
-        processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'
-
-    const dummyLink = `${silentCheckUrl}/pa/3KFNLztllSbTlXckrVE9Kx` as string
-
     const classes = useStyles()
     let maxChar = 500
     const [inputField, setInputField] = useState<IInputField>({
         alias: '',
         expiry_date: null,
-        link: dummyLink,
+        link: '',
         name: '',
-        selected_sites: [],
         survey_for: '',
         survey_to: [],
         text_form_name: '',
         welcome_msg: '',
         qr_image: '',
+        selectedSites: [],
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [sites, _setSites] = useState([
-        { id: 1, name: 'Site1' },
-        { id: 2, name: 'Site4' },
-        { id: 3, name: 'Site5' },
-        { id: 4, name: 'Site6' },
-        { id: 5, name: 'Site7' },
+        { id: 10, name: 'Site1' },
+        { id: 11, name: 'Site4' },
+        { id: 12, name: 'Site5' },
+        { id: 13, name: 'Site6' },
+        { id: 14, name: 'Site7' },
     ])
-    const [selectedSites, _setSelectedSites] = useState([])
     const [qrImage, setQrImage] = useState('')
 
     const fetchData = async () => {
         await fetchSurveyDetails().then((res) => {
             setQrImage(res.qr_image)
-            setInputField(res)
+            setInputField({ ...res, selectedSites: res.entities })
         })
-
-        // setInputField({
-        //     id: response.id,
-        //     alias: '',
-        //     expiry_date: response.expiryDate,
-        //     link: response.surveyUrl,
-        //     name: '',
-        //     selected_sites: [],
-        //     survey_for: '',
-        //     survey_to: [],
-        //     text_form_name: '',
-        //     welcome_msg: '',
-        //     qr_image: response.qrCode,
-        // })
     }
+
+    console.log('inputField', inputField)
 
     useEffect(() => {
         fetchData()
@@ -158,7 +142,20 @@ export default function SurveyForm() {
         alert(JSON.stringify(inputField))
     }
 
-    const surveyFor_list = ['User1', 'User2', 'User3', 'User4']
+    const surveyFor_list = [
+        {
+            id: 1,
+            name: 'User1',
+        },
+        {
+            id: 2,
+            name: 'User2',
+        },
+        {
+            id: 3,
+            name: 'User3',
+        },
+    ]
     const surveyTo_list = [
         { id: 1, name: 'Email1' },
         { id: 2, name: 'Email2' },
@@ -434,16 +431,14 @@ export default function SurveyForm() {
                                                 onChange={updateField}
                                                 variant="outlined"
                                             >
-                                                {surveyFor_list.map(
-                                                    (item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item}
-                                                        >
-                                                            {item}
-                                                        </MenuItem>
-                                                    )
-                                                )}
+                                                {surveyFor_list.map((item) => (
+                                                    <MenuItem
+                                                        key={item.id}
+                                                        value={item.id}
+                                                    >
+                                                        {item.name}
+                                                    </MenuItem>
+                                                ))}
                                             </Select>
                                         </FormControl>
                                     </Grid>
@@ -502,7 +497,9 @@ export default function SurveyForm() {
                                         <MultiSelectField
                                             name="selected_sites"
                                             list={sites}
-                                            selectedList={selectedSites}
+                                            selectedList={
+                                                inputField.selectedSites
+                                            }
                                             inputField={inputField}
                                             setInputField={setInputField}
                                         />
