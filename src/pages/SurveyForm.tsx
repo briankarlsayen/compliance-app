@@ -48,11 +48,11 @@ export interface IInputField {
     expiry_date?: Date | null
     name: string
     survey_for: string
-    survey_to: string[]
-    text_form_name: string
-    welcome_msg: string
-    link: string
-    qr_image: string
+    toRecipients: string[]
+    noOfTextFields: number | null
+    welcomeMessage: string
+    surveyUrl: string
+    qrCode: string
     selectedSites: ISelectedSites[]
 }
 
@@ -74,13 +74,13 @@ export default function SurveyForm() {
     const [inputField, setInputField] = useState<IInputField>({
         alias: '',
         expiry_date: null,
-        link: '',
+        surveyUrl: '',
         name: '',
         survey_for: '',
-        survey_to: [],
-        text_form_name: '',
-        welcome_msg: '',
-        qr_image: '',
+        toRecipients: [],
+        noOfTextFields: 0,
+        welcomeMessage: '',
+        qrCode: '',
         selectedSites: [],
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
@@ -94,8 +94,11 @@ export default function SurveyForm() {
     const [qrImage, setQrImage] = useState('')
 
     const fetchData = async () => {
-        await fetchSurveyDetails().then((res) => {
-            setQrImage(res.qr_image)
+        await fetchSurveyDetails(
+            Number(match.params.tempid),
+            Number(match.params.id)
+        ).then((res) => {
+            setQrImage(res.qrCode)
             setInputField({ ...res, selectedSites: res.entities })
         })
     }
@@ -126,7 +129,7 @@ export default function SurveyForm() {
     console.log('match', match?.params?.tempid)
 
     const updateField = (e: any) => {
-        if (e.target.name === 'welcome_msg') {
+        if (e.target.name === 'welcomeMessage') {
             let charLen = maxChar - e.target.value.length
             if (charLen < 0) return null
             setCharRemaining(charLen)
@@ -207,12 +210,12 @@ export default function SurveyForm() {
                                                 size="small"
                                                 autoComplete="off"
                                                 variant="outlined"
-                                                value={inputField.link}
+                                                value={inputField.surveyUrl}
                                                 onChange={updateField}
                                                 disabled
                                             />
                                             <CopyButton
-                                                value={inputField.link}
+                                                value={inputField.surveyUrl}
                                             />
                                         </Box>
                                     </Grid>
@@ -340,7 +343,7 @@ export default function SurveyForm() {
                                             size="small"
                                             autoComplete="off"
                                             variant="outlined"
-                                            value={inputField.welcome_msg}
+                                            value={inputField.welcomeMessage}
                                             onChange={updateField}
                                             multiline
                                             minRows={3}
@@ -362,15 +365,16 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <TextField
                                             required
-                                            id="text_form_name"
-                                            name="text_form_name"
+                                            id="noOfTextFields"
+                                            name="noOfTextFields"
                                             label="text answers"
                                             fullWidth
                                             size="small"
                                             autoComplete="off"
                                             variant="outlined"
-                                            value={inputField.text_form_name}
+                                            value={inputField.noOfTextFields}
                                             onChange={updateField}
+                                            type="number"
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -385,7 +389,7 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <AutoComplete
-                                            id="survey_to"
+                                            id="toRecipients"
                                             fieldLabel="to"
                                             itemKey="id"
                                             itemLabel="name"
@@ -396,11 +400,13 @@ export default function SurveyForm() {
                                             ) => {
                                                 setInputField({
                                                     ...inputField,
-                                                    survey_to: [...newValue],
+                                                    toRecipients: [...newValue],
                                                 })
                                             }}
                                             // onChange={updateField}
-                                            selectedItems={inputField.survey_to}
+                                            selectedItems={
+                                                inputField.toRecipients
+                                            }
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
