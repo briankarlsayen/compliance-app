@@ -53,7 +53,8 @@ export default function ScheduleForm({
         return year + '-' + month + '-' + day
     }
 
-    const checklistType = featureFlags.retailOrganisation
+    // const checklistType = featureFlags.retailOrganisation
+    const checklistType = true
         ? [
               {
                   id: 1,

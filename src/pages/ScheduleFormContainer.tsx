@@ -13,7 +13,11 @@ import {
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import ScheduleForm from './ScheduleForm'
-import { fetchScheduleDetails, updateSchedule } from '../api/checklist'
+import {
+    createSchedule,
+    fetchScheduleDetails,
+    saveSchedule,
+} from '../api/checklist'
 import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
@@ -30,24 +34,29 @@ interface IEvent {
     id: number
     rRule: string
     rRuleDescription: string
-    startDate: string
+    startDate: string | null
 }
 export interface IInputField {
     name: string
     checklistType: string
     alias: string
     selectedList?: []
-    showOverdue?: boolean
-    futureDatesOnly?: boolean
-    emailNotification?: boolean
+    showOverdue: boolean
+    futureDatesOnly: boolean
+    emailNotification: boolean
     event: IEvent
+}
+
+export interface IScheduleRequest extends IInputField {
+    id?: number
+    tempid: number
 }
 
 interface MatchParams {
     url: string
     params: {
         tempid: string
-        id: string
+        id?: string
     }
 }
 
@@ -55,7 +64,7 @@ export default function ScheduleFormContainer() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
-        checklistType: '',
+        checklistType: 'site',
         alias: '',
         selectedList: [],
         showOverdue: false,
@@ -79,17 +88,23 @@ export default function ScheduleFormContainer() {
     })
 
     const match: MatchParams = useRouteMatch()
+    const formType = match.url.split('/').pop() ?? 'create'
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
         let selectedListName =
             inputField.checklistType === 'site' ? 'sites' : 'franchisees'
         const reqBody = {
             ...inputField,
             [selectedListName]: inputField.selectedList,
+            tempid: Number(match.params.tempid),
+            id: match.params.id ? Number(match.params.id) : undefined,
         }
-        console.log('reqBody', reqBody)
-        alert(JSON.stringify(reqBody))
+        try {
+            await saveSchedule(reqBody)
+        } catch (error) {
+            console.log('error', error)
+        }
     }
 
     const getScheduleDetails = async () => {
@@ -104,29 +119,36 @@ export default function ScheduleFormContainer() {
             event: {
                 gracePeriod: 0,
                 id: 0,
-                rRule: '',
-                rRuleDescription: '',
-                startDate: '',
+                rRule: 'RRULE:FREQ=DAILY;UNTIL=20200524T000000',
+                rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
+                startDate: null,
             },
         }
         try {
-            const details = await fetchScheduleDetails(
-                Number(match.params.tempid),
-                Number(match.params.id)
-            )
-            const selected = []
-            if (details.checklistType === 'site') {
-                details.sites.length && selected.push(...details.sites)
-            } else {
-                details.franchisees.length &&
-                    selected.push(...details.franchisees)
+            switch (formType) {
+                case 'edit':
+                    const details = await fetchScheduleDetails(
+                        Number(match.params.tempid),
+                        Number(match.params.id)
+                    )
+                    const selected = []
+                    if (details.checklistType === 'site') {
+                        details.sites.length && selected.push(...details.sites)
+                    } else {
+                        details.franchisees.length &&
+                            selected.push(...details.franchisees)
+                    }
+                    setInputField({
+                        ...details,
+                        alias: '',
+                        selectedList: selected,
+                        startDate: details.event.startDate,
+                    })
+                    break
+                case 'create':
+                    setInputField(defaultInput)
+                    break
             }
-            setInputField({
-                ...details,
-                alias: '',
-                selectedList: selected,
-                startDate: details.event.startDate,
-            })
         } catch (err) {
             setInputField(defaultInput)
         }

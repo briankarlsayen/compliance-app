@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Switch, Route } from 'react-router-dom'
 import CheckLists from './Checklists'
-import EditSchedule from './ScheduleFormContainer'
+import ScheduleFormContainer from './ScheduleFormContainer'
 import { fetchUserInfo } from '../api/userInfo'
 import { FeatureFlagProvider } from '../feature/featureflag'
 import { defaultFeatures } from '../feature/featureContext'
@@ -36,7 +36,12 @@ const ChecklistHome = () => {
                     <Route
                         exact
                         path="/checklists/:tempid/schedules/:id/edit"
-                        component={EditSchedule}
+                        component={ScheduleFormContainer}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/:tempid/schedules/create"
+                        component={ScheduleFormContainer}
                     />
                     <Route
                         exact

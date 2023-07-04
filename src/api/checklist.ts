@@ -5,6 +5,7 @@ import { ISurvey } from '../pages/Survey'
 import franchisees from './franchisees'
 import alias from './alias'
 import dayjs from 'dayjs'
+import { IScheduleRequest } from '../pages/ScheduleFormContainer'
 
 function wait<T>(ms: number, value: T) {
     return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
@@ -946,7 +947,7 @@ export async function fetchReassignChecklist(): Promise<any> {
     return mockReasignChecklist()
 }
 
-export async function createSchedule(): Promise<any> {
+export async function createSchedule(data: IScheduleRequest): Promise<any> {
     const baseUrl = '/checklist-templates/12633756/schedules/'
     const body = {
         name: 'new schedule',
@@ -1033,8 +1034,23 @@ export async function createSchedule(): Promise<any> {
         futureDatesOnly: false,
         emailNotification: false,
     }
-    return mockReasignChecklist()
+    return alert(JSON.stringify(data))
+    // return mockReasignChecklist()
 }
+
+export async function saveSchedule(schedule: IScheduleRequest): Promise<any> {
+    const url =
+        `checklist-templates/${schedule.tempid}/schedules` +
+        (schedule.id ? `/${schedule.id}` : '')
+    const params = {
+        method: schedule.id ? 'PUT' : 'POST',
+        body: JSON.stringify(schedule),
+    }
+    console.log('url', url)
+    console.log('params', params)
+    return
+}
+
 export async function createSurvey(): Promise<any> {
     const baseUrl = '/checklist-templates/12633756/schedules/'
     const body = {
