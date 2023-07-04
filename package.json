@@ -36,6 +36,7 @@
     "react-router-dom": "^5.2.0",
     "react-rrule-generator": "^1.2.0",
     "react-to-print": "^2.14.13",
+    "rrule": "^2.7.2",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1"
   },

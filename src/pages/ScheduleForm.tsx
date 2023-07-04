@@ -42,34 +42,56 @@ export default function ScheduleForm({
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
     const [selectList, setSelectList] = useState<any[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
+    const [schedFor, setSchedFor] = useState()
+
+    function formatDate(dateString: string) {
+        const date = new Date(dateString)
+        const month = (date.getMonth() + 1).toString().padStart(2, '0')
+        const day = date.getDate().toString().padStart(2, '0')
+        const year = date.getFullYear().toString()
+
+        return year + '-' + month + '-' + day
+    }
 
     const checklistType = featureFlags.retailOrganisation
         ? [
               {
-                  name: 'franchisee',
-                  type: 'Franchisee',
+                  id: 1,
+                  name: 'Franchisee ',
+                  type: 'franchisee',
+                  value: 'franchisee',
               },
               {
-                  name: 'franchisee',
-                  type: 'Franchisee Alias',
+                  id: 2,
+                  name: 'Franchisee Alias',
+                  type: 'franchisee',
+                  value: 'franchisee-alias',
               },
               {
-                  name: 'site',
-                  type: 'Site',
+                  id: 3,
+                  name: 'Site',
+                  type: 'site',
+                  value: 'site',
               },
               {
-                  name: 'site',
-                  type: 'Site Alias',
+                  id: 4,
+                  name: 'Site Alias',
+                  type: 'site',
+                  value: 'sites-alias',
               },
           ]
         : [
               {
-                  name: 'franchisee',
-                  type: 'Franchisee',
+                  id: 1,
+                  name: 'Franchisee ',
+                  type: 'franchisee',
+                  value: 'franchisee',
               },
               {
-                  name: 'franchisee-alias',
-                  type: 'Franchisee',
+                  id: 2,
+                  name: 'Franchisee Alias',
+                  type: 'franchisee',
+                  value: 'franchisee-alias',
               },
           ]
 
@@ -81,7 +103,7 @@ export default function ScheduleForm({
 
     const getAlias = (value: string) => {
         const schedType = checklistType
-            .find((sched) => sched.name.toLowerCase() === value.toLowerCase())
+            .find((sched) => sched.type.toLowerCase() === value.toLowerCase())
             ?.type.toLowerCase()
         const schedAlias = aliasDatas.find(
             (item) => item.name === schedType
@@ -127,8 +149,8 @@ export default function ScheduleForm({
     const dynamicLabel = () => {
         const pickedFor =
             checklistType.find(
-                (item) => item.name === inputField?.checklistType
-            )?.type ?? null
+                (item) => item.type === inputField?.checklistType
+            )?.name ?? null
         return {
             alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
             select: `Select ${pickedFor}`,
@@ -200,8 +222,8 @@ export default function ScheduleForm({
                             variant="outlined"
                         >
                             {checklistType.map((item, index) => (
-                                <MenuItem key={index} value={item.name}>
-                                    {item.type}
+                                <MenuItem key={index} value={item.value}>
+                                    {item.name}
                                 </MenuItem>
                             ))}
                         </Select>
@@ -293,11 +315,14 @@ export default function ScheduleForm({
                             inputVariant="outlined"
                             label="Select start date"
                             name="startDate"
-                            value={inputField.startDate}
+                            value={inputField.event.startDate}
                             onChange={(e: any) =>
                                 setInputField({
                                     ...inputField,
-                                    startDate: e,
+                                    event: {
+                                        ...inputField.event,
+                                        startDate: formatDate(e),
+                                    },
                                 })
                             }
                             InputProps={{
@@ -315,7 +340,7 @@ export default function ScheduleForm({
                                             })
                                         }}
                                     >
-                                        {inputField.startDate ? (
+                                        {inputField.event.startDate ? (
                                             <ClearIcon />
                                         ) : (
                                             <></>

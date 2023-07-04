@@ -25,17 +25,22 @@ const useStyles = makeStyles({
     },
 })
 
+interface IEvent {
+    gracePeriod: number
+    id: number
+    rRule: string
+    rRuleDescription: string
+    startDate: string
+}
 export interface IInputField {
     name: string
     checklistType: string
     alias: string
-    startDate?: Date | null | undefined
-    every_x: string | undefined
-    rrule: string | undefined
     selectedList?: []
     showOverdue?: boolean
     futureDatesOnly?: boolean
     emailNotification?: boolean
+    event: IEvent
 }
 
 interface MatchParams {
@@ -52,13 +57,17 @@ export default function ScheduleFormContainer() {
         name: '',
         checklistType: '',
         alias: '',
-        startDate: null,
-        every_x: '',
-        rrule: '',
         selectedList: [],
         showOverdue: false,
         futureDatesOnly: true,
         emailNotification: true,
+        event: {
+            gracePeriod: 0,
+            id: 0,
+            rRule: '',
+            rRuleDescription: '',
+            startDate: '',
+        },
     })
 
     const blueTheme = createTheme({
@@ -79,6 +88,7 @@ export default function ScheduleFormContainer() {
             ...inputField,
             [selectedListName]: inputField.selectedList,
         }
+        console.log('reqBody', reqBody)
         alert(JSON.stringify(reqBody))
     }
 
@@ -87,13 +97,17 @@ export default function ScheduleFormContainer() {
             checklistType: 'franchisee',
             name: '',
             alias: '',
-            startDate: null,
-            every_x: '',
-            rrule: '',
             selectedList: [] as [],
             showOverdue: false,
             futureDatesOnly: true,
             emailNotification: true,
+            event: {
+                gracePeriod: 0,
+                id: 0,
+                rRule: '',
+                rRuleDescription: '',
+                startDate: '',
+            },
         }
         try {
             const details = await fetchScheduleDetails(
@@ -110,10 +124,8 @@ export default function ScheduleFormContainer() {
             setInputField({
                 ...details,
                 alias: '',
-                every_x: '',
                 selectedList: selected,
                 startDate: details.event.startDate,
-                rrule: details.event.rRule,
             })
         } catch (err) {
             setInputField(defaultInput)

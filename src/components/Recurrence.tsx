@@ -1,6 +1,7 @@
 import RRuleGenerator from 'react-rrule-generator'
 import '../styles/Recurrence.css'
 import { IInputField } from '../pages/ScheduleFormContainer'
+import { rrulestr } from 'rrule'
 
 interface PRecurrence {
     setInputField: any
@@ -14,10 +15,17 @@ const Recurrence = ({ setInputField, inputField }: PRecurrence) => {
                 config={{
                     repeat: ['Monthly', 'Weekly', 'Hourly', 'Daily'],
                 }}
-                value={inputField.rrule}
-                onChange={(e: string) =>
-                    setInputField({ ...inputField, rrule: e })
-                }
+                value={inputField.event.rRule}
+                onChange={(e: string) => {
+                    const ruleDescription = rrulestr(e).toText()
+                    const event = {
+                        ...inputField.event,
+                        rRuleDescription: ruleDescription,
+                        rRule: e,
+                    }
+
+                    setInputField({ ...inputField, event })
+                }}
             />
         </div>
     )
