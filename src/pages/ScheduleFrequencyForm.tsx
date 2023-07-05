@@ -1,7 +1,7 @@
 import { i18n } from '../i18n'
 import Recurrence from '../components/Recurrence'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Grid from '@mui/material/Grid'
 import {
     Typography,
@@ -18,6 +18,9 @@ import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
+import { fetchScheduleDetails, updateScheduleEvent } from '../api/checklist'
+import { IEvent, IInputField } from './ScheduleFormContainer'
+import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -28,26 +31,45 @@ const useStyles = makeStyles({
     },
 })
 
-export interface IInputField {
-    name: string
-    sched_for: string
-    alias: string
-    franchisees: string[] | []
-    startDate?: Date | null
-    every_x: string
-    rrule: string
+export interface IScheduleEventReq extends IEvent {
+    id: number
+    tempid: number
 }
 
-export default function EditScheduleFrequency() {
+function formatDate(dateString: string) {
+    const date = new Date(dateString)
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const year = date.getFullYear().toString()
+
+    return year + '-' + month + '-' + day
+}
+
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+        id?: string
+    }
+}
+
+export default function ScheduleFrequencyForm() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IInputField>({
         name: '',
-        sched_for: '',
+        checklistType: 'site',
         alias: '',
-        franchisees: [],
-        startDate: null,
-        every_x: '',
-        rrule: '',
+        selectedList: [],
+        showOverdue: false,
+        futureDatesOnly: true,
+        emailNotification: true,
+        event: {
+            gracePeriod: 0,
+            id: 0,
+            rRule: '',
+            rRuleDescription: '',
+            startDate: '',
+        },
     })
 
     const blueTheme = createTheme({
@@ -58,35 +80,63 @@ export default function EditScheduleFrequency() {
         },
     })
 
-    const updateField = (e: any) => {
-        setInputField({
-            ...inputField,
-            [e.target.name]: e.target.value,
-        })
-    }
-
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        alert(JSON.stringify(inputField))
+        try {
+            await updateScheduleEvent({
+                ...inputField.event,
+                id: Number(match.params.id),
+                tempid: Number(match.params.tempid),
+            })
+        } catch (err) {
+            console.error('err', err)
+        }
     }
 
-    const schedule = {
-        name: 'Document1',
-        for_user: [
-            'User 1',
-            'User 2',
-            'User 3',
-            'User 4',
-            'User 5',
-            'User 6',
-            'User 7',
-            'User 8',
-            'User 9',
-            'User 10',
-            'User 11',
-            'User 12',
-        ],
+    const match: MatchParams = useRouteMatch()
+
+    const getScheduleDetails = async () => {
+        const defaultInput: IInputField = {
+            checklistType: 'franchisee',
+            name: '',
+            alias: '',
+            selectedList: [] as [],
+            showOverdue: false,
+            futureDatesOnly: true,
+            emailNotification: true,
+            event: {
+                gracePeriod: 0,
+                id: 0,
+                rRule: 'RRULE:FREQ=DAILY;UNTIL=20200524T000000',
+                rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
+                startDate: null,
+            },
+        }
+        try {
+            const details = await fetchScheduleDetails(
+                Number(match.params.tempid),
+                Number(match.params.id)
+            )
+            const selected = []
+            if (details.checklistType === 'site') {
+                details.sites.length && selected.push(...details.sites)
+            } else {
+                details.franchisees.length &&
+                    selected.push(...details.franchisees)
+            }
+            setInputField({
+                ...details,
+                alias: '',
+                selectedList: selected,
+            })
+        } catch (err) {
+            setInputField(defaultInput)
+        }
     }
+
+    useEffect(() => {
+        getScheduleDetails()
+    }, [])
 
     return (
         <React.Fragment>
@@ -121,7 +171,7 @@ export default function EditScheduleFrequency() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <Typography>
-                                            {schedule?.name}
+                                            {inputField?.name}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -144,16 +194,16 @@ export default function EditScheduleFrequency() {
                                                     backgroundColor: 'white',
                                                 }}
                                             >
-                                                {schedule?.for_user.map(
-                                                    (user, index) => (
+                                                {inputField.selectedList?.map(
+                                                    (item) => (
                                                         <li
-                                                            key={index}
+                                                            key={item.name}
                                                             style={{
                                                                 marginLeft:
                                                                     '1rem',
                                                             }}
                                                         >
-                                                            {user}
+                                                            {item.name}
                                                         </li>
                                                     )
                                                 )}
@@ -194,13 +244,18 @@ export default function EditScheduleFrequency() {
                                                 variant="inline"
                                                 inputVariant="outlined"
                                                 label="Select start date"
-                                                defaultValue={null}
                                                 name="startDate"
-                                                value={inputField.startDate}
+                                                value={
+                                                    inputField.event.startDate
+                                                }
                                                 onChange={(e: any) =>
                                                     setInputField({
                                                         ...inputField,
-                                                        startDate: e,
+                                                        event: {
+                                                            ...inputField.event,
+                                                            startDate:
+                                                                formatDate(e),
+                                                        },
                                                     })
                                                 }
                                                 InputProps={{
@@ -216,14 +271,20 @@ export default function EditScheduleFrequency() {
                                                                 e.stopPropagation()
                                                                 setInputField({
                                                                     ...inputField,
-                                                                    startDate:
-                                                                        null,
+                                                                    event: {
+                                                                        ...inputField.event,
+                                                                        startDate:
+                                                                            null,
+                                                                    },
                                                                 })
                                                             }}
                                                         >
-                                                            {inputField.startDate ? (
+                                                            {inputField.event
+                                                                .startDate ? (
                                                                 <ClearIcon />
-                                                            ) : null}
+                                                            ) : (
+                                                                <></>
+                                                            )}
                                                         </InputAdornment>
                                                     ),
                                                 }}

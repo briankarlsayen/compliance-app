@@ -7,7 +7,6 @@ import { FeatureFlagProvider } from '../feature/featureflag'
 import { defaultFeatures } from '../feature/featureContext'
 import Survey from './Survey'
 import SurveyForm from './SurveyForm'
-import EditScheduleFrequency from './EditScheduleFrequency'
 import ChecklistBuilder from './ChecklistBuilder'
 import Settings from './Settings'
 import Versions from './Versions'
@@ -16,6 +15,7 @@ import Register from './Register'
 import ChecklistReassign from './ChecklistReassign'
 import ChecklistReport from './ChecklistReport'
 import Schedules from './Schedules'
+import ScheduleFrequencyForm from './ScheduleFrequencyForm'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -46,7 +46,7 @@ const ChecklistHome = () => {
                     <Route
                         exact
                         path="/checklists/:tempid/schedules/:id/frequency"
-                        component={EditScheduleFrequency}
+                        component={ScheduleFrequencyForm}
                     />
                     <Route
                         exact

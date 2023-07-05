@@ -6,6 +6,7 @@ import franchisees from './franchisees'
 import alias from './alias'
 import dayjs from 'dayjs'
 import { IScheduleRequest } from '../pages/ScheduleFormContainer'
+import { IScheduleEventReq } from '../pages/ScheduleFrequencyForm'
 
 function wait<T>(ms: number, value: T) {
     return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
@@ -1049,6 +1050,20 @@ export async function saveSchedule(schedule: IScheduleRequest): Promise<any> {
     console.log('url', url)
     console.log('params', params)
     return
+}
+
+export async function updateScheduleEvent(
+    event: IScheduleEventReq
+): Promise<any> {
+    const url =
+        `checklist-templates/${event.tempid}/schedules` +
+        (event.id ? `/${event.id}` : '')
+    const params = {
+        method: 'PATCH',
+        body: JSON.stringify(event),
+    }
+    console.log('url', url)
+    console.log('event', event)
 }
 
 export async function createSurvey(): Promise<any> {

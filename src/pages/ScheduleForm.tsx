@@ -42,7 +42,6 @@ export default function ScheduleForm({
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
     const [selectList, setSelectList] = useState<any[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
-    const [schedFor, setSchedFor] = useState()
 
     function formatDate(dateString: string) {
         const date = new Date(dateString)
@@ -322,7 +321,7 @@ export default function ScheduleForm({
                                     ...inputField,
                                     event: {
                                         ...inputField.event,
-                                        startDate: formatDate(e),
+                                        startDate: null,
                                     },
                                 })
                             }

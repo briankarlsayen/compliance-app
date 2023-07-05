@@ -13,11 +13,7 @@ import {
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import ScheduleForm from './ScheduleForm'
-import {
-    createSchedule,
-    fetchScheduleDetails,
-    saveSchedule,
-} from '../api/checklist'
+import { fetchScheduleDetails, saveSchedule } from '../api/checklist'
 import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
@@ -29,7 +25,7 @@ const useStyles = makeStyles({
     },
 })
 
-interface IEvent {
+export interface IEvent {
     gracePeriod: number
     id: number
     rRule: string
@@ -40,11 +36,16 @@ export interface IInputField {
     name: string
     checklistType: string
     alias: string
-    selectedList?: []
+    selectedList?: ISelected[]
     showOverdue: boolean
     futureDatesOnly: boolean
     emailNotification: boolean
     event: IEvent
+}
+
+interface ISelected {
+    id: number
+    name: string
 }
 
 export interface IScheduleRequest extends IInputField {
