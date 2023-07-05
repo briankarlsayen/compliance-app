@@ -79,7 +79,15 @@ const buttonTheme = createTheme({
     },
 })
 
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+    }
+}
+
 const SurveyHeader = () => {
+    const match: MatchParams = useRouteMatch()
     return (
         <div
             style={{
@@ -122,21 +130,29 @@ const SurveyHeader = () => {
                     </Typography>
                     <div>
                         <ThemeProvider theme={buttonTheme}>
-                            <Button
-                                variant="contained"
-                                color="primary"
+                            <Link
+                                to={`${match.url}/create`}
                                 style={{
-                                    color: 'white',
+                                    textDecoration: 'none',
+                                    color: 'blue',
                                 }}
                             >
-                                <AddIcon fontSize="small" />
-                                <Typography
-                                    style={{ fontWeight: 'bold' }}
-                                    variant="body2"
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    style={{
+                                        color: 'white',
+                                    }}
                                 >
-                                    {i18n.t('new_survey')}
-                                </Typography>
-                            </Button>
+                                    <AddIcon fontSize="small" />
+                                    <Typography
+                                        style={{ fontWeight: 'bold' }}
+                                        variant="body2"
+                                    >
+                                        {i18n.t('new_survey')}
+                                    </Typography>
+                                </Button>
+                            </Link>
                         </ThemeProvider>
                     </div>
                 </div>
