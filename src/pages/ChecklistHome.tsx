@@ -53,6 +53,11 @@ const ChecklistHome = () => {
                         path="/checklists/:tempid/surveys/:id/edit"
                         component={SurveyForm}
                     />
+                    <Route
+                        exact
+                        path="/checklists/:tempid/surveys/create"
+                        component={SurveyForm}
+                    />
                     <Route exact path="/checklists" component={CheckLists} />
                     <Route
                         exact

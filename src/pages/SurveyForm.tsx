@@ -16,6 +16,8 @@ import {
     ThemeProvider,
     makeStyles,
     InputAdornment,
+    Chip,
+    Input,
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
@@ -27,6 +29,7 @@ import { grey } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
 import AutoComplete from '../common/AutoComplete'
 import { fetchFranchisee, fetchSurveyDetails } from '../api/checklist'
+import ChipInput from '../common/ChipInput'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -34,6 +37,17 @@ const useStyles = makeStyles({
         '& .MuiFormControl-root': {
             marginTop: 0,
         },
+    },
+    formControl: {
+        minWidth: 120,
+        maxWidth: 300,
+    },
+    chips: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    chip: {
+        margin: 2,
     },
 })
 
@@ -62,6 +76,7 @@ interface PDownloadButton {
 }
 
 interface MatchIds {
+    url: string
     params: {
         id: string
         tempid: string
@@ -93,17 +108,28 @@ export default function SurveyForm() {
     ])
     const [qrImage, setQrImage] = useState('')
 
-    const fetchData = async () => {
-        await fetchSurveyDetails(
-            Number(match.params.tempid),
-            Number(match.params.id)
-        ).then((res) => {
-            setQrImage(res.qrCode)
-            setInputField({ ...res, selectedSites: res.entities })
-        })
-    }
+    const match: MatchIds = useRouteMatch()
+    const formType = match.url.split('/').pop() ?? 'create'
 
-    console.log('inputField', inputField)
+    const fetchData = async () => {
+        try {
+            switch (formType) {
+                case 'edit':
+                    await fetchSurveyDetails(
+                        Number(match.params.tempid),
+                        Number(match.params.id)
+                    ).then((res) => {
+                        setQrImage(res.qrCode)
+                        setInputField({ ...res, selectedSites: res.entities })
+                    })
+                    break
+                case 'create':
+                    break
+            }
+        } catch (err) {
+            console.error('err', err)
+        }
+    }
 
     useEffect(() => {
         fetchData()
@@ -124,9 +150,8 @@ export default function SurveyForm() {
             },
         },
     })
-    const match: MatchIds = useRouteMatch()
+
     const backUrl = `/checklists/${match?.params?.tempid}/surveys`
-    console.log('match', match?.params?.tempid)
 
     const updateField = (e: any) => {
         if (e.target.name === 'welcomeMessage') {
@@ -142,7 +167,15 @@ export default function SurveyForm() {
 
     const handleSubmit = (e: any) => {
         e.preventDefault()
-        alert(JSON.stringify(inputField))
+        const data = {
+            ...inputField,
+            sites: inputField.selectedSites,
+            path: '2f6EbamLMmHLIjSKVnTWjX',
+        }
+
+        console.log('inputField', data)
+
+        alert(JSON.stringify(data, null, '\t'))
     }
 
     const surveyFor_list = [
@@ -168,6 +201,10 @@ export default function SurveyForm() {
     ]
     const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
+    function handleSelecetedTags(items: any) {
+        console.log(items)
+    }
+
     return (
         <div>
             <Paper
@@ -189,62 +226,67 @@ export default function SurveyForm() {
                         <Paper elevation={3}>
                             <Box style={{ padding: '2rem' }}>
                                 <Grid container spacing={3}>
-                                    <Grid item xs={12} sm={4}>
-                                        <InputLabel
-                                            style={{
-                                                display: 'flex',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            {i18n.t('survey_link')}
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8}>
-                                        <Box style={{ display: 'flex' }}>
-                                            <TextField
-                                                required
-                                                id="link"
-                                                name="link"
-                                                label="link"
-                                                fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                variant="outlined"
-                                                value={inputField.surveyUrl}
-                                                onChange={updateField}
-                                                disabled
-                                            />
-                                            <CopyButton
-                                                value={inputField.surveyUrl}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                        <InputLabel
-                                            style={{
-                                                display: 'flex',
-                                                fontWeight: 700,
-                                            }}
-                                        >
-                                            {i18n.t('QR_code')}
-                                        </InputLabel>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8}>
-                                        <img
-                                            src={`data:image/png;base64,${qrImage}`}
-                                            alt="survey-qr"
-                                        />
-                                        <DownloadImageButton
-                                            fileName="survey-qr"
-                                            imageBase64={qrImage}
-                                        />
-                                        {/* <SurveyQRCode
-                                            details={{
-                                                ...qrData,
-                                                qrValue: inputField.link,
-                                            }}
-                                        /> */}
-                                    </Grid>
+                                    {formType === 'edit' && (
+                                        <>
+                                            <Grid item xs={12} sm={4}>
+                                                <InputLabel
+                                                    style={{
+                                                        display: 'flex',
+                                                        fontWeight: 700,
+                                                    }}
+                                                >
+                                                    {i18n.t('survey_link')}
+                                                </InputLabel>
+                                            </Grid>
+                                            <Grid item xs={12} sm={8}>
+                                                <Box
+                                                    style={{ display: 'flex' }}
+                                                >
+                                                    <TextField
+                                                        required
+                                                        id="link"
+                                                        name="link"
+                                                        label="link"
+                                                        fullWidth
+                                                        size="small"
+                                                        autoComplete="off"
+                                                        variant="outlined"
+                                                        value={
+                                                            inputField.surveyUrl
+                                                        }
+                                                        onChange={updateField}
+                                                        disabled
+                                                    />
+                                                    <CopyButton
+                                                        value={
+                                                            inputField.surveyUrl
+                                                        }
+                                                    />
+                                                </Box>
+                                            </Grid>
+                                            <Grid item xs={12} sm={4}>
+                                                <InputLabel
+                                                    style={{
+                                                        display: 'flex',
+                                                        fontWeight: 700,
+                                                    }}
+                                                >
+                                                    {i18n.t('QR_code')}
+                                                </InputLabel>
+                                            </Grid>
+                                            <Grid item xs={12} sm={8}>
+                                                <img
+                                                    src={`data:image/png;base64,${qrImage}`}
+                                                    alt="survey-qr"
+                                                />
+                                                <DownloadImageButton
+                                                    fileName="survey-qr"
+                                                    imageBase64={qrImage}
+                                                />
+                                            </Grid>
+                                        </>
+                                    )}
+
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
                                             style={{
@@ -336,8 +378,8 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <TextField
                                             required
-                                            id="welcome_msg"
-                                            name="welcome_msg"
+                                            id="welcomeMessage"
+                                            name="welcomeMessage"
                                             label={i18n.t('welcome_msg')}
                                             fullWidth
                                             size="small"
@@ -388,7 +430,16 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <AutoComplete
+                                        <ChipInput
+                                            selectedTags={handleSelecetedTags}
+                                            fullWidth
+                                            variant="outlined"
+                                            id="tags"
+                                            name="tags"
+                                            placeholder=""
+                                            label="email to"
+                                        />
+                                        {/* <AutoComplete
                                             id="toRecipients"
                                             fieldLabel="to"
                                             itemKey="id"
@@ -403,11 +454,10 @@ export default function SurveyForm() {
                                                     toRecipients: [...newValue],
                                                 })
                                             }}
-                                            // onChange={updateField}
                                             selectedItems={
                                                 inputField.toRecipients
                                             }
-                                        />
+                                        /> */}
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
@@ -440,7 +490,7 @@ export default function SurveyForm() {
                                                 {surveyFor_list.map((item) => (
                                                     <MenuItem
                                                         key={item.id}
-                                                        value={item.id}
+                                                        value={item.name}
                                                     >
                                                         {item.name}
                                                     </MenuItem>
@@ -501,7 +551,7 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <MultiSelectField
-                                            name="selected_sites"
+                                            name="selectedSites"
                                             list={sites}
                                             selectedList={
                                                 inputField.selectedSites
@@ -585,5 +635,91 @@ const DownloadImageButton = ({ imageBase64, fileName }: PDownloadButton) => {
         >
             Download QR Code
         </Typography>
+    )
+}
+
+const names = [
+    'Oliver Hansen',
+    'Van Henry',
+    'April Tucker',
+    'Ralph Hubbard',
+    'Omar Alexander',
+    'Carlos Abbott',
+    'Miriam Wagner',
+    'Bradley Wilkerson',
+    'Virginia Andrews',
+    'Kelly Snyder',
+]
+
+const ITEM_HEIGHT = 48
+const ITEM_PADDING_TOP = 8
+
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+}
+
+function getStyles(name: any, personName: any, theme: any) {
+    return {
+        fontWeight:
+            personName.indexOf(name) === -1
+                ? theme.typography.fontWeightRegular
+                : theme.typography.fontWeightMedium,
+    }
+}
+
+const MultiSelectInput = () => {
+    const classes = useStyles()
+    const [personName, setPersonName] = useState<any[]>([])
+    const handleChange = (event: any) => {
+        setPersonName(event.target.value)
+    }
+
+    const handleChangeMultiple = (event: any) => {
+        const { options } = event.target
+        const value = []
+        for (let i = 0, l = options.length; i < l; i += 1) {
+            if (options[i].selected) {
+                value.push(options[i].value)
+            }
+        }
+        setPersonName(value)
+    }
+
+    return (
+        <FormControl>
+            <InputLabel id="demo-mutiple-chip-label">Chip</InputLabel>
+            <Select
+                labelId="demo-mutiple-chip-label"
+                id="demo-mutiple-chip"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                input={<Input id="select-multiple-chip" />}
+                renderValue={(selected: any) => (
+                    <div className={classes.chips}>
+                        {selected.map((value: any) => (
+                            <Chip
+                                key={value}
+                                label={value}
+                                className={classes.chip}
+                            />
+                        ))}
+                    </div>
+                )}
+                MenuProps={MenuProps}
+            >
+                {names.map((name) => (
+                    <MenuItem key={name} value={name}>
+                        {name}
+                    </MenuItem>
+                ))}
+            </Select>
+            <Button>Add</Button>
+        </FormControl>
     )
 }
