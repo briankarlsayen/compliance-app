@@ -173,7 +173,9 @@ export default function ScheduleFormContainer() {
                 <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
-                    {i18n.t('edit_sched')}
+                    {formType === 'create'
+                        ? 'Create Schedule'
+                        : 'Edit Schedule'}
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={10}>

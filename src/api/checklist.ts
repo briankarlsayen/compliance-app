@@ -7,6 +7,7 @@ import alias from './alias'
 import dayjs from 'dayjs'
 import { IScheduleRequest } from '../pages/ScheduleFormContainer'
 import { IScheduleEventReq } from '../pages/ScheduleFrequencyForm'
+import { ISurveyRequest } from '../pages/SurveyForm'
 
 function wait<T>(ms: number, value: T) {
     return new Promise<T>((resolve) => setTimeout(resolve, ms, value))
@@ -910,6 +911,7 @@ export async function fetchSurvey(): Promise<any> {
 }
 
 export async function fetchFranchisee(): Promise<any> {
+    return []
     return mockFranchisee()
 }
 
@@ -1040,6 +1042,17 @@ export async function saveSchedule(schedule: IScheduleRequest): Promise<any> {
     }
     console.log('url', url)
     console.log('params', params)
+    return
+}
+
+export async function saveSurvey(survey: ISurveyRequest): Promise<any> {
+    const url =
+        `checklist-templates/${survey.tempid}/surveys` +
+        (survey.id ? `/${survey.id}` : '')
+    const params = {
+        method: survey.id ? 'PUT' : 'POST',
+        body: JSON.stringify(survey),
+    }
     return
 }
 

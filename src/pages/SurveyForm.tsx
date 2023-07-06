@@ -27,7 +27,11 @@ import CopyButton from '../components/CopyButton'
 import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
-import { fetchFranchisee, fetchSurveyDetails } from '../api/checklist'
+import {
+    fetchFranchisee,
+    fetchSurveyDetails,
+    saveSurvey,
+} from '../api/checklist'
 import TagInput from '../common/TagInput'
 i18n.initialise()
 
@@ -69,6 +73,14 @@ export interface IInputField {
     surveyUrl: string
     qrCode: string
     selectedSites: ISelectedSites[]
+    checklistType: string
+}
+
+export interface ISurveyRequest extends IInputField {
+    sites?: ISelectedSites[]
+    path: string
+    tempid: number
+    id?: number
 }
 
 interface PDownloadButton {
@@ -98,6 +110,7 @@ export default function SurveyForm() {
         welcomeMessage: '',
         qrCode: '',
         selectedSites: [],
+        checklistType: 'site',
     })
     console.log('inputField', inputField)
     const [charRemaining, setCharRemaining] = useState(maxChar)
@@ -167,17 +180,20 @@ export default function SurveyForm() {
         })
     }
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault()
-        const data = {
+        const reqBody = {
             ...inputField,
             sites: inputField.selectedSites,
             path: '2f6EbamLMmHLIjSKVnTWjX',
+            tempid: Number(match.params.tempid),
+            id: match.params.id ? Number(match.params.id) : undefined,
         }
-
-        console.log('inputField', data)
-
-        alert(JSON.stringify(data, null, '\t'))
+        try {
+            await saveSurvey(reqBody)
+        } catch (error) {
+            console.log('error', error)
+        }
     }
 
     const surveyFor_list = [
@@ -205,6 +221,7 @@ export default function SurveyForm() {
 
     function handleSelecetedTags(items: any) {
         console.log(items)
+        // setInputField({ ...inputField, toRecipients: items })
     }
 
     return (
@@ -644,65 +661,4 @@ const MenuProps = {
             width: 250,
         },
     },
-}
-
-function getStyles(name: any, personName: any, theme: any) {
-    return {
-        fontWeight:
-            personName.indexOf(name) === -1
-                ? theme.typography.fontWeightRegular
-                : theme.typography.fontWeightMedium,
-    }
-}
-
-const MultiSelectInput = () => {
-    const classes = useStyles()
-    const [personName, setPersonName] = useState<any[]>([])
-    const handleChange = (event: any) => {
-        setPersonName(event.target.value)
-    }
-
-    const handleChangeMultiple = (event: any) => {
-        const { options } = event.target
-        const value = []
-        for (let i = 0, l = options.length; i < l; i += 1) {
-            if (options[i].selected) {
-                value.push(options[i].value)
-            }
-        }
-        setPersonName(value)
-    }
-
-    return (
-        <FormControl>
-            <InputLabel id="demo-mutiple-chip-label">Chip</InputLabel>
-            <Select
-                labelId="demo-mutiple-chip-label"
-                id="demo-mutiple-chip"
-                multiple
-                value={personName}
-                onChange={handleChange}
-                input={<Input id="select-multiple-chip" />}
-                renderValue={(selected: any) => (
-                    <div className={classes.chips}>
-                        {selected.map((value: any) => (
-                            <Chip
-                                key={value}
-                                label={value}
-                                className={classes.chip}
-                            />
-                        ))}
-                    </div>
-                )}
-                MenuProps={MenuProps}
-            >
-                {names.map((name) => (
-                    <MenuItem key={name} value={name}>
-                        {name}
-                    </MenuItem>
-                ))}
-            </Select>
-            <Button>Add</Button>
-        </FormControl>
-    )
 }

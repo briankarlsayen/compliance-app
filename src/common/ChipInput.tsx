@@ -11,11 +11,15 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-export default function ChipInput({ ...props }) {
+export default function ChipInput({
+    inputField,
+    setInputField,
+    ...props
+}: any) {
     const classes = useStyles()
     const { selectedTags, placeholder, tags, ...other } = props
     const [inputValue, setInputValue] = React.useState('')
-    const [selectedItem, setSelectedItem] = React.useState([])
+    const [selectedItem, setSelectedItem] = React.useState(['hey'])
     useEffect(() => {
         setSelectedItem(tags)
     }, [tags])
@@ -55,6 +59,8 @@ export default function ChipInput({ ...props }) {
         }
         setInputValue('')
         setSelectedItem(newSelectedItem)
+        // setInputField({ ...inputField, toRecipients: newSelectedItem })
+        // console.log('item', item)
     }
 
     const handleDelete = (item: any) => () => {
