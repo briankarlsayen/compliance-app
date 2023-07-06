@@ -545,16 +545,7 @@ export const mockSurveyDetails = async () => {
                 name: 'new site alias test',
             },
         ],
-        toRecipients: [
-            {
-                id: 1,
-                name: 'darrell@1placeonline.com',
-            },
-            {
-                id: 2,
-                name: 'darrell_wu@yahoo.co.nz',
-            },
-        ],
+        toRecipients: ['darrell@1placeonline.com', 'darrell_wu@yahoo.co.nz'],
     }
 
     return {

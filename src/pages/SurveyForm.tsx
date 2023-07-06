@@ -27,10 +27,11 @@ import CopyButton from '../components/CopyButton'
 import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
-import AutoComplete from '../common/AutoComplete'
 import { fetchFranchisee, fetchSurveyDetails } from '../api/checklist'
-import ChipInput from '../common/ChipInput'
+import TagInput from '../common/TagInput'
 i18n.initialise()
+
+//TODO fetch get qr api when create survey is clicked
 
 const useStyles = makeStyles({
     root: {
@@ -98,6 +99,7 @@ export default function SurveyForm() {
         qrCode: '',
         selectedSites: [],
     })
+    console.log('inputField', inputField)
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [sites, _setSites] = useState([
         { id: 10, name: 'Site1' },
@@ -430,34 +432,15 @@ export default function SurveyForm() {
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
-                                        <ChipInput
-                                            selectedTags={handleSelecetedTags}
-                                            fullWidth
-                                            variant="outlined"
-                                            id="tags"
-                                            name="tags"
-                                            placeholder=""
-                                            label="email to"
-                                        />
-                                        {/* <AutoComplete
+                                        <TagInput
                                             id="toRecipients"
-                                            fieldLabel="to"
-                                            itemKey="id"
-                                            itemLabel="name"
-                                            items={surveyTo_list}
-                                            onChange={(
-                                                _event: any,
-                                                newValue: any
-                                            ) => {
-                                                setInputField({
-                                                    ...inputField,
-                                                    toRecipients: [...newValue],
-                                                })
-                                            }}
+                                            name="toRecipients"
                                             selectedItems={
                                                 inputField.toRecipients
                                             }
-                                        /> */}
+                                            inputField={inputField}
+                                            setInputField={setInputField}
+                                        />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
