@@ -28,8 +28,9 @@ import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
 import {
-    fetchFranchisee,
+    fetchFranchisees,
     fetchNewSurvey,
+    fetchSites,
     fetchSurveyDetails,
     saveSurvey,
 } from '../api/checklist'
@@ -67,19 +68,20 @@ export interface IInputField {
     alias: string
     expiry_date?: Date | null
     name: string
-    survey_for: string
+    checklistType: string
     toRecipients: string[]
     noOfTextFields: number | null
     welcomeMessage: string
     surveyUrl: string
     qrCode: string
     selectedSites: ISelectedSites[]
-    checklistType: string
     path?: string
+    sites?: any[]
+    franchisees?: any[]
+    selectedEntities: any[]
 }
 
 export interface ISurveyRequest extends IInputField {
-    sites?: ISelectedSites[]
     tempid: number
     id?: number
 }
@@ -105,24 +107,19 @@ export default function SurveyForm() {
         expiry_date: null,
         surveyUrl: '',
         name: '',
-        survey_for: '',
+        checklistType: 'site',
         toRecipients: [],
         noOfTextFields: 0,
         welcomeMessage: '',
         qrCode: '',
         selectedSites: [],
-        checklistType: 'site',
         path: '',
+        sites: [],
+        franchisees: [],
+        selectedEntities: [],
     })
     console.log('inputField', inputField)
     const [charRemaining, setCharRemaining] = useState(maxChar)
-    const [sites, _setSites] = useState([
-        { id: 10, name: 'Site1' },
-        { id: 11, name: 'Site4' },
-        { id: 12, name: 'Site5' },
-        { id: 13, name: 'Site6' },
-        { id: 14, name: 'Site7' },
-    ])
     const [qrImage, setQrImage] = useState('')
 
     const match: MatchIds = useRouteMatch()
@@ -130,6 +127,14 @@ export default function SurveyForm() {
 
     const fetchData = async () => {
         try {
+            await fetchFranchisees().then((res) => {
+                setFranchisees(res)
+            })
+            await fetchSites().then((res) => {
+                setSites(res)
+            })
+            const defaultEntity = 'site'
+
             switch (formType) {
                 case 'edit':
                     await fetchSurveyDetails(
@@ -137,13 +142,23 @@ export default function SurveyForm() {
                         Number(match.params.id)
                     ).then((res) => {
                         setQrImage(res.qrCode)
-                        setInputField({ ...res, selectedSites: res.entities })
+                        setInputField({
+                            ...inputField,
+                            ...res,
+                            checklistType: defaultEntity,
+                            sites: res.entities,
+                            selectedEntities: res.entities,
+                        })
                     })
                     break
                 case 'create':
                     await fetchNewSurvey().then((res) => {
                         setQrImage(res.qrCode)
-                        setInputField({ ...inputField, ...res })
+                        setInputField({
+                            ...inputField,
+                            ...res,
+                            checklistType: defaultEntity,
+                        })
                     })
                     break
             }
@@ -184,6 +199,34 @@ export default function SurveyForm() {
             ...inputField,
             [e.target.name]: e.target.value,
         })
+        if (e.target.name === 'checklistType') {
+            const entityType = getEntities(e.target.value)
+            console.log('entityType', entityType)
+            let newEnt
+            if (entityType === 'site') {
+                // console.log('site 1', inputField?.sites)
+                // setInputField({
+                //     ...inputField,
+                //     selectedEntities: [],
+                // })
+                console.log('run1')
+                newEnt = inputField?.sites
+            } else {
+                console.log('run2')
+
+                // setInputField({
+                //     ...inputField,
+                //     selectedEntities: inputField?.franchisees ?? [],
+                // })
+                newEnt = inputField?.franchisees
+            }
+            console.log('newEntities', newEnt)
+            setInputField({
+                ...inputField,
+                [e.target.name]: e.target.value,
+                selectedEntities: newEnt ?? [],
+            })
+        }
     }
 
     const handleSubmit = async (e: any) => {
@@ -205,20 +248,80 @@ export default function SurveyForm() {
     const surveyFor_list = [
         {
             id: 1,
-            name: 'User1',
+            name: 'Franchisee',
+            type: 'franchisee',
+            value: 'franchisee',
         },
         {
             id: 2,
-            name: 'User2',
+            name: 'Franchisee Alias',
+            type: 'franchisee',
+            value: 'franchisee-alias',
         },
         {
             id: 3,
-            name: 'User3',
+            name: 'Site',
+            type: 'site',
+            value: 'site',
+        },
+        {
+            id: 4,
+            name: 'Site Alias',
+            type: 'site',
+            value: 'site-alias',
         },
     ]
     const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
-    console.log('inputField', inputField)
+    const [sites, setSites] = useState([])
+    const [franchisees, setFranchisees] = useState([])
+
+    const [entities, setEntities] = useState<any[]>([])
+    const [isAlias, setAlias] = useState(false)
+
+    const getEntities = (e?: string) => {
+        console.log('update')
+        let filteredEntity
+        if (e) {
+            filteredEntity = surveyFor_list.filter((item) => item.value === e)
+        } else {
+            filteredEntity = surveyFor_list.filter(
+                (item) => item.value === inputField.checklistType
+            )
+        }
+
+        const newEntities =
+            filteredEntity[0].type === 'site' ? sites : franchisees
+
+        setEntities(newEntities)
+        // if (filteredEntity[0].type === 'site') {
+        //     console.log('site 1', inputField?.sites)
+        //     // setInputField({
+        //     //     ...inputField,
+        //     //     selectedEntities: [],
+        //     // })
+        // } else {
+        //     console.log('fran 1', inputField?.franchisees)
+
+        //     setInputField({
+        //         ...inputField,
+        //         selectedEntities: inputField?.franchisees ?? [],
+        //     })
+        // }
+        setAlias(inputField?.checklistType?.includes('alias'))
+        return filteredEntity[0].type
+    }
+
+    // const updateEntititesList = () => {
+    //   const newEntities = getEntities()
+    //   setEntities(newEntities)
+    // }
+
+    useEffect(() => {
+        getEntities()
+    }, [sites, franchisees])
+
+    console.log('franchisees', franchisees)
 
     return (
         <div>
@@ -468,15 +571,15 @@ export default function SurveyForm() {
                                                 label="survey-for"
                                                 labelId="select-surver-for-label"
                                                 id="select-surver-for"
-                                                value={inputField.survey_for}
-                                                name="survey_for"
+                                                value={inputField.checklistType}
+                                                name="checklistType"
                                                 onChange={updateField}
                                                 variant="outlined"
                                             >
                                                 {surveyFor_list.map((item) => (
                                                     <MenuItem
                                                         key={item.id}
-                                                        value={item.name}
+                                                        value={item.value}
                                                     >
                                                         {item.name}
                                                     </MenuItem>
@@ -537,13 +640,14 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <MultiSelectField
-                                            name="selectedSites"
-                                            list={sites}
+                                            name="selectedEntities"
+                                            list={entities}
                                             selectedList={
-                                                inputField.selectedSites
+                                                inputField.selectedEntities
                                             }
                                             inputField={inputField}
                                             setInputField={setInputField}
+                                            disable={isAlias}
                                         />
                                     </Grid>
                                 </Grid>

@@ -18,7 +18,7 @@ import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
 import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
-import { fetchFranchisee } from '../api/checklist'
+import { fetchFranchisees } from '../api/checklist'
 import { IInputField } from './ScheduleFormContainer'
 i18n.initialise()
 
@@ -158,7 +158,7 @@ export default function ScheduleForm({
     }
 
     const getFranchisees = async () => {
-        const franchisees = await fetchFranchisee()
+        const franchisees = await fetchFranchisees()
 
         setFranchiseeList(franchisees)
         setSelectList(franchisees)

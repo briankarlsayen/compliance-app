@@ -493,19 +493,37 @@ export const mockSurvey = async () => {
 export const mockFranchisee = async () => {
     const franchiseeList = [
         {
-            id: 1,
+            id: 1501,
             name: 'Norbert',
         },
         {
-            id: 2,
+            id: 152,
             name: 'Dameon',
         },
         {
-            id: 3,
+            id: 153,
             name: 'Nicholaus',
         },
     ]
     return await wait(0, franchiseeList)
+}
+
+export const mockSites = async () => {
+    const sites = [
+        {
+            id: 161,
+            name: 'Site 1',
+        },
+        {
+            id: 162,
+            name: 'Site 2',
+        },
+        {
+            id: 163,
+            name: 'Site 3',
+        },
+    ]
+    return await wait(0, sites)
 }
 
 export const mockAlias = async () => {
@@ -908,9 +926,12 @@ export async function fetchSurvey(): Promise<any> {
     return mockSurvey()
 }
 
-export async function fetchFranchisee(): Promise<any> {
-    return []
+export async function fetchFranchisees(): Promise<any> {
     return mockFranchisee()
+}
+
+export async function fetchSites(): Promise<any> {
+    return mockSites()
 }
 
 export async function fetchAlias(): Promise<any> {
