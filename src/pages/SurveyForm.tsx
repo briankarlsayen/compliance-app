@@ -118,7 +118,6 @@ export default function SurveyForm() {
         franchisees: [],
         selectedEntities: [],
     })
-    console.log('inputField', inputField)
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [qrImage, setQrImage] = useState('')
 
@@ -142,12 +141,17 @@ export default function SurveyForm() {
                         Number(match.params.id)
                     ).then((res) => {
                         setQrImage(res.qrCode)
+                        const fetchedSelectedList =
+                            res.checklistType === 'site'
+                                ? 'sites'
+                                : 'franchisees'
                         setInputField({
                             ...inputField,
                             ...res,
-                            checklistType: defaultEntity,
-                            sites: res.entities,
-                            selectedEntities: res.entities,
+                            checklistType: res?.checklistType ?? defaultEntity,
+                            // sites: res.entities,
+                            // selectedEntities: res.entities,
+                            selectedEntities: res[fetchedSelectedList] ?? [],
                         })
                     })
                     break
@@ -294,28 +298,9 @@ export default function SurveyForm() {
             filteredEntity[0].type === 'site' ? sites : franchisees
 
         setEntities(newEntities)
-        // if (filteredEntity[0].type === 'site') {
-        //     console.log('site 1', inputField?.sites)
-        //     // setInputField({
-        //     //     ...inputField,
-        //     //     selectedEntities: [],
-        //     // })
-        // } else {
-        //     console.log('fran 1', inputField?.franchisees)
-
-        //     setInputField({
-        //         ...inputField,
-        //         selectedEntities: inputField?.franchisees ?? [],
-        //     })
-        // }
         setAlias(inputField?.checklistType?.includes('alias'))
         return filteredEntity[0].type
     }
-
-    // const updateEntititesList = () => {
-    //   const newEntities = getEntities()
-    //   setEntities(newEntities)
-    // }
 
     useEffect(() => {
         getEntities()
