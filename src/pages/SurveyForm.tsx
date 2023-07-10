@@ -243,6 +243,7 @@ export default function SurveyForm() {
             id: match.params.id ? Number(match.params.id) : undefined,
         }
         try {
+            console.log('reqBody', reqBody)
             await saveSurvey(reqBody)
         } catch (error) {
             console.log('error', error)
@@ -526,11 +527,15 @@ export default function SurveyForm() {
                                         <TagInput
                                             id="toRecipients"
                                             name="toRecipients"
-                                            selectedItems={
-                                                inputField.toRecipients
+                                            value={inputField.toRecipients}
+                                            handleUpdateList={(val: string[]) =>
+                                                setInputField({
+                                                    ...inputField,
+                                                    toRecipients: val,
+                                                })
                                             }
-                                            inputField={inputField}
-                                            setInputField={setInputField}
+                                            variant="outlined"
+                                            label="email"
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>

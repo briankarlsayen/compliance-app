@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import TextField from '@mui/material/TextField'
+import TextField, { OutlinedTextFieldProps } from '@mui/material/TextField'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import { makeStyles } from '@material-ui/core'
@@ -30,49 +30,46 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const TagInput = ({
-    selectedItems,
-    inputField,
-    setInputField,
-    ...props
-}: any) => {
+interface TagProps extends OutlinedTextFieldProps {
+    value: string[]
+    handleUpdateList: (e: string[]) => void
+}
+
+const TagInput = ({ value, handleUpdateList, ...props }: TagProps) => {
     const classes = useStyles()
     const [inputValue, setInputValue] = useState('')
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter' && inputValue.trim() !== '') {
             setInputValue('')
-            const newList = [...inputField.toRecipients, inputValue.trim()]
-            setInputField({ ...inputField, toRecipients: newList })
+            const newList = [...value, inputValue.trim()]
+            handleUpdateList(newList)
         }
     }
 
     const handleDeleteTag = (tag: string) => {
-        const updatedTags = inputField.toRecipients.filter(
-            (t: string) => t !== tag
-        )
-        setInputField({ ...inputField, toRecipients: updatedTags })
+        const updatedTags = value.filter((t: string) => t !== tag)
+        handleUpdateList(updatedTags)
     }
 
     return (
         <Stack>
             <TextField
+                {...props}
                 className={classes.root}
                 variant="outlined"
                 value={inputValue}
                 onKeyDown={handleKeyDown}
                 onChange={(e) => setInputValue(e.target.value)}
                 InputProps={{
-                    startAdornment: inputField.toRecipients.map(
-                        (item: string) => (
-                            <Chip
-                                key={item}
-                                tabIndex={-1}
-                                label={item}
-                                onDelete={() => handleDeleteTag(item)}
-                            />
-                        )
-                    ),
+                    startAdornment: value.map((item: string) => (
+                        <Chip
+                            key={item}
+                            tabIndex={-1}
+                            label={item}
+                            onDelete={() => handleDeleteTag(item)}
+                        />
+                    )),
                 }}
             />
         </Stack>
