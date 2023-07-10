@@ -530,6 +530,75 @@ export const mockAlias = async () => {
     return await wait(0, [])
 }
 
+export const mockFranchiseeAlias = () => {
+    return {
+        franchiseeAliases: [
+            {
+                id: 122,
+                name: 'Franchisee alias Test1',
+                recStatus: 'active',
+            },
+            {
+                id: 681,
+                name: 'reporting',
+                recStatus: 'active',
+            },
+            {
+                id: 59,
+                name: 'test',
+                recStatus: 'active',
+            },
+        ],
+    }
+}
+
+export const mockSiteAlias = () => {
+    return {
+        pagination: {
+            totalItems: 7,
+            totalPages: 1,
+            itemsPerPage: 100,
+        },
+        siteAliases: [
+            {
+                id: 272,
+                name: "<script>alert('alias')</script>",
+                recStatus: 'active',
+            },
+            {
+                id: 273,
+                name: 'aaa',
+                recStatus: 'active',
+            },
+            {
+                id: 1120,
+                name: 'alias user',
+                recStatus: 'active',
+            },
+            {
+                id: 3,
+                name: 'aNDREW sIMMS',
+                recStatus: 'active',
+            },
+            {
+                id: 72,
+                name: 'FC - 1',
+                recStatus: 'active',
+            },
+            {
+                id: 565,
+                name: 'head office',
+                recStatus: 'active',
+            },
+            {
+                id: 1225,
+                name: 'reporting',
+                recStatus: 'active',
+            },
+        ],
+    }
+}
+
 export const mockSurveyDetails = async () => {
     const franchiseeSurvey = {
         id: 57,
@@ -671,7 +740,45 @@ export const mockVersion = async () => {
             creator: '1Place User',
         },
     ]
-    return await wait(1000, mockVersions)
+
+    const realVersion = [
+        {
+            id: 12973461,
+            createdDateTime: '2021-05-21T05:00:58Z',
+            version: '2',
+            status: 'current',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12973877,
+            createdDateTime: '2022-10-06T04:32:11Z',
+            version: '2-draft',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+    ]
+    return await wait(1000, realVersion)
+}
+
+export const mockVersionHistory = async () => {
+    return {
+        history: [
+            {
+                id: 18518,
+                createdDate: '2021-05-21T05:00:58Z',
+                oldStatus: 'draft',
+                newStatus: 'current',
+                comment: 'Created from template checklist 1 version 2',
+                actionedBy: 'Dennis  Branding',
+            },
+        ],
+    }
 }
 
 export const mockPromotionDetails = async () => {

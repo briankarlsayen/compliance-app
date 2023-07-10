@@ -165,11 +165,8 @@ export default function ScheduleFormContainer() {
                     )
 
                     const selected = []
-                    console.log('details', details)
 
                     if (details.checklistType === 'site') {
-                        console.log('edit')
-
                         details?.sites?.length &&
                             selected.push(...details?.sites)
                     } else {
@@ -195,7 +192,6 @@ export default function ScheduleFormContainer() {
                     break
             }
         } catch (err) {
-            console.log('haha')
             setInputField(defaultInput)
         }
     }
@@ -203,8 +199,6 @@ export default function ScheduleFormContainer() {
     useEffect(() => {
         getScheduleDetails()
     }, [])
-
-    console.log('input', inputField)
 
     return (
         <React.Fragment>

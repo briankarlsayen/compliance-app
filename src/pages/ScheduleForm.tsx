@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core'
 import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
-import { fetchFranchisees, fetchSites } from '../api/checklist'
+import { fetchAlias, fetchFranchisees, fetchSites } from '../api/checklist'
 import { IInputField } from './ScheduleFormContainer'
 i18n.initialise()
 
@@ -109,6 +109,16 @@ export default function ScheduleForm({
 
     const [sites, setSites] = useState([])
     const [franchisees, setFranchisees] = useState([])
+    const [aliases, setAliases] = useState([])
+    const getAliasList = async () => {
+        try {
+            await fetchAlias().then((res) => {
+                setAliases(res)
+            })
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
 
     const getEntities = (e?: string) => {
         let filteredEntity
@@ -129,8 +139,6 @@ export default function ScheduleForm({
     useEffect(() => {
         getEntities()
     }, [sites, franchisees])
-
-    const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
     const [entities, setEntities] = useState<any[]>([])
     const [isAlias, setAlias] = useState(false)
@@ -230,6 +238,7 @@ export default function ScheduleForm({
     }
 
     useEffect(() => {
+        getAliasList()
         fetchSurveyFor()
         getAlias(inputField.checklistType)
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -317,8 +326,9 @@ export default function ScheduleForm({
                             name="alias"
                             onChange={updateField}
                             variant="outlined"
+                            disabled={!aliases.length}
                         >
-                            {alias_list.map((item, index) => (
+                            {aliases.map((item, index) => (
                                 <MenuItem key={index} value={item}>
                                     {item}
                                 </MenuItem>
