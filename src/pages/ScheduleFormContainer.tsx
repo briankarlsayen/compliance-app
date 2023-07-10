@@ -124,7 +124,6 @@ export default function ScheduleFormContainer() {
             id: match.params.id ? Number(match.params.id) : undefined,
             alias: undefined,
             entities: undefined,
-            event: undefined,
             historicEvents: undefined,
             selectedEntities: undefined,
             selectedList: undefined,
@@ -178,12 +177,17 @@ export default function ScheduleFormContainer() {
                             selected.push(...details.franchisees)
                     }
 
+                    const fetchedSelectedList =
+                        details.checklistType === 'site'
+                            ? 'sites'
+                            : 'franchisees'
+
                     setInputField({
                         ...details,
                         alias: '',
                         selectedList: selected,
                         startDate: details.event.startDate,
-                        selectedEntities: details.entities, // TODO update this
+                        selectedEntities: details[fetchedSelectedList],
                     })
                     break
                 case 'create':

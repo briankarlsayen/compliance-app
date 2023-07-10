@@ -28,6 +28,7 @@ import MultiSelectField from '../components/MultiSelectField'
 import { grey } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
 import {
+    fetchAlias,
     fetchFranchisees,
     fetchNewSurvey,
     fetchSites,
@@ -130,7 +131,7 @@ export default function SurveyForm() {
     const match: MatchIds = useRouteMatch()
     const formType = match.url.split('/').pop() ?? 'create'
 
-    const fetchData = async () => {
+    const getEntityList = async () => {
         try {
             await fetchFranchisees().then((res) => {
                 setFranchisees(res)
@@ -138,6 +139,23 @@ export default function SurveyForm() {
             await fetchSites().then((res) => {
                 setSites(res)
             })
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
+
+    const getAliasList = async () => {
+        try {
+            await fetchAlias().then((res) => {
+                setAliases(res)
+            })
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
+
+    const fetchData = async () => {
+        try {
             const defaultEntity = 'site'
 
             switch (formType) {
@@ -151,12 +169,11 @@ export default function SurveyForm() {
                             res.checklistType === 'site'
                                 ? 'sites'
                                 : 'franchisees'
+                        getEntities(res?.checklistType)
                         setInputField({
                             ...inputField,
                             ...res,
                             checklistType: res?.checklistType ?? defaultEntity,
-                            // sites: res.entities,
-                            // selectedEntities: res.entities,
                             selectedEntities: res[fetchedSelectedList] ?? [],
                         })
                     })
@@ -178,6 +195,8 @@ export default function SurveyForm() {
     }
 
     useEffect(() => {
+        getAliasList()
+        getEntityList()
         fetchData()
     }, [])
 
@@ -210,7 +229,6 @@ export default function SurveyForm() {
             [e.target.name]: e.target.value,
         })
         if (e.target.name === 'checklistType') {
-            console.log('e.target.name', e.target.name)
             const entityType = getEntities(e.target.value)
             let newEnt
             if (entityType === 'site') {
@@ -246,6 +264,7 @@ export default function SurveyForm() {
             path: '1',
             tempid: Number(match.params.tempid),
             id: match.params.id ? Number(match.params.id) : undefined,
+            expiryDate: '2023-05-16',
             selectedSites: undefined,
             qrCode: undefined,
             surveyUrl: undefined,
@@ -255,7 +274,6 @@ export default function SurveyForm() {
             alias: undefined,
         }
         try {
-            console.log('reqBody', reqBody)
             await saveSurvey(reqBody)
         } catch (error) {
             console.log('error', error)
@@ -288,10 +306,10 @@ export default function SurveyForm() {
             value: 'site-alias',
         },
     ]
-    const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
 
     const [sites, setSites] = useState([])
     const [franchisees, setFranchisees] = useState([])
+    const [aliases, setAliases] = useState([])
 
     const [entities, setEntities] = useState<any[]>([])
     const [isAlias, setAlias] = useState(false)
@@ -314,7 +332,7 @@ export default function SurveyForm() {
     }
 
     useEffect(() => {
-        getEntities()
+        getEntities(inputField?.checklistType)
     }, [sites, franchisees])
 
     const [resetFlag, setResetFlag] = useState(false)
@@ -563,7 +581,7 @@ export default function SurveyForm() {
                                                 })
                                             }
                                             variant="outlined"
-                                            label="email"
+                                            placeholder="Input Email"
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
@@ -632,17 +650,16 @@ export default function SurveyForm() {
                                                 name="alias"
                                                 onChange={updateField}
                                                 variant="outlined"
+                                                disabled={!aliases.length}
                                             >
-                                                {alias_list.map(
-                                                    (item, index) => (
-                                                        <MenuItem
-                                                            key={index}
-                                                            value={item}
-                                                        >
-                                                            {item}
-                                                        </MenuItem>
-                                                    )
-                                                )}
+                                                {aliases.map((item, index) => (
+                                                    <MenuItem
+                                                        key={index}
+                                                        value={item}
+                                                    >
+                                                        {item}
+                                                    </MenuItem>
+                                                ))}
                                             </Select>
                                         </FormControl>
                                     </Grid>

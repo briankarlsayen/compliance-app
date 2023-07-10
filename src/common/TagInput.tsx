@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
             opacity: 1,
             width: '10px',
             minWidth: '30px',
-            padding: '0px',
+            padding: '5px',
         },
 
         padding: '20px',
