@@ -33,6 +33,7 @@ export interface PMultiSelectField {
     inputField: any
     name: string
     disable?: boolean
+    reset?: boolean
 }
 
 const MultiSelectField = ({
@@ -41,6 +42,7 @@ const MultiSelectField = ({
     list,
     setInputField,
     inputField,
+    reset,
     disable,
 }: PMultiSelectField) => {
     const [leftSide, setLeftSide] = useState(list)
@@ -67,6 +69,14 @@ const MultiSelectField = ({
         setFilteredLeft(list)
         setAllList([...list, ...selectedList])
     }, [list])
+
+    useEffect(() => {
+        if (reset) {
+            setLeftSide(list)
+            setFilteredLeft(list)
+            setAllList([...list, ...selectedList])
+        }
+    }, [reset])
 
     const handleChangeMultiple = (event: any) => {
         const { options } = event.target
@@ -96,11 +106,6 @@ const MultiSelectField = ({
                     )
                     if (idx === -1) newLeftSide.push(el)
                 })
-                // console.log('newLeftSide', newLeftSide)
-                // const selectedItems = allList.length && allList.filter(el => el.id.toString() === selected)
-
-                // console.log('selectedItems', selectedItems)
-
                 rightArr = [...selectedItems, ...rightSide]
                 leftArr = [...newLeftSide]
 

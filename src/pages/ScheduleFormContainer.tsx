@@ -32,6 +32,7 @@ export interface IEvent {
     rRuleDescription: string
     startDate: string | null
 }
+
 export interface IInputField {
     name: string
     checklistType: string
@@ -41,6 +42,9 @@ export interface IInputField {
     futureDatesOnly: boolean
     emailNotification: boolean
     event: IEvent
+    selectedEntities: ISelected[]
+    franchisees?: ISelected[]
+    sites?: ISelected[]
 }
 
 interface ISelected {
@@ -48,7 +52,14 @@ interface ISelected {
     name: string
 }
 
-export interface IScheduleRequest extends IInputField {
+export interface IScheduleRequest {
+    name: string
+    checklistType: string
+    sites?: ISelected[]
+    franchisees?: ISelected[]
+    showOverdue: boolean
+    futureDatesOnly: boolean
+    emailNotification: boolean
     id?: number
     tempid: number
 }
@@ -78,6 +89,9 @@ export default function ScheduleFormContainer() {
             rRuleDescription: '',
             startDate: '',
         },
+        selectedEntities: [],
+        sites: [],
+        franchisees: [],
     })
 
     const blueTheme = createTheme({
@@ -93,13 +107,28 @@ export default function ScheduleFormContainer() {
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        let selectedListName =
-            inputField.checklistType === 'site' ? 'sites' : 'franchisees'
+        const submitSelected =
+            inputField.checklistType === 'site'
+                ? {
+                      sites: inputField.selectedEntities,
+                      franchisees: undefined,
+                  }
+                : {
+                      franchisees: inputField.selectedEntities,
+                      sites: undefined,
+                  }
         const reqBody = {
             ...inputField,
-            [selectedListName]: inputField.selectedList,
+            ...submitSelected,
             tempid: Number(match.params.tempid),
             id: match.params.id ? Number(match.params.id) : undefined,
+            alias: undefined,
+            entities: undefined,
+            event: undefined,
+            historicEvents: undefined,
+            selectedEntities: undefined,
+            selectedList: undefined,
+            startDate: undefined,
         }
         try {
             await saveSchedule(reqBody)
@@ -124,6 +153,9 @@ export default function ScheduleFormContainer() {
                 rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
                 startDate: null,
             },
+            selectedEntities: [],
+            sites: [],
+            franchisees: [],
         }
         try {
             switch (formType) {
@@ -132,18 +164,26 @@ export default function ScheduleFormContainer() {
                         Number(match.params.tempid),
                         Number(match.params.id)
                     )
+
                     const selected = []
+                    console.log('details', details)
+
                     if (details.checklistType === 'site') {
-                        details.sites.length && selected.push(...details.sites)
+                        console.log('edit')
+
+                        details?.sites?.length &&
+                            selected.push(...details?.sites)
                     } else {
-                        details.franchisees.length &&
+                        details?.franchisees.length &&
                             selected.push(...details.franchisees)
                     }
+
                     setInputField({
                         ...details,
                         alias: '',
                         selectedList: selected,
                         startDate: details.event.startDate,
+                        selectedEntities: details.entities, // TODO update this
                     })
                     break
                 case 'create':
@@ -151,6 +191,7 @@ export default function ScheduleFormContainer() {
                     break
             }
         } catch (err) {
+            console.log('haha')
             setInputField(defaultInput)
         }
     }
@@ -158,6 +199,8 @@ export default function ScheduleFormContainer() {
     useEffect(() => {
         getScheduleDetails()
     }, [])
+
+    console.log('input', inputField)
 
     return (
         <React.Fragment>

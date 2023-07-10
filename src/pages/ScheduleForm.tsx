@@ -1,5 +1,4 @@
 import { i18n } from '../i18n'
-import Recurrence from '../components/Recurrence'
 import aliasDatas from '../api/alias'
 
 import { useState, useEffect, useContext } from 'react'
@@ -11,14 +10,10 @@ import {
     MenuItem,
     FormControl,
     Select,
-    InputAdornment,
 } from '@material-ui/core'
-import DateFnsUtils from '@date-io/date-fns'
-import { MuiPickersUtilsProvider, DatePicker } from '@material-ui/pickers'
-import ClearIcon from '@material-ui/icons/Clear'
 import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
-import { fetchFranchisees } from '../api/checklist'
+import { fetchFranchisees, fetchSites } from '../api/checklist'
 import { IInputField } from './ScheduleFormContainer'
 i18n.initialise()
 
@@ -38,19 +33,9 @@ export default function ScheduleForm({
     setInputField,
 }: PEditScheduleForm) {
     const featureFlags = useContext(FeatureFlagsContext).features
-    const [isSchedAlias, setSchedAlias] = useState(false)
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
     const [selectList, setSelectList] = useState<any[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
-
-    function formatDate(dateString: string) {
-        const date = new Date(dateString)
-        const month = (date.getMonth() + 1).toString().padStart(2, '0')
-        const day = date.getDate().toString().padStart(2, '0')
-        const year = date.getFullYear().toString()
-
-        return year + '-' + month + '-' + day
-    }
 
     // const checklistType = featureFlags.retailOrganisation
     const checklistType = true
@@ -94,6 +79,66 @@ export default function ScheduleForm({
                   value: 'franchisee-alias',
               },
           ]
+
+    const surveyFor_list = [
+        {
+            id: 1,
+            name: 'Franchisee',
+            type: 'franchisee',
+            value: 'franchisee',
+        },
+        {
+            id: 2,
+            name: 'Franchisee Alias',
+            type: 'franchisee',
+            value: 'franchisee-alias',
+        },
+        {
+            id: 3,
+            name: 'Site',
+            type: 'site',
+            value: 'site',
+        },
+        {
+            id: 4,
+            name: 'Site Alias',
+            type: 'site',
+            value: 'site-alias',
+        },
+    ]
+
+    const [sites, setSites] = useState([])
+    const [franchisees, setFranchisees] = useState([])
+
+    const getEntities = (e?: string) => {
+        let filteredEntity
+        if (e) {
+            filteredEntity = surveyFor_list.filter((item) => item.value === e)
+        } else {
+            filteredEntity = surveyFor_list.filter(
+                (item) => item.value === inputField.checklistType
+            )
+        }
+        const newEntities =
+            filteredEntity[0].type === 'site' ? sites : franchisees
+
+        setEntities(newEntities)
+        return filteredEntity[0].type
+    }
+
+    useEffect(() => {
+        getEntities()
+    }, [sites, franchisees])
+
+    const alias_list = ['Alias1', 'Alias2', 'Alias3', 'Alias4', 'Alias5']
+
+    const [entities, setEntities] = useState<any[]>([])
+    const [isAlias, setAlias] = useState(false)
+
+    const [resetFlag, setResetFlag] = useState(false)
+    const handleReset = () => {
+        setResetFlag(!resetFlag)
+    }
 
     const checkIsSchedAlias = (str: string) => {
         const strArr = str.toLocaleLowerCase().split(' ')
@@ -140,32 +185,52 @@ export default function ScheduleForm({
             getUserList(e.target.value)
         }
         if (e.target.name === 'checklistType') {
-            const isAlias = checkIsSchedAlias(e.target.value)
-            setSchedAlias(isAlias)
             getAlias(e.target.value)
+
+            // * new
+            const entityType = getEntities(e.target.value)
+            let newEnt
+            if (entityType === 'site') {
+                newEnt = inputField?.sites
+            } else {
+                newEnt = inputField?.franchisees
+            }
+            setInputField({
+                ...inputField,
+                [e.target.name]: e.target.value,
+                selectedEntities: newEnt ?? [],
+            })
+            handleReset()
+            setAlias(e.target.value.includes('alias'))
         }
     }
 
     const dynamicLabel = () => {
-        const pickedFor =
-            checklistType.find(
-                (item) => item.type === inputField?.checklistType
-            )?.name ?? null
+        function capitalize(s: string) {
+            return s[0].toUpperCase() + s.slice(1)
+        }
+        let filteredEntity = surveyFor_list.filter(
+            (item) => item.value === inputField.checklistType
+        )
+        const pickedFor = capitalize(filteredEntity[0].type) ?? null
+
         return {
             alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
             select: `Select ${pickedFor}`,
         }
     }
 
-    const getFranchisees = async () => {
-        const franchisees = await fetchFranchisees()
-
-        setFranchiseeList(franchisees)
-        setSelectList(franchisees)
+    const fetchSurveyFor = async () => {
+        await fetchFranchisees().then((res) => {
+            setFranchisees(res)
+        })
+        await fetchSites().then((res) => {
+            setSites(res)
+        })
     }
 
     useEffect(() => {
-        getFranchisees()
+        fetchSurveyFor()
         getAlias(inputField.checklistType)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -204,25 +269,25 @@ export default function ScheduleForm({
                             fontWeight: 700,
                         }}
                     >
-                        {i18n.t('sched_for')}
+                        {i18n.t('survey_for')}
                     </InputLabel>
                 </Grid>
                 <Grid item xs={12} sm={8}>
                     <FormControl fullWidth size="small" variant="outlined">
-                        <InputLabel id="sched-for-label">
-                            {i18n.t('select_an_opt')}
+                        <InputLabel id="use-room-alias-label">
+                            {i18n.t('for')}
                         </InputLabel>
                         <Select
-                            label={i18n.t('select_an_opt')}
-                            labelId="select-sched-for"
-                            id="select-sched-for"
+                            label="survey-for"
+                            labelId="select-surver-for-label"
+                            id="select-surver-for"
                             value={inputField.checklistType}
                             name="checklistType"
                             onChange={updateField}
                             variant="outlined"
                         >
-                            {checklistType.map((item, index) => (
-                                <MenuItem key={index} value={item.value}>
+                            {surveyFor_list.map((item) => (
+                                <MenuItem key={item.id} value={item.value}>
                                     {item.name}
                                 </MenuItem>
                             ))}
@@ -241,24 +306,23 @@ export default function ScheduleForm({
                 </Grid>
                 <Grid item xs={12} sm={8}>
                     <FormControl fullWidth size="small" variant="outlined">
-                        <InputLabel id="use-franchisee-alias-label">
-                            {i18n.t('select_an_opt')}
+                        <InputLabel id="use-room-alias-label">
+                            {dynamicLabel().select}
                         </InputLabel>
                         <Select
-                            label={i18n.t('select_an_opt')}
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
+                            label="use-room-alias"
+                            labelId="select-room-alias-label"
+                            id="select-room-alias"
                             value={inputField.alias}
                             name="alias"
                             onChange={updateField}
                             variant="outlined"
                         >
-                            {aliasList &&
-                                aliasList.map((item, index) => (
-                                    <MenuItem key={item.id} value={item.name}>
-                                        {item.name}
-                                    </MenuItem>
-                                ))}
+                            {alias_list.map((item, index) => (
+                                <MenuItem key={index} value={item}>
+                                    {item}
+                                </MenuItem>
+                            ))}
                         </Select>
                     </FormControl>
                 </Grid>
@@ -274,12 +338,13 @@ export default function ScheduleForm({
                 </Grid>
                 <Grid item xs={12} sm={8}>
                     <MultiSelectField
-                        name="selectedList"
-                        list={selectList}
-                        selectedList={inputField?.selectedList ?? []}
+                        name="selectedEntities"
+                        list={entities}
+                        selectedList={inputField.selectedEntities}
                         inputField={inputField}
                         setInputField={setInputField}
-                        disable={isSchedAlias}
+                        disable={isAlias}
+                        reset={resetFlag}
                     />
                 </Grid>
             </Grid>

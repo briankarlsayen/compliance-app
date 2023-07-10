@@ -37,8 +37,6 @@ import {
 import TagInput from '../common/TagInput'
 i18n.initialise()
 
-//TODO fetch get qr api when create survey is clicked
-
 const useStyles = makeStyles({
     root: {
         '& .MuiFormControl-root': {
@@ -76,12 +74,20 @@ export interface IInputField {
     qrCode: string
     selectedSites: ISelectedSites[]
     path?: string
-    sites?: any[]
-    franchisees?: any[]
-    selectedEntities: any[]
+    sites?: ISelectedSites[]
+    franchisees?: ISelectedSites[]
+    selectedEntities: ISelectedSites[]
 }
 
-export interface ISurveyRequest extends IInputField {
+export interface ISurveyRequest {
+    name?: string
+    path?: string
+    welcomeMessage?: string
+    noOfTextFields?: number | null
+    checklistType: string
+    sites?: ISelectedSites[]
+    franchisees?: ISelectedSites[]
+    toRecipients?: string[]
     tempid: number
     id?: number
 }
@@ -118,7 +124,6 @@ export default function SurveyForm() {
         franchisees: [],
         selectedEntities: [],
     })
-    console.log('inputField', inputField)
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [qrImage, setQrImage] = useState('')
 
@@ -146,7 +151,6 @@ export default function SurveyForm() {
                             ...inputField,
                             ...res,
                             checklistType: defaultEntity,
-                            sites: res.entities,
                             selectedEntities: res.entities,
                         })
                     })
@@ -200,43 +204,49 @@ export default function SurveyForm() {
             [e.target.name]: e.target.value,
         })
         if (e.target.name === 'checklistType') {
+            console.log('e.target.name', e.target.name)
             const entityType = getEntities(e.target.value)
-            console.log('entityType', entityType)
             let newEnt
             if (entityType === 'site') {
-                // console.log('site 1', inputField?.sites)
-                // setInputField({
-                //     ...inputField,
-                //     selectedEntities: [],
-                // })
-                console.log('run1')
                 newEnt = inputField?.sites
             } else {
-                console.log('run2')
-
-                // setInputField({
-                //     ...inputField,
-                //     selectedEntities: inputField?.franchisees ?? [],
-                // })
                 newEnt = inputField?.franchisees
             }
-            console.log('newEntities', newEnt)
             setInputField({
                 ...inputField,
                 [e.target.name]: e.target.value,
                 selectedEntities: newEnt ?? [],
             })
+            handleReset()
+            setAlias(e.target.value.includes('alias'))
         }
     }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
+        const submitSelected =
+            inputField.checklistType === 'site'
+                ? {
+                      sites: inputField.selectedEntities,
+                      franchisees: undefined,
+                  }
+                : {
+                      franchisees: inputField.selectedEntities,
+                      sites: undefined,
+                  }
         const reqBody = {
             ...inputField,
-            sites: inputField.selectedSites,
+            ...submitSelected,
             path: '1',
             tempid: Number(match.params.tempid),
             id: match.params.id ? Number(match.params.id) : undefined,
+            selectedSites: undefined,
+            qrCode: undefined,
+            surveyUrl: undefined,
+            selectedEntities: undefined,
+            entities: undefined,
+            expiry_date: undefined,
+            alias: undefined,
         }
         try {
             await saveSurvey(reqBody)
@@ -280,7 +290,6 @@ export default function SurveyForm() {
     const [isAlias, setAlias] = useState(false)
 
     const getEntities = (e?: string) => {
-        console.log('update')
         let filteredEntity
         if (e) {
             filteredEntity = surveyFor_list.filter((item) => item.value === e)
@@ -289,39 +298,36 @@ export default function SurveyForm() {
                 (item) => item.value === inputField.checklistType
             )
         }
-
         const newEntities =
             filteredEntity[0].type === 'site' ? sites : franchisees
 
         setEntities(newEntities)
-        // if (filteredEntity[0].type === 'site') {
-        //     console.log('site 1', inputField?.sites)
-        //     // setInputField({
-        //     //     ...inputField,
-        //     //     selectedEntities: [],
-        //     // })
-        // } else {
-        //     console.log('fran 1', inputField?.franchisees)
-
-        //     setInputField({
-        //         ...inputField,
-        //         selectedEntities: inputField?.franchisees ?? [],
-        //     })
-        // }
-        setAlias(inputField?.checklistType?.includes('alias'))
         return filteredEntity[0].type
     }
-
-    // const updateEntititesList = () => {
-    //   const newEntities = getEntities()
-    //   setEntities(newEntities)
-    // }
 
     useEffect(() => {
         getEntities()
     }, [sites, franchisees])
 
-    console.log('franchisees', franchisees)
+    const [resetFlag, setResetFlag] = useState(false)
+    const handleReset = () => {
+        setResetFlag(!resetFlag)
+    }
+
+    const dynamicLabel = () => {
+        function capitalize(s: string) {
+            return s[0].toUpperCase() + s.slice(1)
+        }
+        let filteredEntity = surveyFor_list.filter(
+            (item) => item.value === inputField.checklistType
+        )
+        const pickedFor = capitalize(filteredEntity[0].type) ?? null
+
+        return {
+            alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
+            select: `Select ${pickedFor}`,
+        }
+    }
 
     return (
         <div>
@@ -594,7 +600,7 @@ export default function SurveyForm() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            {i18n.t('use_room_alias')}
+                                            {dynamicLabel().alias}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -604,7 +610,7 @@ export default function SurveyForm() {
                                             variant="outlined"
                                         >
                                             <InputLabel id="use-room-alias-label">
-                                                Select sites
+                                                {dynamicLabel().select}
                                             </InputLabel>
                                             <Select
                                                 label="use-room-alias"
@@ -635,7 +641,7 @@ export default function SurveyForm() {
                                                 fontWeight: 700,
                                             }}
                                         >
-                                            Select sites
+                                            {dynamicLabel().select}
                                         </InputLabel>
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
@@ -648,6 +654,7 @@ export default function SurveyForm() {
                                             inputField={inputField}
                                             setInputField={setInputField}
                                             disable={isAlias}
+                                            reset={resetFlag}
                                         />
                                     </Grid>
                                 </Grid>
@@ -726,29 +733,4 @@ const DownloadImageButton = ({ imageBase64, fileName }: PDownloadButton) => {
             Download QR Code
         </Typography>
     )
-}
-
-const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
-]
-
-const ITEM_HEIGHT = 48
-const ITEM_PADDING_TOP = 8
-
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
 }
