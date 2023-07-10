@@ -86,7 +86,7 @@ const ChecklistHome = () => {
                     />
                     <Route
                         exact
-                        path="/checklists/versions"
+                        path="/checklists/:tempid/versions"
                         component={Versions}
                     />
                     <Route

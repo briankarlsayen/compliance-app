@@ -25,7 +25,7 @@ import {
     withStyles,
 } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 i18n.initialise()
 
@@ -38,6 +38,13 @@ const useStyles = makeStyles({
         },
     },
 })
+
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+    }
+}
 
 export default function Versions() {
     const classes = useStyles()
@@ -85,14 +92,14 @@ const VersionHeader = () => {
 }
 
 function createData(
-    createdDate: string,
+    createdDateTime: string,
     version: string,
     status: string,
-    creator: string,
+    creator: ICreator,
     actions: React.ReactNode
 ) {
     return {
-        createdDate,
+        createdDateTime,
         version,
         status,
         creator,
@@ -100,11 +107,16 @@ function createData(
     }
 }
 
+interface ICreator {
+    id: number
+    name: string
+}
+
 interface IVersion {
-    createdDate: string
+    createdDateTime: string
     version: string
     status: string
-    creator: string
+    creator: ICreator
     actions: any
 }
 
@@ -113,9 +125,9 @@ function VersionTable() {
     const processRows = (data: IVersion[]) => {
         setPage(0)
         const createdRows = data.map(
-            ({ createdDate, version, status, creator }) => {
+            ({ createdDateTime, version, status, creator }) => {
                 return createData(
-                    createdDate,
+                    createdDateTime,
                     version,
                     status,
                     creator,
@@ -195,10 +207,11 @@ function VersionTable() {
     const [page, setPage] = useState(0)
     const [loading, setLoading] = useState(false)
 
+    const match: MatchParams = useRouteMatch()
     const fetchData = async () => {
         try {
             setLoading(true)
-            const lists = await fetchVersions()
+            const lists = await fetchVersions(Number(match.params?.tempid))
             processRows(lists)
             setLoading(false)
         } catch (error) {
@@ -285,7 +298,7 @@ function VersionTable() {
                                     .map((row, index) => (
                                         <StyledTableRow key={index} role="row">
                                             <StyledTableCell role="cell">
-                                                {row.createdDate}
+                                                {row.createdDateTime}
                                             </StyledTableCell>
                                             <StyledTableCell
                                                 role="cell"
@@ -296,6 +309,9 @@ function VersionTable() {
                                             <StyledTableCell
                                                 role="cell"
                                                 align="center"
+                                                style={{
+                                                    textTransform: 'capitalize',
+                                                }}
                                             >
                                                 {row.status}
                                             </StyledTableCell>
@@ -303,7 +319,7 @@ function VersionTable() {
                                                 role="cell"
                                                 align="center"
                                             >
-                                                {row.creator}
+                                                {row.creator.name}
                                             </StyledTableCell>
                                             <StyledTableCell role="cell">
                                                 {row.actions}

@@ -1101,7 +1101,7 @@ export async function fetchNewSurvey(): Promise<any> {
     return mockNewSurvey()
 }
 
-export async function fetchVersions(): Promise<any> {
+export async function fetchVersions(id: number): Promise<any> {
     return mockVersion()
 }
 

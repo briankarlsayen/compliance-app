@@ -389,7 +389,7 @@ function CheckListsTable({ setTab }: any) {
                                 {!featureFlags?.hideCreateChecklistTemplate && (
                                     <MenuItem onClick={handleClose}>
                                         <Link
-                                            to={`/checklists/versions`}
+                                            to={`/checklists/${selectedId}/versions`}
                                             style={{
                                                 textDecoration: 'none',
                                                 color: 'black',
