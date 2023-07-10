@@ -147,11 +147,17 @@ export default function SurveyForm() {
                         Number(match.params.id)
                     ).then((res) => {
                         setQrImage(res.qrCode)
+                        const fetchedSelectedList =
+                            res.checklistType === 'site'
+                                ? 'sites'
+                                : 'franchisees'
                         setInputField({
                             ...inputField,
                             ...res,
-                            checklistType: defaultEntity,
-                            selectedEntities: res.entities,
+                            checklistType: res?.checklistType ?? defaultEntity,
+                            // sites: res.entities,
+                            // selectedEntities: res.entities,
+                            selectedEntities: res[fetchedSelectedList] ?? [],
                         })
                     })
                     break
@@ -249,6 +255,7 @@ export default function SurveyForm() {
             alias: undefined,
         }
         try {
+            console.log('reqBody', reqBody)
             await saveSurvey(reqBody)
         } catch (error) {
             console.log('error', error)
@@ -302,6 +309,7 @@ export default function SurveyForm() {
             filteredEntity[0].type === 'site' ? sites : franchisees
 
         setEntities(newEntities)
+        setAlias(inputField?.checklistType?.includes('alias'))
         return filteredEntity[0].type
     }
 
@@ -547,11 +555,15 @@ export default function SurveyForm() {
                                         <TagInput
                                             id="toRecipients"
                                             name="toRecipients"
-                                            selectedItems={
-                                                inputField.toRecipients
+                                            value={inputField.toRecipients}
+                                            handleUpdateList={(val: string[]) =>
+                                                setInputField({
+                                                    ...inputField,
+                                                    toRecipients: val,
+                                                })
                                             }
-                                            inputField={inputField}
-                                            setInputField={setInputField}
+                                            variant="outlined"
+                                            label="email"
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
