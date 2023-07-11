@@ -179,14 +179,16 @@ export default function SurveyForm() {
                     })
                     break
                 case 'create':
-                    await fetchNewSurvey().then((res) => {
-                        setQrImage(res.qrCode)
-                        setInputField({
-                            ...inputField,
-                            ...res,
-                            checklistType: defaultEntity,
-                        })
-                    })
+                    await fetchNewSurvey(Number(match.params.tempid)).then(
+                        (res) => {
+                            setQrImage(res.qrCode)
+                            setInputField({
+                                ...inputField,
+                                ...res,
+                                checklistType: defaultEntity,
+                            })
+                        }
+                    )
                     break
             }
         } catch (err) {
@@ -246,25 +248,37 @@ export default function SurveyForm() {
         }
     }
 
+    const formatSubmitEntities = (arr: any[]) => {
+        return arr.map((item) => {
+            return {
+                ...item,
+                recStatus: undefined,
+            }
+        })
+    }
+
     const handleSubmit = async (e: any) => {
         e.preventDefault()
+        const formattedSelectedEntitites = formatSubmitEntities(
+            inputField.selectedEntities
+        )
         const submitSelected =
             inputField.checklistType === 'site'
                 ? {
-                      sites: inputField.selectedEntities,
+                      sites: formattedSelectedEntitites,
                       franchisees: undefined,
                   }
                 : {
-                      franchisees: inputField.selectedEntities,
+                      franchisees: formattedSelectedEntitites,
                       sites: undefined,
                   }
         const reqBody = {
             ...inputField,
             ...submitSelected,
-            path: '1',
+            path: inputField.path ?? '1',
             tempid: Number(match.params.tempid),
             id: match.params.id ? Number(match.params.id) : undefined,
-            expiryDate: '2023-05-16',
+            // expiryDate: '2023-05-16',
             selectedSites: undefined,
             qrCode: undefined,
             surveyUrl: undefined,
