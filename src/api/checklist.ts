@@ -660,87 +660,6 @@ export const mockNewSurvey = async () => {
 }
 
 export const mockVersion = async () => {
-    const mockVersions = [
-        {
-            createdDate: '10/05/2023 9:36:27AM',
-            version: '1-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '10/05/2023 9:36:27AM',
-            version: '1-draft-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '09/05/2023 9:36:27AM',
-            version: '2-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '10/05/2023 9:36:27AM',
-            version: '3-draft',
-            recStatus: 'Published',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '10/05/2023 9:36:27AM',
-            version: '4-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '01/05/2023 9:36:27AM',
-            version: '5-draft',
-            recStatus: 'Archived',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '10/01/2023 9:36:27AM',
-            version: '6-draft',
-            recStatus: 'Archived',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '11/01/2023 9:36:27AM',
-            version: '7-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '11/25/2023 9:36:27AM',
-            version: '8-draft',
-            recStatus: 'Published',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '09/01/2023 9:36:27AM',
-            version: '9-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '10/22/2023 9:36:27AM',
-            version: '10-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '11/05/2023 9:36:27AM',
-            version: '11-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-        {
-            createdDate: '01/11/2023 9:36:27AM',
-            version: '12-draft',
-            recStatus: 'Draft',
-            creator: '1Place User',
-        },
-    ]
-
     const realVersion = [
         {
             id: 12973461,
@@ -1272,4 +1191,12 @@ export async function createSurvey(): Promise<any> {
         ],
     }
     return mockReasignChecklist()
+}
+
+export async function deleteVersion(tempid: number, id: number): Promise<any> {
+    const baseUrl = `/checklist-templates/${tempid}/versions/${id}`
+    const params = {
+        method: 'DELETE',
+    }
+    return alert('Version deleted')
 }

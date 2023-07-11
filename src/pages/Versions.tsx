@@ -1,5 +1,5 @@
 import { i18n } from '../i18n'
-import { fetchVersions } from '../api/checklist'
+import { deleteVersion, fetchVersions } from '../api/checklist'
 import Loading from '../components/Loading'
 
 import React, { useEffect, useState } from 'react'
@@ -92,6 +92,7 @@ const VersionHeader = () => {
 }
 
 function createData(
+    id: number,
     createdDateTime: string,
     version: string,
     status: string,
@@ -99,6 +100,7 @@ function createData(
     actions: React.ReactNode
 ) {
     return {
+        id,
         createdDateTime,
         version,
         status,
@@ -113,6 +115,7 @@ interface ICreator {
 }
 
 interface IVersion {
+    id: number
     createdDateTime: string
     version: string
     status: string
@@ -121,12 +124,13 @@ interface IVersion {
 }
 
 function VersionTable() {
-    const [versions, setVersions] = useState<IVersion[]>()
+    const [versions, setVersions] = useState<IVersion[]>([])
     const processRows = (data: IVersion[]) => {
         setPage(0)
         const createdRows = data.map(
-            ({ createdDateTime, version, status, creator }) => {
+            ({ id, createdDateTime, version, status, creator }) => {
                 return createData(
+                    id,
                     createdDateTime,
                     version,
                     status,
@@ -164,6 +168,7 @@ function VersionTable() {
                                 color="primary"
                                 size="small"
                                 style={{ textTransform: 'none' }}
+                                onClick={() => handleDelete(id)}
                             >
                                 {i18n.t('delete')}
                             </Button>
@@ -236,6 +241,17 @@ function VersionTable() {
         setRowsPerPage(parseInt(event.target.value))
         setPage(0)
     }
+
+    const handleDelete = async (id: number) => {
+        try {
+            await deleteVersion(Number(match.params?.tempid), id)
+            await fetchData()
+        } catch (error) {
+            console.log('error', error)
+        }
+    }
+
+    console.log('versions', versions)
 
     return (
         <>

@@ -15,6 +15,12 @@ import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
 import { fetchAlias, fetchFranchisees, fetchSites } from '../api/checklist'
 import { IInputField } from './ScheduleFormContainer'
+import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { InputAdornment } from '@mui/material'
+import DateFnsUtils from '@date-io/date-fns'
+import Recurrence from '../components/Recurrence'
+import ClearIcon from '@material-ui/icons/Clear'
+import { useRouteMatch } from 'react-router-dom'
 i18n.initialise()
 
 interface IAlias {
@@ -23,9 +29,25 @@ interface IAlias {
     for_user: string[]
 }
 
+function formatDate(dateString: string) {
+    const date = new Date(dateString)
+    const month = (date.getMonth() + 1).toString().padStart(2, '0')
+    const day = date.getDate().toString().padStart(2, '0')
+    const year = date.getFullYear().toString()
+
+    return year + '-' + month + '-' + day
+}
 interface PEditScheduleForm {
     inputField: IInputField
     setInputField: any
+}
+
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+        id?: string
+    }
 }
 
 export default function ScheduleForm({
@@ -36,6 +58,9 @@ export default function ScheduleForm({
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
     const [selectList, setSelectList] = useState<any[]>([])
     const [franchiseeList, setFranchiseeList] = useState<string[]>([])
+
+    const match: MatchParams = useRouteMatch()
+    const formType = match.url.split('/').pop() ?? 'create'
 
     // const checklistType = featureFlags.retailOrganisation
     const checklistType = true
@@ -357,6 +382,83 @@ export default function ScheduleForm({
                         reset={resetFlag}
                     />
                 </Grid>
+                {formType === 'create' && (
+                    <>
+                        <Grid item xs={12} sm={4}>
+                            <InputLabel
+                                style={{
+                                    display: 'flex',
+                                    fontWeight: 700,
+                                }}
+                            >
+                                {i18n.t('recurrence')}
+                            </InputLabel>
+                        </Grid>
+                        <Grid item xs={12} sm={8}>
+                            <Recurrence
+                                setInputField={setInputField}
+                                inputField={inputField}
+                            />
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                            <InputLabel
+                                style={{
+                                    display: 'flex',
+                                    fontWeight: 700,
+                                }}
+                            >
+                                formatDate
+                                {i18n.t('start_date')}
+                            </InputLabel>
+                        </Grid>
+                        <Grid item xs={12} sm={8}>
+                            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                <DatePicker
+                                    variant="inline"
+                                    inputVariant="outlined"
+                                    label="Select start date"
+                                    name="startDate"
+                                    value={inputField.event.startDate}
+                                    onChange={(e: any) =>
+                                        setInputField({
+                                            ...inputField,
+                                            event: {
+                                                ...inputField.event,
+                                                startDate: formatDate(e),
+                                            },
+                                        })
+                                    }
+                                    InputProps={{
+                                        endAdornment: (
+                                            <InputAdornment
+                                                position="end"
+                                                style={{
+                                                    cursor: 'pointer',
+                                                }}
+                                                onClick={(e: any) => {
+                                                    e.stopPropagation()
+                                                    setInputField({
+                                                        ...inputField,
+                                                        event: {
+                                                            ...inputField.event,
+                                                            startDate: null,
+                                                        },
+                                                    })
+                                                }}
+                                            >
+                                                {inputField.event.startDate ? (
+                                                    <ClearIcon />
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </MuiPickersUtilsProvider>
+                        </Grid>
+                    </>
+                )}
             </Grid>
         </Box>
     )

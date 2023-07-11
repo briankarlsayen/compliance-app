@@ -70,6 +70,9 @@ export default function ScheduleFrequencyForm() {
             rRuleDescription: '',
             startDate: '',
         },
+        selectedEntities: [],
+        sites: [],
+        franchisees: [],
     })
 
     const blueTheme = createTheme({
@@ -111,6 +114,9 @@ export default function ScheduleFrequencyForm() {
                 rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
                 startDate: null,
             },
+            selectedEntities: [],
+            sites: [],
+            franchisees: [],
         }
         try {
             const details = await fetchScheduleDetails(
