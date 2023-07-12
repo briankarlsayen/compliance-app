@@ -29,6 +29,15 @@ interface IAlias {
     for_user: string[]
 }
 
+interface ISelectedSites {
+    id: number
+    name: string
+}
+
+interface ISites extends ISelectedSites {
+    recStatus?: string
+}
+
 function formatDate(dateString: string) {
     const date = new Date(dateString)
     const month = (date.getMonth() + 1).toString().padStart(2, '0')
@@ -132,8 +141,8 @@ export default function ScheduleForm({
         },
     ]
 
-    const [sites, setSites] = useState([])
-    const [franchisees, setFranchisees] = useState([])
+    const [sites, setSites] = useState<ISites[]>([])
+    const [franchisees, setFranchisees] = useState<ISites[]>([])
     const [aliases, setAliases] = useState([])
     const getAliasList = async () => {
         try {
@@ -156,8 +165,11 @@ export default function ScheduleForm({
         }
         const newEntities =
             filteredEntity[0].type === 'site' ? sites : franchisees
+        const filteredActive = newEntities?.filter(
+            (e) => e.recStatus === 'active'
+        )
 
-        setEntities(newEntities)
+        setEntities(filteredActive)
         return filteredEntity[0].type
     }
 
@@ -165,7 +177,7 @@ export default function ScheduleForm({
         getEntities()
     }, [sites, franchisees])
 
-    const [entities, setEntities] = useState<any[]>([])
+    const [entities, setEntities] = useState<ISites[]>([])
     const [isAlias, setAlias] = useState(false)
 
     const [resetFlag, setResetFlag] = useState(false)

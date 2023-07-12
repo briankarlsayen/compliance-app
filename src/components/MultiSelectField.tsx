@@ -24,6 +24,7 @@ interface PMove {
 interface IList {
     id: number
     name: string
+    recStatus?: string
 }
 
 export interface PMultiSelectField {
@@ -58,6 +59,16 @@ const MultiSelectField = ({
         setInputField({ ...inputField, [name]: rightSide })
     }, [rightSide, rightFilter])
 
+    const filterList = (arr: any[], selectedArr: any[]) => {
+        const newList = arr?.filter((site) => {
+            return !selectedArr.some(
+                (selectedFruit) => selectedFruit.id === site.id
+            )
+        })
+        setLeftSide(newList)
+        setFilteredLeft(newList)
+    }
+
     useEffect(() => {
         setRightSide(selectedList)
         setFilteredRight(selectedList)
@@ -65,8 +76,9 @@ const MultiSelectField = ({
     }, [selectedList])
 
     useEffect(() => {
-        setLeftSide(list)
-        setFilteredLeft(list)
+        filterList(list, selectedList)
+        // setLeftSide(list)
+        // setFilteredLeft(list)
         setAllList([...list, ...selectedList])
     }, [list])
 

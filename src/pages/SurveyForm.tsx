@@ -62,6 +62,10 @@ interface ISelectedSites {
     name: string
 }
 
+interface ISites extends ISelectedSites {
+    recStatus?: string
+}
+
 export interface IInputField {
     id?: number
     alias: string
@@ -288,6 +292,7 @@ export default function SurveyForm() {
             alias: undefined,
         }
         try {
+            console.log('reqBody', reqBody)
             await saveSurvey(reqBody)
         } catch (error) {
             console.log('error', error)
@@ -321,11 +326,11 @@ export default function SurveyForm() {
         },
     ]
 
-    const [sites, setSites] = useState([])
-    const [franchisees, setFranchisees] = useState([])
+    const [sites, setSites] = useState<ISites[]>([])
+    const [franchisees, setFranchisees] = useState<ISites[]>([])
     const [aliases, setAliases] = useState([])
 
-    const [entities, setEntities] = useState<any[]>([])
+    const [entities, setEntities] = useState<ISites[]>([])
     const [isAlias, setAlias] = useState(false)
 
     const getEntities = (e?: string) => {
@@ -339,8 +344,11 @@ export default function SurveyForm() {
         }
         const newEntities =
             filteredEntity[0].type === 'site' ? sites : franchisees
+        const filteredActive = newEntities?.filter(
+            (e) => e.recStatus === 'active'
+        )
 
-        setEntities(newEntities)
+        setEntities(filteredActive)
         setAlias(inputField?.checklistType?.includes('alias'))
         return filteredEntity[0].type
     }
