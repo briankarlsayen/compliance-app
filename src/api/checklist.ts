@@ -687,8 +687,28 @@ export const mockNewSurvey = async () => {
 export const mockVersion = async () => {
     const realVersion = [
         {
-            id: 12973461,
-            createdDateTime: '2021-05-21T05:00:58Z',
+            id: 12917828,
+            createdDateTime: '2018-07-09T04:54:13Z',
+            version: '1-draft',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12971588,
+            createdDateTime: '2019-03-28T20:09:42Z',
+            version: '2',
+            status: 'archived',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12971589,
+            createdDateTime: '2019-03-28T20:25:05Z',
             version: '2',
             status: 'current',
             creator: {
@@ -697,8 +717,8 @@ export const mockVersion = async () => {
             },
         },
         {
-            id: 12973877,
-            createdDateTime: '2022-10-06T04:32:11Z',
+            id: 12971590,
+            createdDateTime: '2019-03-28T20:26:02Z',
             version: '2-draft',
             status: 'draft',
             creator: {
@@ -706,7 +726,68 @@ export const mockVersion = async () => {
                 name: 'Dennis Branding',
             },
         },
+        {
+            id: 12973415,
+            createdDateTime: '2021-05-17T21:16:47Z',
+            version: '2-draft',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12973712,
+            createdDateTime: '2022-04-09T23:38:06Z',
+            version: '2-draft',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12973818,
+            createdDateTime: '2022-08-18T04:24:19Z',
+            version: '2-draft',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12974124,
+            createdDateTime: '2023-07-12T23:07:43Z',
+            version: '2-draft copy',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12974126,
+            createdDateTime: '2023-07-12T23:09:26Z',
+            version: '2-draft copy copy',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
+        {
+            id: 12974130,
+            createdDateTime: '2023-07-12T23:15:08Z',
+            version: '2-draft copy copy copy',
+            status: 'draft',
+            creator: {
+                id: 12434657,
+                name: 'Dennis Branding',
+            },
+        },
     ]
+
     return await wait(1000, realVersion)
 }
 

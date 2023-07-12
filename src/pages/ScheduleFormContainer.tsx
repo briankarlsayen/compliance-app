@@ -105,16 +105,29 @@ export default function ScheduleFormContainer() {
     const match: MatchParams = useRouteMatch()
     const formType = match.url.split('/').pop() ?? 'create'
 
+    const formatSubmitEntities = (arr: any[]) => {
+        return arr.map((item) => {
+            return {
+                ...item,
+                recStatus: undefined,
+            }
+        })
+    }
+
     const handleSubmit = async (e: any) => {
         e.preventDefault()
+
+        const formattedSelectedEntitites = formatSubmitEntities(
+            inputField.selectedEntities
+        )
         const submitSelected =
             inputField.checklistType === 'site'
                 ? {
-                      sites: inputField.selectedEntities,
+                      sites: formattedSelectedEntitites,
                       franchisees: undefined,
                   }
                 : {
-                      franchisees: inputField.selectedEntities,
+                      franchisees: formattedSelectedEntitites,
                       sites: undefined,
                   }
         const reqBody = {
@@ -130,6 +143,7 @@ export default function ScheduleFormContainer() {
             startDate: undefined,
         }
         try {
+            console.log('reqBody', reqBody)
             await saveSchedule(reqBody)
         } catch (error) {
             console.log('error', error)

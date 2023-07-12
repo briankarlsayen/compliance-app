@@ -282,7 +282,6 @@ export default function SurveyForm() {
             path: inputField.path ?? '1',
             tempid: Number(match.params.tempid),
             id: match.params.id ? Number(match.params.id) : undefined,
-            // expiryDate: '2023-05-16',
             selectedSites: undefined,
             qrCode: undefined,
             surveyUrl: undefined,
@@ -292,7 +291,6 @@ export default function SurveyForm() {
             alias: undefined,
         }
         try {
-            console.log('reqBody', reqBody)
             await saveSurvey(reqBody)
         } catch (error) {
             console.log('error', error)
