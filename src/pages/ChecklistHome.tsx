@@ -16,6 +16,7 @@ import ChecklistReassign from './ChecklistReassign'
 import ChecklistReport from './ChecklistReport'
 import Schedules from './Schedules'
 import ScheduleFrequencyForm from './ScheduleFrequencyForm'
+import VersionStatusForm from './VersionStatusForm'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -81,8 +82,13 @@ const ChecklistHome = () => {
                     />
                     <Route
                         exact
-                        path="/checklists/versions/promote/:id"
+                        path="/checklists/:tempid/versions/:id/promote"
                         component={Promotion}
+                    />
+                    <Route
+                        exact
+                        path="/checklists/:tempid/versions/:id/status"
+                        component={VersionStatusForm}
                     />
                     <Route
                         exact

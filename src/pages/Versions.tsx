@@ -137,7 +137,7 @@ function VersionTable() {
                     creator,
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <ThemeProvider theme={blueTheme}>
-                            {status === 'Draft' && (
+                            {status === 'draft' && (
                                 <Button
                                     variant="outlined"
                                     color="primary"
@@ -186,11 +186,19 @@ function VersionTable() {
                                 size="small"
                                 style={{ textTransform: 'none' }}
                             >
-                                {status === 'Published' ? (
-                                    'Change Status'
+                                {status === 'current' ? (
+                                    <Link
+                                        to={`/checklists/${match.params?.tempid}/versions/${id}/status`}
+                                        style={{
+                                            textDecoration: 'none',
+                                            color: '#2196f3',
+                                        }}
+                                    >
+                                        Change Status
+                                    </Link>
                                 ) : (
                                     <Link
-                                        to={`/checklists/versions/promote/1`}
+                                        to={`/checklists/${match.params?.tempid}/versions/${id}/promote`}
                                         style={{
                                             textDecoration: 'none',
                                             color: '#2196f3',
@@ -251,6 +259,18 @@ function VersionTable() {
         }
     }
 
+    const formatDate = (date: string) => {
+        return new Date(date)
+            .toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+            })
+            .split(' ')
+            .join('-')
+            .toUpperCase()
+    }
+
     console.log('versions', versions)
 
     return (
@@ -305,43 +325,44 @@ function VersionTable() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {versions &&
-                                versions
-                                    .slice(
-                                        page * rowsPerPage,
-                                        page * rowsPerPage + rowsPerPage
-                                    )
-                                    .map((row, index) => (
-                                        <StyledTableRow key={index} role="row">
-                                            <StyledTableCell role="cell">
-                                                {row.createdDateTime}
-                                            </StyledTableCell>
-                                            <StyledTableCell
-                                                role="cell"
-                                                align="center"
-                                            >
-                                                {row.version}
-                                            </StyledTableCell>
-                                            <StyledTableCell
-                                                role="cell"
-                                                align="center"
-                                                style={{
-                                                    textTransform: 'capitalize',
-                                                }}
-                                            >
-                                                {row.status}
-                                            </StyledTableCell>
-                                            <StyledTableCell
-                                                role="cell"
-                                                align="center"
-                                            >
-                                                {row.creator.name}
-                                            </StyledTableCell>
-                                            <StyledTableCell role="cell">
-                                                {row.actions}
-                                            </StyledTableCell>
-                                        </StyledTableRow>
-                                    ))}
+                            {versions
+                                .slice(
+                                    page * rowsPerPage,
+                                    page * rowsPerPage + rowsPerPage
+                                )
+                                .map((row, index) => (
+                                    <StyledTableRow key={index} role="row">
+                                        <StyledTableCell role="cell">
+                                            {formatDate(row.createdDateTime)}
+                                        </StyledTableCell>
+                                        <StyledTableCell
+                                            role="cell"
+                                            align="center"
+                                        >
+                                            {row.version}
+                                        </StyledTableCell>
+                                        <StyledTableCell
+                                            role="cell"
+                                            align="center"
+                                            style={{
+                                                textTransform: 'capitalize',
+                                            }}
+                                        >
+                                            {row.status === 'current'
+                                                ? 'published'
+                                                : row.status}
+                                        </StyledTableCell>
+                                        <StyledTableCell
+                                            role="cell"
+                                            align="center"
+                                        >
+                                            {row.creator.name}
+                                        </StyledTableCell>
+                                        <StyledTableCell role="cell">
+                                            {row.actions}
+                                        </StyledTableCell>
+                                    </StyledTableRow>
+                                ))}
                         </TableBody>
                     </Table>
                     {versions && (

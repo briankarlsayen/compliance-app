@@ -1272,3 +1272,14 @@ export async function deleteVersion(tempid: number, id: number): Promise<any> {
     }
     return alert('Version deleted')
 }
+
+export async function changeStatusVersion(
+    tempid: number,
+    id: number
+): Promise<any> {
+    const baseUrl = `/checklist-templates/${tempid}/versions/${id}/status`
+    const params = {
+        method: 'POST',
+    }
+    return alert('Status updated')
+}

@@ -486,13 +486,7 @@ function CenteredTabs() {
         setValue(newValue)
     }
 
-    const tabs = [
-        'Checklist Templates',
-        'To-Do List',
-        'Schedules & Surveys',
-        'Register',
-        'Settings',
-    ]
+    const tabs = ['Checklist Templates', 'To-Do List', 'Register', 'Settings']
 
     return (
         <div>
@@ -525,9 +519,6 @@ function CenteredTabs() {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <Typography>To-Do List</Typography>
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    <Schedules />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
                     <Register />

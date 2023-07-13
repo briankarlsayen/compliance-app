@@ -12,6 +12,9 @@ import {
     createTheme,
     ThemeProvider,
     makeStyles,
+    Select,
+    MenuItem,
+    FormGroup,
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import { grey } from '@material-ui/core/colors'
@@ -34,16 +37,17 @@ interface MatchParams {
         tempid: string
     }
 }
-export interface IPromoteInputField {
+
+export interface IStatusInputField {
     id?: number
-    name: string
+    status: string
     comment: string
 }
 
-export default function Promotion() {
+export default function VersionStatusForm() {
     const classes = useStyles()
-    const [inputField, setInputField] = useState<IPromoteInputField>({
-        name: '',
+    const [inputField, setInputField] = useState<IStatusInputField>({
+        status: '',
         comment: '',
     })
 
@@ -51,7 +55,7 @@ export default function Promotion() {
         const response = await fetchPromotionDetails()
         setInputField({
             id: response.id,
-            name: response.name,
+            status: response.status,
             comment: response.comment,
         })
     }
@@ -83,6 +87,23 @@ export default function Promotion() {
         })
     }
 
+    const templateName = 'NQR-PW V1'
+
+    const statusList = [
+        {
+            id: 1,
+            name: 'Draft',
+            value: 'draft',
+        },
+        {
+            id: 2,
+            name: 'Archived',
+            value: 'archived',
+        },
+    ]
+
+    const match: MatchParams = useRouteMatch()
+
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         try {
@@ -95,8 +116,6 @@ export default function Promotion() {
         }
     }
 
-    const templateName = 'NQR-PW V1'
-    const match: MatchParams = useRouteMatch()
     const urlArr = match.url.split('/')
     urlArr.pop()
     urlArr.pop()
@@ -134,22 +153,44 @@ export default function Promotion() {
                                                     fontWeight: 700,
                                                 }}
                                             >
-                                                {i18n.t('enter_version_name')}*
+                                                Change Version Status*
                                             </InputLabel>
                                         </Grid>
                                         <Grid item xs={12} sm={8}>
                                             <Box style={{ display: 'flex' }}>
-                                                <TextField
-                                                    required
-                                                    id="name"
-                                                    name="name"
-                                                    fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    variant="outlined"
-                                                    value={inputField.name}
+                                                <Select
+                                                    style={{
+                                                        minWidth: '300px',
+                                                    }}
+                                                    name="status"
+                                                    labelId="demo-simple-select-label"
+                                                    id="status"
+                                                    value={inputField.status}
                                                     onChange={updateField}
-                                                />
+                                                    variant="outlined"
+                                                    MenuProps={{
+                                                        anchorOrigin: {
+                                                            vertical: 'bottom',
+                                                            horizontal: 'left',
+                                                        },
+                                                        transformOrigin: {
+                                                            vertical: 'top',
+                                                            horizontal: 'left',
+                                                        },
+                                                        getContentAnchorEl:
+                                                            null,
+                                                    }}
+                                                    required
+                                                >
+                                                    {statusList.map((item) => (
+                                                        <MenuItem
+                                                            key={item.id}
+                                                            value={item.value}
+                                                        >
+                                                            {item.name}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
                                             </Box>
                                         </Grid>
                                         <Grid item xs={12} sm={4}>
