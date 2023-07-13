@@ -9,7 +9,7 @@ import {
     Button,
     createTheme,
     ThemeProvider,
-    makeStyles,
+    makeStyles
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import ScheduleForm from './ScheduleForm'
@@ -20,9 +20,9 @@ i18n.initialise()
 const useStyles = makeStyles({
     root: {
         '& .MuiFormControl-root': {
-            marginTop: 0,
-        },
-    },
+            marginTop: 0
+        }
+    }
 })
 
 export interface IEvent {
@@ -87,19 +87,19 @@ export default function ScheduleFormContainer() {
             id: 0,
             rRule: '',
             rRuleDescription: '',
-            startDate: '',
+            startDate: ''
         },
         selectedEntities: [],
         sites: [],
-        franchisees: [],
+        franchisees: []
     })
 
     const blueTheme = createTheme({
         palette: {
             primary: {
-                main: blue[500],
-            },
-        },
+                main: blue[500]
+            }
+        }
     })
 
     const match: MatchParams = useRouteMatch()
@@ -109,7 +109,7 @@ export default function ScheduleFormContainer() {
         return arr.map((item) => {
             return {
                 ...item,
-                recStatus: undefined,
+                recStatus: undefined
             }
         })
     }
@@ -124,11 +124,11 @@ export default function ScheduleFormContainer() {
             inputField.checklistType === 'site'
                 ? {
                       sites: formattedSelectedEntitites,
-                      franchisees: undefined,
+                      franchisees: undefined
                   }
                 : {
                       franchisees: formattedSelectedEntitites,
-                      sites: undefined,
+                      sites: undefined
                   }
         const reqBody = {
             ...inputField,
@@ -140,7 +140,7 @@ export default function ScheduleFormContainer() {
             historicEvents: undefined,
             selectedEntities: undefined,
             selectedList: undefined,
-            startDate: undefined,
+            startDate: undefined
         }
         try {
             console.log('reqBody', reqBody)
@@ -164,11 +164,11 @@ export default function ScheduleFormContainer() {
                 id: 0,
                 rRule: 'RRULE:FREQ=DAILY;UNTIL=20200524T000000',
                 rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
-                startDate: null,
+                startDate: null
             },
             selectedEntities: [],
             sites: [],
-            franchisees: [],
+            franchisees: []
         }
         try {
             switch (formType) {
@@ -198,7 +198,7 @@ export default function ScheduleFormContainer() {
                         alias: '',
                         selectedList: selected,
                         startDate: details.event.startDate,
-                        selectedEntities: details[fetchedSelectedList],
+                        selectedEntities: details[fetchedSelectedList]
                     })
                     break
                 case 'create':
@@ -212,6 +212,7 @@ export default function ScheduleFormContainer() {
 
     useEffect(() => {
         getScheduleDetails()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -222,7 +223,7 @@ export default function ScheduleFormContainer() {
                 style={{
                     padding: '2rem',
                     marginTop: '2rem',
-                    marginBottom: '2rem',
+                    marginBottom: '2rem'
                 }}
             >
                 <Typography
@@ -248,22 +249,22 @@ export default function ScheduleFormContainer() {
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '1rem',
+                                    gap: '1rem'
                                 }}
                             >
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                     style={{ width: '100%' }}
                                     onClick={handleSubmit}
                                 >
                                     {i18n.t('save')}
                                 </Button>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                     style={{ width: '100%' }}
                                 >
                                     {i18n.t('save_and_new_sched')}

@@ -17,7 +17,7 @@ import {
     makeStyles,
     InputAdornment,
     Chip,
-    Input,
+    Input
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
@@ -33,28 +33,27 @@ import {
     fetchNewSurvey,
     fetchSites,
     fetchSurveyDetails,
-    saveSurvey,
+    saveSurvey
 } from '../api/checklist'
 import TagInput from '../common/TagInput'
 i18n.initialise()
-
 const useStyles = makeStyles({
     root: {
         '& .MuiFormControl-root': {
-            marginTop: 0,
-        },
+            marginTop: 0
+        }
     },
     formControl: {
         minWidth: 120,
-        maxWidth: 300,
+        maxWidth: 300
     },
     chips: {
         display: 'flex',
-        flexWrap: 'wrap',
+        flexWrap: 'wrap'
     },
     chip: {
-        margin: 2,
-    },
+        margin: 2
+    }
 })
 
 interface ISelectedSites {
@@ -127,7 +126,7 @@ export default function SurveyForm() {
         path: '',
         sites: [],
         franchisees: [],
-        selectedEntities: [],
+        selectedEntities: []
     })
     const [charRemaining, setCharRemaining] = useState(maxChar)
     const [qrImage, setQrImage] = useState('')
@@ -178,7 +177,7 @@ export default function SurveyForm() {
                             ...inputField,
                             ...res,
                             checklistType: res?.checklistType ?? defaultEntity,
-                            selectedEntities: res[fetchedSelectedList] ?? [],
+                            selectedEntities: res[fetchedSelectedList] ?? []
                         })
                     })
                     break
@@ -189,7 +188,7 @@ export default function SurveyForm() {
                             setInputField({
                                 ...inputField,
                                 ...res,
-                                checklistType: defaultEntity,
+                                checklistType: defaultEntity
                             })
                         }
                     )
@@ -209,17 +208,17 @@ export default function SurveyForm() {
     const blueTheme = createTheme({
         palette: {
             primary: {
-                main: blue[500],
-            },
-        },
+                main: blue[500]
+            }
+        }
     })
 
     const greyTheme = createTheme({
         palette: {
             primary: {
-                main: grey[500],
-            },
-        },
+                main: grey[500]
+            }
+        }
     })
 
     const backUrl = `/checklists/${match?.params?.tempid}/surveys`
@@ -232,7 +231,7 @@ export default function SurveyForm() {
         }
         setInputField({
             ...inputField,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         })
         if (e.target.name === 'checklistType') {
             const entityType = getEntities(e.target.value)
@@ -245,7 +244,7 @@ export default function SurveyForm() {
             setInputField({
                 ...inputField,
                 [e.target.name]: e.target.value,
-                selectedEntities: newEnt ?? [],
+                selectedEntities: newEnt ?? []
             })
             handleReset()
             setAlias(e.target.value.includes('alias'))
@@ -256,7 +255,7 @@ export default function SurveyForm() {
         return arr.map((item) => {
             return {
                 ...item,
-                recStatus: undefined,
+                recStatus: undefined
             }
         })
     }
@@ -270,11 +269,11 @@ export default function SurveyForm() {
             inputField.checklistType === 'site'
                 ? {
                       sites: formattedSelectedEntitites,
-                      franchisees: undefined,
+                      franchisees: undefined
                   }
                 : {
                       franchisees: formattedSelectedEntitites,
-                      sites: undefined,
+                      sites: undefined
                   }
         const reqBody = {
             ...inputField,
@@ -288,7 +287,7 @@ export default function SurveyForm() {
             selectedEntities: undefined,
             entities: undefined,
             expiry_date: undefined,
-            alias: undefined,
+            alias: undefined
         }
         try {
             await saveSurvey(reqBody)
@@ -302,26 +301,26 @@ export default function SurveyForm() {
             id: 1,
             name: 'Franchisee',
             type: 'franchisee',
-            value: 'franchisee',
+            value: 'franchisee'
         },
         {
             id: 2,
             name: 'Franchisee Alias',
             type: 'franchisee',
-            value: 'franchisee-alias',
+            value: 'franchisee-alias'
         },
         {
             id: 3,
             name: 'Site',
             type: 'site',
-            value: 'site',
+            value: 'site'
         },
         {
             id: 4,
             name: 'Site Alias',
             type: 'site',
-            value: 'site-alias',
-        },
+            value: 'site-alias'
+        }
     ]
 
     const [sites, setSites] = useState<ISites[]>([])
@@ -371,7 +370,7 @@ export default function SurveyForm() {
 
         return {
             alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
-            select: `Select ${pickedFor}`,
+            select: `Select ${pickedFor}`
         }
     }
 
@@ -383,7 +382,7 @@ export default function SurveyForm() {
                 style={{
                     padding: '2rem',
                     marginTop: '2rem',
-                    marginBottom: '2rem',
+                    marginBottom: '2rem'
                 }}
             >
                 <Typography
@@ -400,7 +399,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('survey_link')}
@@ -410,13 +409,13 @@ export default function SurveyForm() {
                                         <Box style={{ display: 'flex' }}>
                                             <TextField
                                                 required
-                                                id="link"
-                                                name="link"
-                                                label="link"
+                                                id='link'
+                                                name='link'
+                                                label='link'
                                                 fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                variant="outlined"
+                                                size='small'
+                                                autoComplete='off'
+                                                variant='outlined'
                                                 value={inputField.surveyUrl}
                                                 onChange={updateField}
                                                 disabled
@@ -430,7 +429,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('QR_code')}
@@ -439,10 +438,10 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <img
                                             src={`data:image/png;base64,${qrImage}`}
-                                            alt="survey-qr"
+                                            alt='survey-qr'
                                         />
                                         <DownloadImageButton
-                                            fileName="survey-qr"
+                                            fileName='survey-qr'
                                             imageBase64={qrImage}
                                         />
                                     </Grid>
@@ -451,7 +450,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('survey_name')}
@@ -460,13 +459,13 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <TextField
                                             required
-                                            id="name"
-                                            name="name"
-                                            label="name"
+                                            id='name'
+                                            name='name'
+                                            label='name'
                                             fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
+                                            size='small'
+                                            autoComplete='off'
+                                            variant='outlined'
                                             value={inputField.name}
                                             onChange={updateField}
                                         />
@@ -475,7 +474,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('survey_expiry_date')}
@@ -486,24 +485,24 @@ export default function SurveyForm() {
                                             utils={DateFnsUtils}
                                         >
                                             <DatePicker
-                                                variant="inline"
-                                                inputVariant="outlined"
-                                                label="Select expiry date"
+                                                variant='inline'
+                                                inputVariant='outlined'
+                                                label='Select expiry date'
                                                 defaultValue={null}
-                                                name="expiry_date"
+                                                name='expiry_date'
                                                 value={inputField.expiry_date}
                                                 onChange={(e: any) =>
                                                     setInputField({
                                                         ...inputField,
-                                                        expiry_date: e,
+                                                        expiry_date: e
                                                     })
                                                 }
                                                 InputProps={{
                                                     endAdornment: (
                                                         <InputAdornment
-                                                            position="end"
+                                                            position='end'
                                                             style={{
-                                                                cursor: 'pointer',
+                                                                cursor: 'pointer'
                                                             }}
                                                             onClick={(
                                                                 e: any
@@ -512,7 +511,7 @@ export default function SurveyForm() {
                                                                 setInputField({
                                                                     ...inputField,
                                                                     expiry_date:
-                                                                        null,
+                                                                        null
                                                                 })
                                                             }}
                                                         >
@@ -520,7 +519,7 @@ export default function SurveyForm() {
                                                                 <ClearIcon />
                                                             ) : null}
                                                         </InputAdornment>
-                                                    ),
+                                                    )
                                                 }}
                                             />
                                         </MuiPickersUtilsProvider>
@@ -529,7 +528,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('welcome_msg')}
@@ -538,13 +537,13 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <TextField
                                             required
-                                            id="welcomeMessage"
-                                            name="welcomeMessage"
+                                            id='welcomeMessage'
+                                            name='welcomeMessage'
                                             label={i18n.t('welcome_msg')}
                                             fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
+                                            size='small'
+                                            autoComplete='off'
+                                            variant='outlined'
                                             value={inputField.welcomeMessage}
                                             onChange={updateField}
                                             multiline
@@ -558,7 +557,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('txt_ans_to_copy')}
@@ -567,23 +566,23 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <TextField
                                             required
-                                            id="noOfTextFields"
-                                            name="noOfTextFields"
-                                            label="text answers"
+                                            id='noOfTextFields'
+                                            name='noOfTextFields'
+                                            label='text answers'
                                             fullWidth
-                                            size="small"
-                                            autoComplete="off"
-                                            variant="outlined"
+                                            size='small'
+                                            autoComplete='off'
+                                            variant='outlined'
                                             value={inputField.noOfTextFields}
                                             onChange={updateField}
-                                            type="number"
+                                            type='number'
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('surveys_to')}
@@ -591,24 +590,24 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <TagInput
-                                            id="toRecipients"
-                                            name="toRecipients"
+                                            id='toRecipients'
+                                            name='toRecipients'
                                             value={inputField.toRecipients}
                                             handleUpdateList={(val: string[]) =>
                                                 setInputField({
                                                     ...inputField,
-                                                    toRecipients: val,
+                                                    toRecipients: val
                                                 })
                                             }
-                                            variant="outlined"
-                                            placeholder="Input Email"
+                                            variant='outlined'
+                                            placeholder='Input Email'
                                         />
                                     </Grid>
                                     <Grid item xs={12} sm={4}>
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('survey_for')}
@@ -617,20 +616,20 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <FormControl
                                             fullWidth
-                                            size="small"
-                                            variant="outlined"
+                                            size='small'
+                                            variant='outlined'
                                         >
-                                            <InputLabel id="use-room-alias-label">
+                                            <InputLabel id='use-room-alias-label'>
                                                 {i18n.t('for')}
                                             </InputLabel>
                                             <Select
-                                                label="survey-for"
-                                                labelId="select-surver-for-label"
-                                                id="select-surver-for"
+                                                label='survey-for'
+                                                labelId='select-surver-for-label'
+                                                id='select-surver-for'
                                                 value={inputField.checklistType}
-                                                name="checklistType"
+                                                name='checklistType'
                                                 onChange={updateField}
-                                                variant="outlined"
+                                                variant='outlined'
                                             >
                                                 {surveyFor_list.map((item) => (
                                                     <MenuItem
@@ -647,7 +646,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {dynamicLabel().alias}
@@ -656,20 +655,20 @@ export default function SurveyForm() {
                                     <Grid item xs={12} sm={8}>
                                         <FormControl
                                             fullWidth
-                                            size="small"
-                                            variant="outlined"
+                                            size='small'
+                                            variant='outlined'
                                         >
-                                            <InputLabel id="use-room-alias-label">
+                                            <InputLabel id='use-room-alias-label'>
                                                 {dynamicLabel().select}
                                             </InputLabel>
                                             <Select
-                                                label="use-room-alias"
-                                                labelId="select-room-alias-label"
-                                                id="select-room-alias"
+                                                label='use-room-alias'
+                                                labelId='select-room-alias-label'
+                                                id='select-room-alias'
                                                 value={inputField.alias}
-                                                name="alias"
+                                                name='alias'
                                                 onChange={updateField}
-                                                variant="outlined"
+                                                variant='outlined'
                                                 disabled={!aliases.length}
                                             >
                                                 {aliases.map((item, index) => (
@@ -687,7 +686,7 @@ export default function SurveyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {dynamicLabel().select}
@@ -695,7 +694,7 @@ export default function SurveyForm() {
                                     </Grid>
                                     <Grid item xs={12} sm={8}>
                                         <MultiSelectField
-                                            name="selectedEntities"
+                                            name='selectedEntities'
                                             list={entities}
                                             selectedList={
                                                 inputField.selectedEntities
@@ -720,20 +719,20 @@ export default function SurveyForm() {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 gap: '1rem',
-                                float: 'right',
+                                float: 'right'
                             }}
                         >
                             <ThemeProvider theme={greyTheme}>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                 >
                                     <Link
                                         to={backUrl}
                                         style={{
                                             textDecoration: 'none',
-                                            color: 'white',
+                                            color: 'white'
                                         }}
                                     >
                                         {i18n.t('cancel')}
@@ -742,17 +741,17 @@ export default function SurveyForm() {
                             </ThemeProvider>
                             <ThemeProvider theme={blueTheme}>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                     onClick={handleSubmit}
                                 >
                                     {i18n.t('save_and_copy')}
                                 </Button>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                     onClick={handleSubmit}
                                 >
                                     {i18n.t('save')}

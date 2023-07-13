@@ -9,7 +9,7 @@ import {
     InputLabel,
     MenuItem,
     FormControl,
-    Select,
+    Select
 } from '@material-ui/core'
 import MultiSelectField from '../components/MultiSelectField'
 import FeatureFlagsContext from '../feature/featureContext'
@@ -61,12 +61,9 @@ interface MatchParams {
 
 export default function ScheduleForm({
     inputField,
-    setInputField,
+    setInputField
 }: PEditScheduleForm) {
-    const featureFlags = useContext(FeatureFlagsContext).features
     const [aliasList, setPickAliasList] = useState<IAlias[]>()
-    const [selectList, setSelectList] = useState<any[]>([])
-    const [franchiseeList, setFranchiseeList] = useState<string[]>([])
 
     const match: MatchParams = useRouteMatch()
     const formType = match.url.split('/').pop() ?? 'create'
@@ -78,40 +75,40 @@ export default function ScheduleForm({
                   id: 1,
                   name: 'Franchisee ',
                   type: 'franchisee',
-                  value: 'franchisee',
+                  value: 'franchisee'
               },
               {
                   id: 2,
                   name: 'Franchisee Alias',
                   type: 'franchisee',
-                  value: 'franchisee-alias',
+                  value: 'franchisee-alias'
               },
               {
                   id: 3,
                   name: 'Site',
                   type: 'site',
-                  value: 'site',
+                  value: 'site'
               },
               {
                   id: 4,
                   name: 'Site Alias',
                   type: 'site',
-                  value: 'sites-alias',
-              },
+                  value: 'sites-alias'
+              }
           ]
         : [
               {
                   id: 1,
                   name: 'Franchisee ',
                   type: 'franchisee',
-                  value: 'franchisee',
+                  value: 'franchisee'
               },
               {
                   id: 2,
                   name: 'Franchisee Alias',
                   type: 'franchisee',
-                  value: 'franchisee-alias',
-              },
+                  value: 'franchisee-alias'
+              }
           ]
 
     const surveyFor_list = [
@@ -119,26 +116,26 @@ export default function ScheduleForm({
             id: 1,
             name: 'Franchisee',
             type: 'franchisee',
-            value: 'franchisee',
+            value: 'franchisee'
         },
         {
             id: 2,
             name: 'Franchisee Alias',
             type: 'franchisee',
-            value: 'franchisee-alias',
+            value: 'franchisee-alias'
         },
         {
             id: 3,
             name: 'Site',
             type: 'site',
-            value: 'site',
+            value: 'site'
         },
         {
             id: 4,
             name: 'Site Alias',
             type: 'site',
-            value: 'site-alias',
-        },
+            value: 'site-alias'
+        }
     ]
 
     const [sites, setSites] = useState<ISites[]>([])
@@ -175,6 +172,7 @@ export default function ScheduleForm({
 
     useEffect(() => {
         getEntities()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sites, franchisees])
 
     const [entities, setEntities] = useState<ISites[]>([])
@@ -183,12 +181,6 @@ export default function ScheduleForm({
     const [resetFlag, setResetFlag] = useState(false)
     const handleReset = () => {
         setResetFlag(!resetFlag)
-    }
-
-    const checkIsSchedAlias = (str: string) => {
-        const strArr = str.toLocaleLowerCase().split(' ')
-        const idx = strArr.findIndex((e) => e === 'alias')
-        return idx > -1 ? true : false
     }
 
     const getAlias = (value: string) => {
@@ -201,13 +193,6 @@ export default function ScheduleForm({
         setPickAliasList(schedAlias ?? [])
     }
 
-    const updateSelectList = (list: string[] = []) => {
-        const difference = list.length
-            ? franchiseeList.filter((item) => !list.includes(item))
-            : franchiseeList
-        setSelectList(difference)
-    }
-
     const getUserList = (value: string) => {
         const schedUsers = aliasList
             ? aliasList.find((item) => item.name === value)?.for_user
@@ -215,16 +200,15 @@ export default function ScheduleForm({
         const newData = {
             ...inputField,
             alias: value,
-            franchisees: schedUsers,
+            franchisees: schedUsers
         }
         setInputField(newData)
-        updateSelectList(schedUsers)
     }
 
     const updateField = (e: any) => {
         setInputField({
             ...inputField,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         })
         if (e.target.name === 'alias') {
             getUserList(e.target.value)
@@ -243,7 +227,7 @@ export default function ScheduleForm({
             setInputField({
                 ...inputField,
                 [e.target.name]: e.target.value,
-                selectedEntities: newEnt ?? [],
+                selectedEntities: newEnt ?? []
             })
             handleReset()
             setAlias(e.target.value.includes('alias'))
@@ -261,7 +245,7 @@ export default function ScheduleForm({
 
         return {
             alias: `Use ${pickedFor} Alias to Select ${pickedFor}`,
-            select: `Select ${pickedFor}`,
+            select: `Select ${pickedFor}`
         }
     }
 
@@ -288,7 +272,7 @@ export default function ScheduleForm({
                     <InputLabel
                         style={{
                             display: 'flex',
-                            fontWeight: 700,
+                            fontWeight: 700
                         }}
                     >
                         {i18n.t('sched_name')}
@@ -297,13 +281,13 @@ export default function ScheduleForm({
                 <Grid item xs={12} sm={8}>
                     <TextField
                         required
-                        id="name"
-                        name="name"
-                        label="name"
+                        id='name'
+                        name='name'
+                        label='name'
                         fullWidth
-                        size="small"
-                        autoComplete="off"
-                        variant="outlined"
+                        size='small'
+                        autoComplete='off'
+                        variant='outlined'
                         value={inputField.name}
                         onChange={updateField}
                     />
@@ -312,25 +296,25 @@ export default function ScheduleForm({
                     <InputLabel
                         style={{
                             display: 'flex',
-                            fontWeight: 700,
+                            fontWeight: 700
                         }}
                     >
                         {i18n.t('survey_for')}
                     </InputLabel>
                 </Grid>
                 <Grid item xs={12} sm={8}>
-                    <FormControl fullWidth size="small" variant="outlined">
-                        <InputLabel id="use-room-alias-label">
+                    <FormControl fullWidth size='small' variant='outlined'>
+                        <InputLabel id='use-room-alias-label'>
                             {i18n.t('for')}
                         </InputLabel>
                         <Select
-                            label="survey-for"
-                            labelId="select-surver-for-label"
-                            id="select-surver-for"
+                            label='survey-for'
+                            labelId='select-surver-for-label'
+                            id='select-surver-for'
                             value={inputField.checklistType}
-                            name="checklistType"
+                            name='checklistType'
                             onChange={updateField}
-                            variant="outlined"
+                            variant='outlined'
                         >
                             {surveyFor_list.map((item) => (
                                 <MenuItem key={item.id} value={item.value}>
@@ -344,25 +328,25 @@ export default function ScheduleForm({
                     <InputLabel
                         style={{
                             display: 'flex',
-                            fontWeight: 700,
+                            fontWeight: 700
                         }}
                     >
                         {dynamicLabel().alias}
                     </InputLabel>
                 </Grid>
                 <Grid item xs={12} sm={8}>
-                    <FormControl fullWidth size="small" variant="outlined">
-                        <InputLabel id="use-room-alias-label">
+                    <FormControl fullWidth size='small' variant='outlined'>
+                        <InputLabel id='use-room-alias-label'>
                             {dynamicLabel().select}
                         </InputLabel>
                         <Select
-                            label="use-room-alias"
-                            labelId="select-room-alias-label"
-                            id="select-room-alias"
+                            label='use-room-alias'
+                            labelId='select-room-alias-label'
+                            id='select-room-alias'
                             value={inputField.alias}
-                            name="alias"
+                            name='alias'
                             onChange={updateField}
-                            variant="outlined"
+                            variant='outlined'
                             disabled={!aliases.length}
                         >
                             {aliases.map((item, index) => (
@@ -377,7 +361,7 @@ export default function ScheduleForm({
                     <InputLabel
                         style={{
                             display: 'flex',
-                            fontWeight: 700,
+                            fontWeight: 700
                         }}
                     >
                         {dynamicLabel().select}
@@ -385,7 +369,7 @@ export default function ScheduleForm({
                 </Grid>
                 <Grid item xs={12} sm={8}>
                     <MultiSelectField
-                        name="selectedEntities"
+                        name='selectedEntities'
                         list={entities}
                         selectedList={inputField.selectedEntities}
                         inputField={inputField}
@@ -400,7 +384,7 @@ export default function ScheduleForm({
                             <InputLabel
                                 style={{
                                     display: 'flex',
-                                    fontWeight: 700,
+                                    fontWeight: 700
                                 }}
                             >
                                 {i18n.t('recurrence')}
@@ -416,7 +400,7 @@ export default function ScheduleForm({
                             <InputLabel
                                 style={{
                                     display: 'flex',
-                                    fontWeight: 700,
+                                    fontWeight: 700
                                 }}
                             >
                                 formatDate
@@ -426,26 +410,26 @@ export default function ScheduleForm({
                         <Grid item xs={12} sm={8}>
                             <MuiPickersUtilsProvider utils={DateFnsUtils}>
                                 <DatePicker
-                                    variant="inline"
-                                    inputVariant="outlined"
-                                    label="Select start date"
-                                    name="startDate"
+                                    variant='inline'
+                                    inputVariant='outlined'
+                                    label='Select start date'
+                                    name='startDate'
                                     value={inputField.event.startDate}
                                     onChange={(e: any) =>
                                         setInputField({
                                             ...inputField,
                                             event: {
                                                 ...inputField.event,
-                                                startDate: formatDate(e),
-                                            },
+                                                startDate: formatDate(e)
+                                            }
                                         })
                                     }
                                     InputProps={{
                                         endAdornment: (
                                             <InputAdornment
-                                                position="end"
+                                                position='end'
                                                 style={{
-                                                    cursor: 'pointer',
+                                                    cursor: 'pointer'
                                                 }}
                                                 onClick={(e: any) => {
                                                     e.stopPropagation()
@@ -453,8 +437,8 @@ export default function ScheduleForm({
                                                         ...inputField,
                                                         event: {
                                                             ...inputField.event,
-                                                            startDate: null,
-                                                        },
+                                                            startDate: null
+                                                        }
                                                     })
                                                 }}
                                             >
@@ -464,7 +448,7 @@ export default function ScheduleForm({
                                                     <></>
                                                 )}
                                             </InputAdornment>
-                                        ),
+                                        )
                                     }}
                                 />
                             </MuiPickersUtilsProvider>

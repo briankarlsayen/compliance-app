@@ -12,7 +12,7 @@ import {
     TableBody,
     TablePagination,
     TableCell,
-    Box,
+    Box
 } from '@material-ui/core'
 import {
     Theme,
@@ -20,7 +20,7 @@ import {
     createStyles,
     createTheme,
     makeStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/styles'
 import { Add as AddIcon } from '@material-ui/icons'
 
@@ -32,7 +32,6 @@ import { fetchSurvey } from '../api/checklist'
 import Loading from '../components/Loading'
 
 i18n.initialise()
-
 export interface IScheduleData {
     id: number
     name: string
@@ -56,9 +55,9 @@ const useStyles = makeStyles({
         '& .MuiTableCell-head': {
             color: 'white',
             backgroundColor: '#223d79',
-            padding: '1rem',
-        },
-    },
+            padding: '1rem'
+        }
+    }
 })
 
 const Survey = () => {
@@ -74,17 +73,10 @@ const Survey = () => {
 const buttonTheme = createTheme({
     palette: {
         primary: {
-            main: lightGreen[600],
-        },
-    },
-})
-
-interface MatchParams {
-    url: string
-    params: {
-        tempid: string
+            main: lightGreen[600]
+        }
     }
-}
+})
 
 const SurveyHeader = () => {
     const match: MatchParams = useRouteMatch()
@@ -93,14 +85,14 @@ const SurveyHeader = () => {
             style={{
                 display: 'flex',
                 alignItems: 'flex-end',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between'
             }}
         >
             <div
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    alignSelf: 'self-start',
+                    alignSelf: 'self-start'
                 }}
             >
                 <Typography style={{ fontWeight: 'bold' }}>
@@ -114,7 +106,7 @@ const SurveyHeader = () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-end',
+                    alignItems: 'flex-end'
                 }}
             >
                 <div
@@ -122,10 +114,10 @@ const SurveyHeader = () => {
                         display: 'flex',
                         flex: 1,
                         flexDirection: 'column',
-                        alignItems: 'flex-end',
+                        alignItems: 'flex-end'
                     }}
                 >
-                    <Typography variant="caption">
+                    <Typography variant='caption'>
                         {i18n.t('new_sched_caption')}:
                     </Typography>
                     <div>
@@ -134,20 +126,20 @@ const SurveyHeader = () => {
                                 to={`${match.url}/create`}
                                 style={{
                                     textDecoration: 'none',
-                                    color: 'blue',
+                                    color: 'blue'
                                 }}
                             >
                                 <Button
-                                    variant="contained"
-                                    color="primary"
+                                    variant='contained'
+                                    color='primary'
                                     style={{
-                                        color: 'white',
+                                        color: 'white'
                                     }}
                                 >
-                                    <AddIcon fontSize="small" />
+                                    <AddIcon fontSize='small' />
                                     <Typography
                                         style={{ fontWeight: 'bold' }}
-                                        variant="body2"
+                                        variant='body2'
                                     >
                                         {i18n.t('new_survey')}
                                     </Typography>
@@ -160,7 +152,12 @@ const SurveyHeader = () => {
         </div>
     )
 }
-
+interface MatchParams {
+    url: string
+    params: {
+        tempid: string
+    }
+}
 const SurveyTable = () => {
     function createData(
         id: number,
@@ -176,18 +173,12 @@ const SurveyTable = () => {
             expiry_date,
             qrCodeLink,
             surveyUrl,
-            entities,
+            entities
         }
     }
-    const match = useRouteMatch()
-    const isServer = typeof window === 'undefined'
+    const match: MatchParams = useRouteMatch()
 
-    const processEnv: any = isServer ? process.env : {}
-
-    const silentCheckUrl =
-        processEnv?.REACT_APP_SILENT_CHECK_URL || 'http://localhost:3000'
     const [surveys, setSurveys] = useState<ISurvey[]>()
-
     const processRows = (data: ISurvey[]) => {
         const createdRows = data.map(
             ({ id, name, expiry_date, qrCodeLink, surveyUrl, entities }) => {
@@ -211,7 +202,8 @@ const SurveyTable = () => {
     const fetchData = async () => {
         try {
             setLoading(true)
-            const lists = await fetchSurvey()
+            const lists = await fetchSurvey(Number(match.params?.tempid))
+            console.log('lists', lists)
             setSurveys(lists)
             processRows(lists)
             setLoading(false)
@@ -222,6 +214,7 @@ const SurveyTable = () => {
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleChangePage = (
@@ -243,7 +236,7 @@ const SurveyTable = () => {
             .toLocaleDateString('en-GB', {
                 day: 'numeric',
                 month: 'short',
-                year: 'numeric',
+                year: 'numeric'
             })
             .split(' ')
             .join('-')
@@ -257,28 +250,28 @@ const SurveyTable = () => {
                     component={Paper}
                     style={{ marginTop: '2rem', borderRadius: '5px' }}
                 >
-                    <Table data-testid="survey-table" role="table" size="small">
+                    <Table data-testid='survey-table' role='table' size='small'>
                         <TableHead>
-                            <TableRow role="rowheader">
-                                <StyledTableCell role="columnheader">
+                            <TableRow role='rowheader'>
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('survey_name')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
-                                    role="columnheader"
-                                    align="center"
+                                    role='columnheader'
+                                    align='center'
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('expiry_date')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('link')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('for')}
                                     </Typography>
@@ -299,19 +292,19 @@ const SurveyTable = () => {
                                                     to={`${match.url}/${row.id}/edit`}
                                                     style={{
                                                         textDecoration: 'none',
-                                                        color: 'blue',
+                                                        color: 'blue'
                                                     }}
                                                 >
                                                     {row.name}
                                                 </Link>
                                             </StyledTableCell>
-                                            <StyledTableCell align="center">
+                                            <StyledTableCell align='center'>
                                                 {formatDate(row.expiry_date)}
                                             </StyledTableCell>
 
                                             <StyledTableCell
                                                 style={{
-                                                    maxWidth: '80px',
+                                                    maxWidth: '80px'
                                                 }}
                                             >
                                                 <Box
@@ -319,7 +312,7 @@ const SurveyTable = () => {
                                                         display: 'flex',
                                                         alignItems: 'center',
                                                         justifyContent:
-                                                            'space-between',
+                                                            'space-between'
                                                     }}
                                                     padding={1}
                                                     bgcolor={'#0000001a'}
@@ -328,7 +321,7 @@ const SurveyTable = () => {
                                                         sx={{
                                                             width: '100%',
                                                             maxWidth:
-                                                                'calc(100% - 92px)',
+                                                                'calc(100% - 92px)'
                                                         }}
                                                     >
                                                         <Typography
@@ -338,7 +331,7 @@ const SurveyTable = () => {
                                                                 overflow:
                                                                     'hidden',
                                                                 whiteSpace:
-                                                                    'nowrap',
+                                                                    'nowrap'
                                                             }}
                                                         >
                                                             {row.surveyUrl}
@@ -351,7 +344,7 @@ const SurveyTable = () => {
                                                 <LinkQRDialog
                                                     details={{
                                                         ...row,
-                                                        qrValue: row.surveyUrl,
+                                                        qrValue: row.surveyUrl
                                                     }}
                                                 />
                                             </StyledTableCell>
@@ -361,8 +354,7 @@ const SurveyTable = () => {
                                                         border: '1px black solid',
                                                         padding: '1rem',
                                                         borderRadius: '5px',
-                                                        backgroundColor:
-                                                            'white',
+                                                        backgroundColor: 'white'
                                                     }}
                                                 >
                                                     {row.entities.map(
@@ -371,7 +363,7 @@ const SurveyTable = () => {
                                                                 key={index}
                                                                 style={{
                                                                     marginLeft:
-                                                                        '1rem',
+                                                                        '1rem'
                                                                 }}
                                                             >
                                                                 {user}
@@ -387,7 +379,7 @@ const SurveyTable = () => {
                     {surveys && (
                         <TablePagination
                             rowsPerPageOptions={[10, 25]}
-                            component="div"
+                            component='div'
                             count={surveys.length}
                             page={page}
                             onPageChange={handleChangePage}
@@ -404,12 +396,12 @@ const SurveyTable = () => {
 const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
         head: {
-            backgroundColor: 'white',
+            backgroundColor: 'white'
         },
         body: {
             fontSize: 14,
-            verticalAlign: 'top',
-        },
+            verticalAlign: 'top'
+        }
     })
 )(TableCell)
 
@@ -417,10 +409,10 @@ const StyledTableRow = withStyles((theme: Theme) =>
     createStyles({
         root: {
             '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.action.hover,
+                backgroundColor: theme.palette.action.hover
             },
-            height: '44px',
-        },
+            height: '44px'
+        }
     })
 )(TableRow)
 

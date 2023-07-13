@@ -12,7 +12,7 @@ import {
     createTheme,
     ThemeProvider,
     makeStyles,
-    InputAdornment,
+    InputAdornment
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import DateFnsUtils from '@date-io/date-fns'
@@ -26,9 +26,9 @@ i18n.initialise()
 const useStyles = makeStyles({
     root: {
         '& .MuiFormControl-root': {
-            marginTop: 0,
-        },
-    },
+            marginTop: 0
+        }
+    }
 })
 
 export interface IScheduleEventReq extends IEvent {
@@ -68,19 +68,19 @@ export default function ScheduleFrequencyForm() {
             id: 0,
             rRule: '',
             rRuleDescription: '',
-            startDate: '',
+            startDate: ''
         },
         selectedEntities: [],
         sites: [],
-        franchisees: [],
+        franchisees: []
     })
 
     const blueTheme = createTheme({
         palette: {
             primary: {
-                main: blue[500],
-            },
-        },
+                main: blue[500]
+            }
+        }
     })
 
     const handleSubmit = async (e: any) => {
@@ -90,7 +90,7 @@ export default function ScheduleFrequencyForm() {
             await updateScheduleEvent({
                 ...inputField.event,
                 id: Number(match.params.id),
-                tempid: Number(match.params.tempid),
+                tempid: Number(match.params.tempid)
             })
         } catch (err) {
             console.error('err', err)
@@ -113,11 +113,11 @@ export default function ScheduleFrequencyForm() {
                 id: 0,
                 rRule: 'RRULE:FREQ=DAILY;UNTIL=20200524T000000',
                 rRuleDescription: 'Repeats every 1 days, ends on 24 May, 2020',
-                startDate: null,
+                startDate: null
             },
             selectedEntities: [],
             sites: [],
-            franchisees: [],
+            franchisees: []
         }
         try {
             const details = await fetchScheduleDetails(
@@ -134,7 +134,7 @@ export default function ScheduleFrequencyForm() {
             setInputField({
                 ...details,
                 alias: '',
-                selectedList: selected,
+                selectedList: selected
             })
         } catch (err) {
             setInputField(defaultInput)
@@ -143,6 +143,7 @@ export default function ScheduleFrequencyForm() {
 
     useEffect(() => {
         getScheduleDetails()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -153,7 +154,7 @@ export default function ScheduleFrequencyForm() {
                 style={{
                     padding: '2rem',
                     marginTop: '2rem',
-                    marginBottom: '2rem',
+                    marginBottom: '2rem'
                 }}
             >
                 <Typography
@@ -170,7 +171,7 @@ export default function ScheduleFrequencyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('sched_name')}
@@ -185,7 +186,7 @@ export default function ScheduleFrequencyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('sched_for')}
@@ -198,7 +199,7 @@ export default function ScheduleFrequencyForm() {
                                                     border: '1px black solid',
                                                     padding: '1rem',
                                                     borderRadius: '5px',
-                                                    backgroundColor: 'white',
+                                                    backgroundColor: 'white'
                                                 }}
                                             >
                                                 {inputField.selectedList?.map(
@@ -207,7 +208,7 @@ export default function ScheduleFrequencyForm() {
                                                             key={item.name}
                                                             style={{
                                                                 marginLeft:
-                                                                    '1rem',
+                                                                    '1rem'
                                                             }}
                                                         >
                                                             {item.name}
@@ -221,7 +222,7 @@ export default function ScheduleFrequencyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('recurrence')}
@@ -237,7 +238,7 @@ export default function ScheduleFrequencyForm() {
                                         <InputLabel
                                             style={{
                                                 display: 'flex',
-                                                fontWeight: 700,
+                                                fontWeight: 700
                                             }}
                                         >
                                             {i18n.t('start_date')}
@@ -248,10 +249,10 @@ export default function ScheduleFrequencyForm() {
                                             utils={DateFnsUtils}
                                         >
                                             <DatePicker
-                                                variant="inline"
-                                                inputVariant="outlined"
-                                                label="Select start date"
-                                                name="startDate"
+                                                variant='inline'
+                                                inputVariant='outlined'
+                                                label='Select start date'
+                                                name='startDate'
                                                 value={
                                                     inputField.event.startDate
                                                 }
@@ -261,16 +262,16 @@ export default function ScheduleFrequencyForm() {
                                                         event: {
                                                             ...inputField.event,
                                                             startDate:
-                                                                formatDate(e),
-                                                        },
+                                                                formatDate(e)
+                                                        }
                                                     })
                                                 }
                                                 InputProps={{
                                                     endAdornment: (
                                                         <InputAdornment
-                                                            position="end"
+                                                            position='end'
                                                             style={{
-                                                                cursor: 'pointer',
+                                                                cursor: 'pointer'
                                                             }}
                                                             onClick={(
                                                                 e: any
@@ -281,8 +282,8 @@ export default function ScheduleFrequencyForm() {
                                                                     event: {
                                                                         ...inputField.event,
                                                                         startDate:
-                                                                            null,
-                                                                    },
+                                                                            null
+                                                                    }
                                                                 })
                                                             }}
                                                         >
@@ -293,7 +294,7 @@ export default function ScheduleFrequencyForm() {
                                                                 <></>
                                                             )}
                                                         </InputAdornment>
-                                                    ),
+                                                    )
                                                 }}
                                             />
                                         </MuiPickersUtilsProvider>
@@ -309,22 +310,22 @@ export default function ScheduleFrequencyForm() {
                                 style={{
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    gap: '1rem',
+                                    gap: '1rem'
                                 }}
                             >
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                     style={{ width: '100%' }}
                                     onClick={handleSubmit}
                                 >
                                     {i18n.t('save')}
                                 </Button>
                                 <Button
-                                    variant="contained"
-                                    color="primary"
-                                    size="small"
+                                    variant='contained'
+                                    color='primary'
+                                    size='small'
                                     style={{ width: '100%' }}
                                 >
                                     {i18n.t('save_and_new_sched')}

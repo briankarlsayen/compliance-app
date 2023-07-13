@@ -1,5 +1,5 @@
 import { i18n } from '../i18n'
-import { deleteVersion, fetchVersions } from '../api/checklist'
+import { copyVersion, deleteVersion, fetchVersions } from '../api/checklist'
 import Loading from '../components/Loading'
 
 import React, { useEffect, useState } from 'react'
@@ -14,7 +14,7 @@ import {
     TableBody,
     TablePagination,
     TableCell,
-    Box,
+    Box
 } from '@material-ui/core'
 import {
     Theme,
@@ -22,7 +22,7 @@ import {
     createStyles,
     createTheme,
     makeStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/styles'
 import { blue } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
@@ -34,9 +34,9 @@ const useStyles = makeStyles({
         '& .MuiTableCell-head': {
             color: 'white',
             backgroundColor: '#223d79',
-            padding: '1rem',
-        },
-    },
+            padding: '1rem'
+        }
+    }
 })
 
 interface MatchParams {
@@ -59,9 +59,9 @@ export default function Versions() {
 const blueTheme = createTheme({
     palette: {
         primary: {
-            main: blue[500],
-        },
-    },
+            main: blue[500]
+        }
+    }
 })
 
 const VersionHeader = () => {
@@ -70,14 +70,14 @@ const VersionHeader = () => {
             style={{
                 display: 'flex',
                 alignItems: 'flex-end',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between'
             }}
         >
             <div
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    alignSelf: 'self-start',
+                    alignSelf: 'self-start'
                 }}
             >
                 <Typography style={{ fontWeight: 'bold' }}>
@@ -105,7 +105,7 @@ function createData(
         version,
         status,
         creator,
-        actions,
+        actions
     }
 }
 
@@ -137,71 +137,64 @@ function VersionTable() {
                     creator,
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <ThemeProvider theme={blueTheme}>
-                            {status === 'draft' && (
+                            {status === 'Draft' && (
                                 <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    size="small"
+                                    variant='outlined'
+                                    color='primary'
+                                    size='small'
                                     style={{ textTransform: 'none' }}
                                 >
                                     {i18n.t('edit')}
                                 </Button>
                             )}
                             <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
+                                variant='outlined'
+                                color='primary'
+                                size='small'
                                 style={{ textTransform: 'none' }}
                             >
                                 {i18n.t('history')}
                             </Button>
                             <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
+                                variant='outlined'
+                                color='primary'
+                                size='small'
                                 style={{ textTransform: 'none' }}
+                                onClick={() => handleCopy(id)}
                             >
                                 {i18n.t('copy')}
                             </Button>
                             <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
+                                variant='outlined'
+                                color='primary'
+                                size='small'
                                 style={{ textTransform: 'none' }}
                                 onClick={() => handleDelete(id)}
                             >
                                 {i18n.t('delete')}
                             </Button>
                             <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
+                                variant='outlined'
+                                color='primary'
+                                size='small'
                                 style={{ textTransform: 'none' }}
                             >
                                 {i18n.t('export')}
                             </Button>
                             <Button
-                                variant="outlined"
-                                color="primary"
-                                size="small"
+                                variant='outlined'
+                                color='primary'
+                                size='small'
                                 style={{ textTransform: 'none' }}
                             >
-                                {status === 'current' ? (
-                                    <Link
-                                        to={`/checklists/${match.params?.tempid}/versions/${id}/status`}
-                                        style={{
-                                            textDecoration: 'none',
-                                            color: '#2196f3',
-                                        }}
-                                    >
-                                        Change Status
-                                    </Link>
+                                {status === 'Published' ? (
+                                    'Change Status'
                                 ) : (
                                     <Link
-                                        to={`/checklists/${match.params?.tempid}/versions/${id}/promote`}
+                                        to={`/checklists/versions/promote/1`}
                                         style={{
                                             textDecoration: 'none',
-                                            color: '#2196f3',
+                                            color: '#2196f3'
                                         }}
                                     >
                                         {i18n.t('publish')}
@@ -234,6 +227,7 @@ function VersionTable() {
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleChangePage = (
@@ -255,20 +249,19 @@ function VersionTable() {
             await deleteVersion(Number(match.params?.tempid), id)
             await fetchData()
         } catch (error) {
+            await fetchData()
             console.log('error', error)
         }
     }
 
-    const formatDate = (date: string) => {
-        return new Date(date)
-            .toLocaleDateString('en-GB', {
-                day: 'numeric',
-                month: 'short',
-                year: 'numeric',
-            })
-            .split(' ')
-            .join('-')
-            .toUpperCase()
+    const handleCopy = async (id: number) => {
+        try {
+            await copyVersion(Number(match.params?.tempid), id)
+            await fetchData()
+        } catch (error) {
+            await fetchData()
+            console.log('error in copying version')
+        }
     }
 
     console.log('versions', versions)
@@ -278,46 +271,46 @@ function VersionTable() {
             {versions && (
                 <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
                     <Table
-                        data-testid="version-table"
-                        role="table"
-                        size="small"
+                        data-testid='version-table'
+                        role='table'
+                        size='small'
                     >
                         <TableHead>
-                            <TableRow role="rowheader">
-                                <StyledTableCell role="columnheader">
+                            <TableRow role='rowheader'>
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('created_date')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
-                                    role="columnheader"
-                                    align="center"
+                                    role='columnheader'
+                                    align='center'
                                 >
                                     <Typography
                                         style={{
-                                            fontWeight: 'bold',
+                                            fontWeight: 'bold'
                                         }}
                                     >
                                         {i18n.t('version')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
-                                    role="columnheader"
-                                    align="center"
+                                    role='columnheader'
+                                    align='center'
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('checklist_status')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
-                                    role="columnheader"
-                                    align="center"
+                                    role='columnheader'
+                                    align='center'
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('creator')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('actions')}
                                     </Typography>
@@ -325,50 +318,49 @@ function VersionTable() {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {versions
-                                .slice(
-                                    page * rowsPerPage,
-                                    page * rowsPerPage + rowsPerPage
-                                )
-                                .map((row, index) => (
-                                    <StyledTableRow key={index} role="row">
-                                        <StyledTableCell role="cell">
-                                            {formatDate(row.createdDateTime)}
-                                        </StyledTableCell>
-                                        <StyledTableCell
-                                            role="cell"
-                                            align="center"
-                                        >
-                                            {row.version}
-                                        </StyledTableCell>
-                                        <StyledTableCell
-                                            role="cell"
-                                            align="center"
-                                            style={{
-                                                textTransform: 'capitalize',
-                                            }}
-                                        >
-                                            {row.status === 'current'
-                                                ? 'published'
-                                                : row.status}
-                                        </StyledTableCell>
-                                        <StyledTableCell
-                                            role="cell"
-                                            align="center"
-                                        >
-                                            {row.creator.name}
-                                        </StyledTableCell>
-                                        <StyledTableCell role="cell">
-                                            {row.actions}
-                                        </StyledTableCell>
-                                    </StyledTableRow>
-                                ))}
+                            {versions &&
+                                versions
+                                    .slice(
+                                        page * rowsPerPage,
+                                        page * rowsPerPage + rowsPerPage
+                                    )
+                                    .map((row, index) => (
+                                        <StyledTableRow key={index} role='row'>
+                                            <StyledTableCell role='cell'>
+                                                {row.createdDateTime}
+                                            </StyledTableCell>
+                                            <StyledTableCell
+                                                role='cell'
+                                                align='center'
+                                            >
+                                                {row.version}
+                                            </StyledTableCell>
+                                            <StyledTableCell
+                                                role='cell'
+                                                align='center'
+                                                style={{
+                                                    textTransform: 'capitalize'
+                                                }}
+                                            >
+                                                {row.status}
+                                            </StyledTableCell>
+                                            <StyledTableCell
+                                                role='cell'
+                                                align='center'
+                                            >
+                                                {row.creator.name}
+                                            </StyledTableCell>
+                                            <StyledTableCell role='cell'>
+                                                {row.actions}
+                                            </StyledTableCell>
+                                        </StyledTableRow>
+                                    ))}
                         </TableBody>
                     </Table>
                     {versions && (
                         <TablePagination
                             rowsPerPageOptions={[10, 25]}
-                            component="div"
+                            component='div'
                             count={versions.length}
                             page={page}
                             onPageChange={handleChangePage}
@@ -385,12 +377,12 @@ function VersionTable() {
 const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
         head: {
-            backgroundColor: 'white',
+            backgroundColor: 'white'
         },
         body: {
             fontSize: 14,
-            verticalAlign: 'top',
-        },
+            verticalAlign: 'top'
+        }
     })
 )(TableCell)
 
@@ -398,9 +390,9 @@ const StyledTableRow = withStyles((theme: Theme) =>
     createStyles({
         root: {
             '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.action.hover,
+                backgroundColor: theme.palette.action.hover
             },
-            height: '44px',
-        },
+            height: '44px'
+        }
     })
 )(TableRow)
