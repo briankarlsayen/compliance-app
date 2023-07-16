@@ -1,6 +1,6 @@
 import ChecklistFilter from '../components/ChecklistFilter'
 import { i18n } from '../i18n'
-import { fetchChecklist } from '../api/checklist'
+import { copyTemplate, deleteTemplate, fetchChecklist } from '../api/checklist'
 import Schedules from './Schedules'
 import Loading from '../components/Loading'
 import FeatureFlagsContext from '../feature/featureContext'
@@ -12,7 +12,7 @@ import {
     createStyles,
     createTheme,
     makeStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Tabs from '@material-ui/core/Tabs'
@@ -41,14 +41,14 @@ export default function CheckLists() {
 const useStyles = makeStyles({
     root: {
         flexGrow: 1,
-        marginTop: '1rem',
+        marginTop: '1rem'
     },
     tabs: {
-        background: grey[100],
+        background: grey[100]
     },
     tab: {
-        marginTop: '2rem',
-    },
+        marginTop: '2rem'
+    }
 })
 
 interface TabPanelProps {
@@ -68,7 +68,7 @@ function TabPanel(props: TabPanelProps) {
 
     return (
         <div
-            role="tabpanel"
+            role='tabpanel'
             hidden={value !== index}
             id={`simple-tabpanel-${index}`}
             aria-labelledby={`simple-tab-${index}`}
@@ -86,7 +86,7 @@ function TabPanel(props: TabPanelProps) {
 function a11yProps(index: any) {
     return {
         id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`
     }
 }
 
@@ -96,7 +96,7 @@ function ChecklistTemplates() {
             style={{
                 display: 'flex',
                 alignItems: 'flex-start',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between'
             }}
         >
             <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -116,11 +116,11 @@ function ChecklistTemplates() {
 const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
         head: {
-            backgroundColor: 'white',
+            backgroundColor: 'white'
         },
         body: {
-            fontSize: 14,
-        },
+            fontSize: 14
+        }
     })
 )(TableCell)
 
@@ -128,9 +128,9 @@ const StyledTableRow = withStyles((theme: Theme) =>
     createStyles({
         root: {
             '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.action.hover,
-            },
-        },
+                backgroundColor: theme.palette.action.hover
+            }
+        }
     })
 )(TableRow)
 
@@ -142,32 +142,32 @@ function createData(
     return {
         name,
         schedule,
-        actions,
+        actions
     }
 }
 
 const redTheme = createTheme({
     palette: {
         primary: {
-            main: red[500],
-        },
-    },
+            main: red[500]
+        }
+    }
 })
 
 const blueTheme = createTheme({
     palette: {
         primary: {
-            main: blue[500],
-        },
-    },
+            main: blue[500]
+        }
+    }
 })
 
 const greyTheme = createTheme({
     palette: {
         primary: {
-            main: grey[500],
-        },
-    },
+            main: grey[500]
+        }
+    }
 })
 
 export interface ICheckListData {
@@ -190,19 +190,19 @@ function CheckListsTable({ setTab }: any) {
                 return createData(
                     name,
                     <ThemeProvider theme={redTheme}>
-                        <Button variant="outlined" color="primary" size="small">
+                        <Button variant='outlined' color='primary' size='small'>
                             {schedules}
                         </Button>
                     </ThemeProvider>,
                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                         <ThemeProvider theme={adhoc ? blueTheme : greyTheme}>
                             <Button
-                                variant="contained"
-                                color="primary"
-                                size="small"
+                                variant='contained'
+                                color='primary'
+                                size='small'
                                 style={{
                                     textTransform: 'none',
-                                    color: 'white',
+                                    color: 'white'
                                 }}
                             >
                                 {i18n.t('start')}
@@ -211,9 +211,9 @@ function CheckListsTable({ setTab }: any) {
                         <ThemeProvider theme={blueTheme}>
                             {!featureFlags?.hideCreateChecklistTemplate && (
                                 <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    size="small"
+                                    variant='outlined'
+                                    color='primary'
+                                    size='small'
                                     style={{ textTransform: 'none' }}
                                 >
                                     {i18n.t('edit')}
@@ -222,20 +222,20 @@ function CheckListsTable({ setTab }: any) {
 
                             {!featureFlags?.hideCreateChecklistSchedule && (
                                 <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    size="small"
+                                    variant='outlined'
+                                    color='primary'
+                                    size='small'
                                     style={{ textTransform: 'none' }}
-                                    id="menu-btn"
-                                    aria-controls="menu"
-                                    aria-haspopup="true"
+                                    id='menu-btn'
+                                    aria-controls='menu'
+                                    aria-haspopup='true'
                                     aria-expanded={open ? 'true' : undefined}
                                     onClick={(e) => {
                                         console.log('id', id)
                                         setSelectId(id)
                                         handleClick(e, recStatus)
                                     }}
-                                    data-testid="btn-more"
+                                    data-testid='btn-more'
                                 >
                                     {i18n.t('more')}
                                 </Button>
@@ -267,6 +267,29 @@ function CheckListsTable({ setTab }: any) {
         setAnchorEl(null)
         setOpen(false)
     }
+
+    const handleDelete = async (id: number | null) => {
+        if (id) {
+            await deleteTemplate(id)
+                .then(() => fetchData())
+                .catch((error) => {
+                    console.log('failed to delete', error)
+                })
+        }
+    }
+    const handleCopy = async (id: number | null) => {
+        if (id) {
+            await copyTemplate(id)
+                .then(() => {
+                    fetchData()
+                })
+                .catch((error) => {
+                    console.log('failed to delete', error)
+                    fetchData()
+                })
+        }
+    }
+
     const [loading, setLoading] = useState(false)
 
     const [checklist, setChecklist] = useState([])
@@ -286,6 +309,7 @@ function CheckListsTable({ setTab }: any) {
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleChangePage = (
@@ -302,10 +326,6 @@ function CheckListsTable({ setTab }: any) {
         setPage(0)
     }
 
-    const handleTabChange = (page: number) => {
-        return setTab(page ?? 0)
-    }
-
     return (
         <>
             {checkLists && (
@@ -315,26 +335,26 @@ function CheckListsTable({ setTab }: any) {
                         processRows={processRows}
                     />
                     <Table
-                        data-testid="checklist-table"
-                        role="table"
-                        size="small"
+                        data-testid='checklist-table'
+                        role='table'
+                        size='small'
                     >
                         <TableHead>
-                            <TableRow role="rowheader">
-                                <StyledTableCell role="columnheader">
+                            <TableRow role='rowheader'>
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('checklist_name')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
-                                    role="columnheader"
-                                    align="center"
+                                    role='columnheader'
+                                    align='center'
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('current_schedules')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('actions')}
                                     </Typography>
@@ -343,22 +363,22 @@ function CheckListsTable({ setTab }: any) {
                         </TableHead>
                         <TableBody>
                             <Menu
-                                id="menu"
+                                id='menu'
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={handleClose}
                                 ref={menuRef}
                                 MenuListProps={{
-                                    'aria-labelledby': 'menu-btn',
+                                    'aria-labelledby': 'menu-btn'
                                 }}
                                 getContentAnchorEl={null}
                                 anchorOrigin={{
                                     vertical: 'bottom',
-                                    horizontal: 'left',
+                                    horizontal: 'left'
                                 }}
                                 transformOrigin={{
                                     vertical: 'top',
-                                    horizontal: 'left',
+                                    horizontal: 'left'
                                 }}
                             >
                                 <MenuItem>
@@ -366,7 +386,7 @@ function CheckListsTable({ setTab }: any) {
                                         to={`/checklists/${selectedId}/schedules`}
                                         style={{
                                             textDecoration: 'none',
-                                            color: 'black',
+                                            color: 'black'
                                         }}
                                     >
                                         {i18n.t('schedule')}
@@ -380,7 +400,7 @@ function CheckListsTable({ setTab }: any) {
                                         to={`/checklists/${selectedId}/surveys`}
                                         style={{
                                             textDecoration: 'none',
-                                            color: 'black',
+                                            color: 'black'
                                         }}
                                     >
                                         {i18n.t('survey')}
@@ -392,7 +412,7 @@ function CheckListsTable({ setTab }: any) {
                                             to={`/checklists/${selectedId}/versions`}
                                             style={{
                                                 textDecoration: 'none',
-                                                color: 'black',
+                                                color: 'black'
                                             }}
                                         >
                                             {i18n.t('versions')}
@@ -405,7 +425,7 @@ function CheckListsTable({ setTab }: any) {
                                             to={`/checklists/settings`}
                                             style={{
                                                 textDecoration: 'none',
-                                                color: 'black',
+                                                color: 'black'
                                             }}
                                         >
                                             {i18n.t('settings')}
@@ -413,13 +433,19 @@ function CheckListsTable({ setTab }: any) {
                                     </MenuItem>
                                 )}
                                 {!featureFlags?.hideCreateChecklistTemplate && (
-                                    <MenuItem onClick={handleClose}>
+                                    <MenuItem
+                                        onClick={() => handleCopy(selectedId)}
+                                    >
                                         {i18n.t('copy')}
                                     </MenuItem>
                                 )}
                                 {!featureFlags?.hideCreateChecklistTemplate &&
                                     activeBtn && (
-                                        <MenuItem onClick={handleClose}>
+                                        <MenuItem
+                                            onClick={() =>
+                                                handleDelete(selectedId)
+                                            }
+                                        >
                                             {i18n.t('delete')}
                                         </MenuItem>
                                     )}
@@ -443,17 +469,17 @@ function CheckListsTable({ setTab }: any) {
                                         page * rowsPerPage + rowsPerPage
                                     )
                                     .map((row, index) => (
-                                        <StyledTableRow key={index} role="row">
-                                            <StyledTableCell role="cell">
+                                        <StyledTableRow key={index} role='row'>
+                                            <StyledTableCell role='cell'>
                                                 {row.name}
                                             </StyledTableCell>
                                             <StyledTableCell
-                                                role="cell"
-                                                align="center"
+                                                role='cell'
+                                                align='center'
                                             >
                                                 {row.schedule}
                                             </StyledTableCell>
-                                            <StyledTableCell role="cell">
+                                            <StyledTableCell role='cell'>
                                                 {row.actions}
                                             </StyledTableCell>
                                         </StyledTableRow>
@@ -463,7 +489,7 @@ function CheckListsTable({ setTab }: any) {
                     {checkLists && (
                         <TablePagination
                             rowsPerPageOptions={[10, 25]}
-                            component="div"
+                            component='div'
                             count={checkLists.length}
                             page={page}
                             onPageChange={handleChangePage}
@@ -494,8 +520,8 @@ function CenteredTabs() {
                 <Tabs
                     value={value}
                     onChange={handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
+                    indicatorColor='primary'
+                    textColor='primary'
                     centered
                     className={classes.tabs}
                 >

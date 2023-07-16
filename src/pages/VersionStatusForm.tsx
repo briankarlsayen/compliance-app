@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import { grey } from '@material-ui/core/colors'
-import { Link, useRouteMatch } from 'react-router-dom'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
 import { changeStatusVersion, fetchPromotionDetails } from '../api/checklist'
 i18n.initialise()
 
@@ -41,7 +41,12 @@ interface MatchParams {
 export interface IStatusInputField {
     id?: number
     status: string
-    comment: string
+    comment?: string
+}
+
+interface IHistory {
+    version: string
+    status: string
 }
 
 export default function VersionStatusForm() {
@@ -50,18 +55,19 @@ export default function VersionStatusForm() {
         status: '',
         comment: ''
     })
+    const history = useHistory<IHistory>()
 
     const fetchData = async () => {
-        const response = await fetchPromotionDetails()
-        setInputField({
-            id: response.id,
-            status: response.status,
-            comment: response.comment
-        })
+        if (history.location.state) {
+            setInputField(history?.location?.state)
+        } else {
+            console.log('error')
+        }
     }
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const blueTheme = createTheme({
@@ -86,8 +92,6 @@ export default function VersionStatusForm() {
             [e.target.name]: e.target.value
         })
     }
-
-    const templateName = 'NQR-PW V1'
 
     const statusList = [
         {

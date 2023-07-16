@@ -1,5 +1,10 @@
 import { i18n } from '../i18n'
-import { copyVersion, deleteVersion, fetchVersions } from '../api/checklist'
+import {
+    copyVersion,
+    deleteVersion,
+    exportVersion,
+    fetchVersions
+} from '../api/checklist'
 import Loading from '../components/Loading'
 
 import React, { useEffect, useState } from 'react'
@@ -178,6 +183,7 @@ function VersionTable() {
                                 color='primary'
                                 size='small'
                                 style={{ textTransform: 'none' }}
+                                onClick={() => handleExport(id)}
                             >
                                 {i18n.t('export')}
                             </Button>
@@ -199,7 +205,13 @@ function VersionTable() {
                                     </Link>
                                 ) : (
                                     <Link
-                                        to={`/checklists/${match.params?.tempid}/versions/${id}/promote`}
+                                        to={{
+                                            pathname: `/checklists/${match.params?.tempid}/versions/${id}/promote`,
+                                            state: {
+                                                version,
+                                                status
+                                            }
+                                        }}
                                         style={{
                                             textDecoration: 'none',
                                             color: '#2196f3'
@@ -235,6 +247,7 @@ function VersionTable() {
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const handleChangePage = (
@@ -263,6 +276,16 @@ function VersionTable() {
     const handleCopy = async (id: number) => {
         try {
             await copyVersion(Number(match.params?.tempid), id)
+            await fetchData()
+        } catch (error) {
+            await fetchData()
+            console.log('error in copying version')
+        }
+    }
+
+    const handleExport = async (id: number) => {
+        try {
+            await exportVersion(Number(match.params?.tempid), id)
             await fetchData()
         } catch (error) {
             await fetchData()

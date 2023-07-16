@@ -801,6 +801,14 @@ export const mockVersionHistory = async () => {
                 newStatus: 'current',
                 comment: 'Created from template checklist 1 version 2',
                 actionedBy: 'Dennis  Branding'
+            },
+            {
+                id: 15453,
+                createdDate: "2018-07-09T04:54:13Z",
+                oldStatus: "draft",
+                newStatus: "draft",
+                comment: "Created new TemplateChecklist ",
+                actionedBy: "Dennis Branding"
             }
         ]
     }
@@ -1280,6 +1288,14 @@ export async function copyVersion(tempid: number, id: number): Promise<any> {
     return alert('Version copied')
 }
 
+export async function exportVersion(tempid: number, id: number): Promise<any> {
+    const baseUrl = `/checklist-templates/${tempid}/versions/${id}/export`
+    const params = {
+        method: 'POST'
+    }
+    return alert('Version exported')
+}
+
 export async function changeStatusVersion(version: any): Promise<any> {
     const baseUrl = `/checklist-templates/${version.tempid}/versions/${version.id}/status`
     const params = {
@@ -1288,3 +1304,23 @@ export async function changeStatusVersion(version: any): Promise<any> {
     return alert(JSON.stringify(version, null, '\t'))
     // return alert('Status updated')
 }
+
+
+export async function deleteTemplate(id: number): Promise<any> {
+    const baseUrl = `/email-templates/${id}`
+    const params = {
+        method: 'DELETE'
+    }
+    return alert('Template deleted')
+}
+
+export async function copyTemplate(id: number): Promise<any> {
+    const baseUrl = `/email-templates/${id}/copy`
+    const params = {
+        method: 'POST'
+    }
+    return alert('Template deleted')
+}
+
+
+

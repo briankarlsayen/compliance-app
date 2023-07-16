@@ -15,8 +15,8 @@ import {
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import { grey } from '@material-ui/core/colors'
-import { Link, useRouteMatch } from 'react-router-dom'
-import { changeStatusVersion, fetchPromotionDetails } from '../api/checklist'
+import { Link, useHistory, useRouteMatch } from 'react-router-dom'
+import { changeStatusVersion } from '../api/checklist'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -36,24 +36,30 @@ interface MatchParams {
 }
 export interface IPromoteInputField {
     id?: number
-    name: string
-    comment: string
+    version: string
+    comment?: string
+}
+
+interface IHistory {
+    version: string
+    status: string
 }
 
 export default function Promotion() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IPromoteInputField>({
-        name: '',
+        version: '',
         comment: ''
     })
 
+    const history = useHistory<IHistory>()
+
     const fetchData = async () => {
-        const response = await fetchPromotionDetails()
-        setInputField({
-            id: response.id,
-            name: response.name,
-            comment: response.comment
-        })
+        if (history.location.state) {
+            setInputField(history?.location?.state)
+        } else {
+            history.push(backUrl)
+        }
     }
 
     useEffect(() => {
@@ -99,7 +105,6 @@ export default function Promotion() {
         }
     }
 
-    const templateName = 'NQR-PW V1'
     const match: MatchParams = useRouteMatch()
     const urlArr = match.url.split('/')
     urlArr.pop()
@@ -141,13 +146,13 @@ export default function Promotion() {
                                             <Box style={{ display: 'flex' }}>
                                                 <TextField
                                                     required
-                                                    id='name'
-                                                    name='name'
+                                                    id='version'
+                                                    name='version'
                                                     fullWidth
                                                     size='small'
                                                     autoComplete='off'
                                                     variant='outlined'
-                                                    value={inputField.name}
+                                                    value={inputField.version}
                                                     onChange={updateField}
                                                 />
                                             </Box>
