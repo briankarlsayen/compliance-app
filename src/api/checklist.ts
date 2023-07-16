@@ -1280,13 +1280,11 @@ export async function copyVersion(tempid: number, id: number): Promise<any> {
     return alert('Version copied')
 }
 
-export async function changeStatusVersion(
-    tempid: number,
-    id: number
-): Promise<any> {
-    const baseUrl = `/checklist-templates/${tempid}/versions/${id}/status`
+export async function changeStatusVersion(version: any): Promise<any> {
+    const baseUrl = `/checklist-templates/${version.tempid}/versions/${version.id}/status`
     const params = {
         method: 'POST'
     }
-    return alert('Status updated')
+    return alert(JSON.stringify(version, null, '\t'))
+    // return alert('Status updated')
 }

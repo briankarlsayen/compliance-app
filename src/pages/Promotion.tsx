@@ -11,7 +11,7 @@ import {
     Button,
     createTheme,
     ThemeProvider,
-    makeStyles,
+    makeStyles
 } from '@material-ui/core'
 import { blue } from '@mui/material/colors'
 import { grey } from '@material-ui/core/colors'
@@ -22,9 +22,9 @@ i18n.initialise()
 const useStyles = makeStyles({
     root: {
         '& .MuiFormControl-root': {
-            marginTop: 0,
-        },
-    },
+            marginTop: 0
+        }
+    }
 })
 
 interface MatchParams {
@@ -44,7 +44,7 @@ export default function Promotion() {
     const classes = useStyles()
     const [inputField, setInputField] = useState<IPromoteInputField>({
         name: '',
-        comment: '',
+        comment: ''
     })
 
     const fetchData = async () => {
@@ -52,44 +52,48 @@ export default function Promotion() {
         setInputField({
             id: response.id,
             name: response.name,
-            comment: response.comment,
+            comment: response.comment
         })
     }
 
     useEffect(() => {
         fetchData()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const blueTheme = createTheme({
         palette: {
             primary: {
-                main: blue[500],
-            },
-        },
+                main: blue[500]
+            }
+        }
     })
 
     const greyTheme = createTheme({
         palette: {
             primary: {
-                main: grey[500],
-            },
-        },
+                main: grey[500]
+            }
+        }
     })
 
     const updateField = (e: any) => {
         setInputField({
             ...inputField,
-            [e.target.name]: e.target.value,
+            [e.target.name]: e.target.value
         })
     }
 
     const handleSubmit = async (e: any) => {
         e.preventDefault()
         try {
-            await changeStatusVersion(
-                Number(match.params?.tempid),
-                Number(match.params?.id)
-            )
+            const reqBody = {
+                ...inputField,
+                status: 'current',
+                tempid: Number(match.params?.tempid),
+                id: Number(match.params?.id)
+            }
+            await changeStatusVersion(reqBody)
         } catch (error) {
             console.log('error', error)
         }
@@ -109,17 +113,13 @@ export default function Promotion() {
                 style={{
                     padding: '2rem',
                     marginTop: '2rem',
-                    marginBottom: '2rem',
+                    marginBottom: '2rem'
                 }}
             >
                 <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
                     {i18n.t('promote_template')}
-                </Typography>
-                <Typography style={{ paddingBottom: '1rem' }}>
-                    You are about to promote Template: {templateName} version
-                    Final to the current version
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={3}>
@@ -131,7 +131,7 @@ export default function Promotion() {
                                             <InputLabel
                                                 style={{
                                                     display: 'flex',
-                                                    fontWeight: 700,
+                                                    fontWeight: 700
                                                 }}
                                             >
                                                 {i18n.t('enter_version_name')}*
@@ -141,12 +141,12 @@ export default function Promotion() {
                                             <Box style={{ display: 'flex' }}>
                                                 <TextField
                                                     required
-                                                    id="name"
-                                                    name="name"
+                                                    id='name'
+                                                    name='name'
                                                     fullWidth
-                                                    size="small"
-                                                    autoComplete="off"
-                                                    variant="outlined"
+                                                    size='small'
+                                                    autoComplete='off'
+                                                    variant='outlined'
                                                     value={inputField.name}
                                                     onChange={updateField}
                                                 />
@@ -156,7 +156,7 @@ export default function Promotion() {
                                             <InputLabel
                                                 style={{
                                                     display: 'flex',
-                                                    fontWeight: 700,
+                                                    fontWeight: 700
                                                 }}
                                             >
                                                 {i18n.t('enter_comment')}*
@@ -165,12 +165,12 @@ export default function Promotion() {
                                         <Grid item xs={12} sm={8}>
                                             <TextField
                                                 required
-                                                id="comment"
-                                                name="comment"
+                                                id='comment'
+                                                name='comment'
                                                 fullWidth
-                                                size="small"
-                                                autoComplete="off"
-                                                variant="outlined"
+                                                size='small'
+                                                autoComplete='off'
+                                                variant='outlined'
                                                 value={inputField.comment}
                                                 onChange={updateField}
                                                 multiline
@@ -191,20 +191,20 @@ export default function Promotion() {
                                     display: 'flex',
                                     flexDirection: 'row',
                                     gap: '1rem',
-                                    float: 'right',
+                                    float: 'right'
                                 }}
                             >
                                 <ThemeProvider theme={greyTheme}>
                                     <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
+                                        variant='contained'
+                                        color='primary'
+                                        size='small'
                                     >
                                         <Link
                                             to={backUrl}
                                             style={{
                                                 textDecoration: 'none',
-                                                color: 'white',
+                                                color: 'white'
                                             }}
                                         >
                                             {i18n.t('cancel')}
@@ -213,10 +213,10 @@ export default function Promotion() {
                                 </ThemeProvider>
                                 <ThemeProvider theme={blueTheme}>
                                     <Button
-                                        variant="contained"
-                                        color="primary"
-                                        size="small"
-                                        type="submit"
+                                        variant='contained'
+                                        color='primary'
+                                        size='small'
+                                        type='submit'
                                     >
                                         {i18n.t('save')}
                                     </Button>

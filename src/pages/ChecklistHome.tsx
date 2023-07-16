@@ -36,73 +36,73 @@ const ChecklistHome = () => {
                 <Switch>
                     <Route
                         exact
-                        path="/checklists/:tempid/schedules/:id/edit"
+                        path='/checklists/:tempid/schedules/:id/edit'
                         component={ScheduleFormContainer}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/schedules/create"
+                        path='/checklists/:tempid/schedules/create'
                         component={ScheduleFormContainer}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/schedules/:id/frequency"
+                        path='/checklists/:tempid/schedules/:id/frequency'
                         component={ScheduleFrequencyForm}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/surveys/:id/edit"
+                        path='/checklists/:tempid/surveys/:id/edit'
                         component={SurveyForm}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/surveys/create"
+                        path='/checklists/:tempid/surveys/create'
                         component={SurveyForm}
                     />
-                    <Route exact path="/checklists" component={CheckLists} />
+                    <Route exact path='/checklists' component={CheckLists} />
                     <Route
                         exact
-                        path="/checklists/builder"
+                        path='/checklists/builder'
                         component={ChecklistBuilder}
                     />
                     <Route
                         exact
-                        path="/checklists/settings"
+                        path='/checklists/settings'
                         component={Settings}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/surveys"
+                        path='/checklists/:tempid/surveys'
                         component={Survey}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/schedules"
+                        path='/checklists/:tempid/schedules'
                         component={Schedules}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/versions/:id/promote"
+                        path='/checklists/:tempid/versions/:id/promote'
                         component={Promotion}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/versions/:id/status"
+                        path='/checklists/:tempid/versions/:id/status'
                         component={VersionStatusForm}
                     />
                     <Route
                         exact
-                        path="/checklists/:tempid/versions"
+                        path='/checklists/:tempid/versions'
                         component={Versions}
                     />
                     <Route
                         exact
-                        path="/checklists/reassign"
+                        path='/checklists/reassign'
                         component={ChecklistReassign}
                     />
                     <Route
                         exact
-                        path="/checklists/report"
+                        path='/checklists/report'
                         component={ChecklistReport}
                     />
                     <Route component={CheckLists} />
