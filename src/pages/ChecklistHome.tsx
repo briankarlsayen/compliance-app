@@ -17,6 +17,7 @@ import ChecklistReport from './ChecklistReport'
 import Schedules from './Schedules'
 import ScheduleFrequencyForm from './ScheduleFrequencyForm'
 import VersionStatusForm from './VersionStatusForm'
+import NewComplete from './NewComplete'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -104,6 +105,11 @@ const ChecklistHome = () => {
                         exact
                         path='/checklists/report'
                         component={ChecklistReport}
+                    />
+                    <Route
+                        exact
+                        path='/checklists/complete'
+                        component={NewComplete}
                     />
                     <Route component={CheckLists} />
                 </Switch>

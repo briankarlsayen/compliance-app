@@ -6,12 +6,12 @@ import {
     Theme,
     createStyles
 } from '@material-ui/core/styles'
-import {
-    IOneplaceLibraryContextProp,
-    IFranchisee,
-    ISite,
-    withOneplaceLibraryContext
-} from 'oneplace-components'
+// import {
+//     IOneplaceLibraryContextProp,
+//     IFranchisee,
+//     ISite,
+//     withOneplaceLibraryContext
+// } from 'oneplace-components'
 
 const styles = (theme: Theme) =>
     createStyles({
@@ -25,24 +25,20 @@ const styles = (theme: Theme) =>
         }
     })
 
-export interface IChecklistInfoProps
-    extends WithStyles<typeof styles>,
-        IOneplaceLibraryContextProp {
+export interface IChecklistInfoProps extends WithStyles<typeof styles> {
     surveyName: string
     assignee: string
-    franchisee?: IFranchisee
-    site?: ISite
+    franchisee?: any
+    site?: any
 }
 
 const infoFn: React.FC<IChecklistInfoProps> = (props) => {
     const t = (key: string) => {
-        return props.ctx.i18next.t(key)
+        return key
     }
 
     const assigneeTypeLabel =
-        props.assignee === 'franchisee'
-            ? t('customLabel_franchisee')
-            : t('customLabel_site')
+        props.assignee === 'franchisee' ? 'framchisee' : 'site'
     const assigneeName =
         props.assignee === 'franchisee'
             ? props.franchisee!.name
@@ -62,5 +58,5 @@ const infoFn: React.FC<IChecklistInfoProps> = (props) => {
     )
 }
 
-const ChecklistInfo = withStyles(styles)(withOneplaceLibraryContext(infoFn))
+const ChecklistInfo = withStyles(styles)(infoFn)
 export { ChecklistInfo }
