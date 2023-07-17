@@ -1,0 +1,28 @@
+#onePlaceLogo {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+.txtLogo {
+    text-align: left;
+    padding-left: 10%;
+    color: #223d79;
+}
+
+.txtLogo a:visited,
+.a:hover,
+.a:active {
+    color: inherit;
+}
+
+.imgLogo {
+    width: 80%;
+    max-width: 500px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.endMessage {
+    margin-top: 20%;
+    color: #223d79;
+}
