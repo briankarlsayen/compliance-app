@@ -35,7 +35,12 @@ import Register from './Register'
 
 i18n.initialise()
 export default function CheckLists() {
-    return <CenteredTabs />
+    return (
+        <div>
+            <ChecklistTemplates />
+            <CheckListsTable />
+        </div>
+    )
 }
 
 const useStyles = makeStyles({
