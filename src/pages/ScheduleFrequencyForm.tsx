@@ -21,6 +21,7 @@ import ClearIcon from '@material-ui/icons/Clear'
 import { fetchScheduleDetails, updateScheduleEvent } from '../api/checklist'
 import { IEvent, IInputField } from './ScheduleFormContainer'
 import { useRouteMatch } from 'react-router-dom'
+import BreadcrumbsComponent from '../common/BreadcrumbsComponent'
 i18n.initialise()
 
 const useStyles = makeStyles({
@@ -157,11 +158,11 @@ export default function ScheduleFrequencyForm() {
                     marginBottom: '2rem'
                 }}
             >
-                <Typography
+                {/* <Typography
                     style={{ fontWeight: 'bold', paddingBottom: '1rem' }}
                 >
                     {i18n.t('edit_sched_freq')}
-                </Typography>
+                </Typography> */}
                 <Grid container spacing={3}>
                     <Grid item xs={12} sm={10}>
                         <Paper elevation={3}>

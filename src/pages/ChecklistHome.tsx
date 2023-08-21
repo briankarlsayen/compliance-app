@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Switch, Route } from 'react-router-dom'
+import { Switch, Route, useHistory } from 'react-router-dom'
 import CheckLists from './Checklists'
 import ScheduleFormContainer from './ScheduleFormContainer'
 import { fetchUserInfo } from '../api/userInfo'
@@ -18,6 +18,8 @@ import Schedules from './Schedules'
 import ScheduleFrequencyForm from './ScheduleFrequencyForm'
 import VersionStatusForm from './VersionStatusForm'
 import ChecklistTab from '../common/ChecklistTab'
+import Breadcrumbs from '../common/BreadcrumbsComponent'
+import BreadcrumbsComponent from '../common/BreadcrumbsComponent'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -35,6 +37,7 @@ const ChecklistHome = () => {
                 features={{ features: { ...defaultFeatures.features } }}
             >
                 <ChecklistTab />
+                <BreadcrumbsComponent />
                 <Switch>
                     <Route
                         exact

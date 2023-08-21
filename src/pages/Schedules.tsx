@@ -12,7 +12,7 @@ import {
     TableBody,
     TablePagination,
     TableCell,
-    Box,
+    Box
 } from '@material-ui/core'
 import {
     Theme,
@@ -20,7 +20,7 @@ import {
     createStyles,
     createTheme,
     makeStyles,
-    withStyles,
+    withStyles
 } from '@material-ui/core/styles'
 import AddIcon from '@material-ui/icons/Add'
 
@@ -28,6 +28,7 @@ import { lightGreen } from '@material-ui/core/colors'
 import { Link, useRouteMatch } from 'react-router-dom'
 import { fetchSchedule } from '../api/checklist'
 import Loading from '../components/Loading'
+import BreadcrumbsComponent from '../common/BreadcrumbsComponent'
 i18n.initialise()
 
 interface IEvent {
@@ -51,9 +52,9 @@ const useStyles = makeStyles({
         '& .MuiTableCell-head': {
             color: 'white',
             backgroundColor: '#223d79',
-            padding: '1rem',
-        },
-    },
+            padding: '1rem'
+        }
+    }
 })
 
 const Schedules = () => {
@@ -69,9 +70,9 @@ const Schedules = () => {
 const buttonTheme = createTheme({
     palette: {
         primary: {
-            main: lightGreen[600],
-        },
-    },
+            main: lightGreen[600]
+        }
+    }
 })
 
 const ScheduleHeader = () => {
@@ -81,14 +82,14 @@ const ScheduleHeader = () => {
             style={{
                 display: 'flex',
                 alignItems: 'flex-end',
-                justifyContent: 'space-between',
+                justifyContent: 'space-between'
             }}
         >
             <div
                 style={{
                     display: 'flex',
                     alignItems: 'center',
-                    alignSelf: 'self-start',
+                    alignSelf: 'self-start'
                 }}
             >
                 <Typography style={{ fontWeight: 'bold' }}>
@@ -102,7 +103,7 @@ const ScheduleHeader = () => {
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'flex-end',
+                    alignItems: 'flex-end'
                 }}
             >
                 <div
@@ -110,10 +111,10 @@ const ScheduleHeader = () => {
                         display: 'flex',
                         flex: 1,
                         flexDirection: 'column',
-                        alignItems: 'flex-end',
+                        alignItems: 'flex-end'
                     }}
                 >
-                    <Typography variant="caption">
+                    <Typography variant='caption'>
                         {i18n.t('new_sched_caption')}:
                     </Typography>
                     <div>
@@ -122,20 +123,20 @@ const ScheduleHeader = () => {
                                 to={`${match.url}/create`}
                                 style={{
                                     textDecoration: 'none',
-                                    color: 'blue',
+                                    color: 'blue'
                                 }}
                             >
                                 <Button
-                                    variant="contained"
-                                    color="primary"
+                                    variant='contained'
+                                    color='primary'
                                     style={{
-                                        color: 'white',
+                                        color: 'white'
                                     }}
                                 >
-                                    <AddIcon fontSize="small" />
+                                    <AddIcon fontSize='small' />
                                     <Typography
                                         style={{ fontWeight: 'bold' }}
-                                        variant="body2"
+                                        variant='body2'
                                     >
                                         {i18n.t('new_sched')}
                                     </Typography>
@@ -172,7 +173,7 @@ const ScheduleTable = () => {
             name,
             showOverdue,
             entities,
-            event,
+            event
         }
     }
 
@@ -227,7 +228,7 @@ const ScheduleTable = () => {
             .toLocaleDateString('en-GB', {
                 day: 'numeric',
                 month: 'short',
-                year: 'numeric',
+                year: 'numeric'
             })
             .split(' ')
             .join('-')
@@ -242,36 +243,36 @@ const ScheduleTable = () => {
                     style={{ marginTop: '2rem', borderRadius: '5px' }}
                 >
                     <Table
-                        data-testid="schedule-table"
-                        role="table"
-                        size="small"
+                        data-testid='schedule-table'
+                        role='table'
+                        size='small'
                     >
                         <TableHead>
-                            <TableRow role="rowheader">
-                                <StyledTableCell role="columnheader">
+                            <TableRow role='rowheader'>
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('sched_name')}
                                     </Typography>
                                 </StyledTableCell>
                                 <StyledTableCell
-                                    role="columnheader"
-                                    align="center"
+                                    role='columnheader'
+                                    align='center'
                                 >
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('start_date')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('show_when_overdue')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('sched_frequency')}
                                     </Typography>
                                 </StyledTableCell>
-                                <StyledTableCell role="columnheader">
+                                <StyledTableCell role='columnheader'>
                                     <Typography style={{ fontWeight: 'bold' }}>
                                         {i18n.t('for')}
                                     </Typography>
@@ -292,13 +293,13 @@ const ScheduleTable = () => {
                                                     to={`${match.url}/${row.id}/edit`}
                                                     style={{
                                                         textDecoration: 'none',
-                                                        color: 'blue',
+                                                        color: 'blue'
                                                     }}
                                                 >
                                                     {row.name}
                                                 </Link>
                                             </StyledTableCell>
-                                            <StyledTableCell align="center">
+                                            <StyledTableCell align='center'>
                                                 {formatDate(
                                                     row.event.startDate
                                                 )}
@@ -311,7 +312,7 @@ const ScheduleTable = () => {
                                                     to={`${match.url}/${row.id}/frequency`}
                                                     style={{
                                                         textDecoration: 'none',
-                                                        color: 'blue',
+                                                        color: 'blue'
                                                     }}
                                                 >
                                                     {row.event.rRuleDescription}
@@ -323,8 +324,7 @@ const ScheduleTable = () => {
                                                         border: '1px black solid',
                                                         padding: '1rem',
                                                         borderRadius: '5px',
-                                                        backgroundColor:
-                                                            'white',
+                                                        backgroundColor: 'white'
                                                     }}
                                                 >
                                                     {row.entities.map(
@@ -333,7 +333,7 @@ const ScheduleTable = () => {
                                                                 key={index}
                                                                 style={{
                                                                     marginLeft:
-                                                                        '1rem',
+                                                                        '1rem'
                                                                 }}
                                                             >
                                                                 {user}
@@ -349,7 +349,7 @@ const ScheduleTable = () => {
                     {schedules && (
                         <TablePagination
                             rowsPerPageOptions={[10, 25]}
-                            component="div"
+                            component='div'
                             count={schedules.length}
                             page={page}
                             onPageChange={handleChangePage}
@@ -366,12 +366,12 @@ const ScheduleTable = () => {
 const StyledTableCell = withStyles((theme: Theme) =>
     createStyles({
         head: {
-            backgroundColor: 'white',
+            backgroundColor: 'white'
         },
         body: {
             fontSize: 14,
-            verticalAlign: 'top',
-        },
+            verticalAlign: 'top'
+        }
     })
 )(TableCell)
 
@@ -379,10 +379,10 @@ const StyledTableRow = withStyles((theme: Theme) =>
     createStyles({
         root: {
             '&:nth-of-type(odd)': {
-                backgroundColor: theme.palette.action.hover,
+                backgroundColor: theme.palette.action.hover
             },
-            height: '44px',
-        },
+            height: '44px'
+        }
     })
 )(TableRow)
 

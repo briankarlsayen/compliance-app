@@ -43,19 +43,6 @@ export default function CheckLists() {
     )
 }
 
-const useStyles = makeStyles({
-    root: {
-        flexGrow: 1,
-        marginTop: '1rem'
-    },
-    tabs: {
-        background: grey[100]
-    },
-    tab: {
-        marginTop: '2rem'
-    }
-})
-
 interface TabPanelProps {
     children?: React.ReactNode
     index: any
@@ -68,33 +55,6 @@ interface IChecklist {
     actions: any
 }
 
-function TabPanel(props: TabPanelProps) {
-    const { children, value, index, ...other } = props
-
-    return (
-        <div
-            role='tabpanel'
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            aria-labelledby={`simple-tab-${index}`}
-            {...other}
-        >
-            {value === index && (
-                <Box p={3}>
-                    <div>{children}</div>
-                </Box>
-            )}
-        </div>
-    )
-}
-
-function a11yProps(index: any) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`
-    }
-}
-
 function ChecklistTemplates() {
     return (
         <div
@@ -104,12 +64,12 @@ function ChecklistTemplates() {
                 justifyContent: 'space-between'
             }}
         >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            {/* <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Typography style={{ fontWeight: 'bold' }}>
                     {i18n.t('customLabel_checklist')}
                 </Typography>
                 <Typography>&nbsp;/ {i18n.t('health_and_safety')}</Typography>
-            </div>
+            </div> */}
         </div>
     )
 }
@@ -506,58 +466,5 @@ function CheckListsTable({ setTab }: any) {
             )}
             <Loading loading={loading} />
         </>
-    )
-}
-
-function CenteredTabs() {
-    const classes = useStyles()
-    const [value, setValue] = useState(0)
-
-    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-        setValue(newValue)
-    }
-
-    const tabs = ['Checklist Templates', 'To-Do List', 'Register', 'Settings']
-
-    return (
-        <div>
-            <Paper className={classes.root}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    indicatorColor='primary'
-                    textColor='primary'
-                    centered
-                    className={classes.tabs}
-                >
-                    {tabs.map((tab, index) => (
-                        <Tab
-                            key={index}
-                            label={
-                                <Typography style={{ textTransform: 'none' }}>
-                                    {tab}
-                                </Typography>
-                            }
-                            {...a11yProps(index)}
-                        />
-                    ))}
-                </Tabs>
-            </Paper>
-            <Paper className={classes.tab} style={{ minHeight: '710px' }}>
-                <TabPanel value={value} index={0}>
-                    <ChecklistTemplates />
-                    <CheckListsTable setTab={setValue} />
-                </TabPanel>
-                <TabPanel value={value} index={1}>
-                    <Typography>To-Do List</Typography>
-                </TabPanel>
-                <TabPanel value={value} index={3}>
-                    <Register />
-                </TabPanel>
-                <TabPanel value={value} index={4}>
-                    <Typography>Settings</Typography>
-                </TabPanel>
-            </Paper>
-        </div>
     )
 }
