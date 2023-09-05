@@ -20,6 +20,7 @@ import VersionStatusForm from './VersionStatusForm'
 import ChecklistTab from '../common/ChecklistTab'
 import Breadcrumbs from '../common/BreadcrumbsComponent'
 import BreadcrumbsComponent from '../common/BreadcrumbsComponent'
+import PartnerPortal from './PartnerPortal'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -109,6 +110,11 @@ const ChecklistHome = () => {
                         exact
                         path='/checklists/report'
                         component={ChecklistReport}
+                    />
+                    <Route
+                        exact
+                        path='/partner-portals'
+                        component={PartnerPortal}
                     />
                     <Route component={CheckLists} />
                 </Switch>
