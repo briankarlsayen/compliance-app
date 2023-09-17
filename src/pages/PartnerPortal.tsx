@@ -1,4 +1,5 @@
 import {
+    Box,
     Paper,
     Table,
     TableBody,
@@ -9,15 +10,34 @@ import {
     Theme,
     Typography,
     createStyles,
+    makeStyles,
     withStyles
 } from '@material-ui/core'
 import React, { useEffect, useState } from 'react'
 import { i18n } from '../i18n'
 import { mockPartnerPortals } from './mockData/partnerPortals'
+import { Link } from 'react-router-dom'
 
 i18n.initialise()
+
+const useStyles = makeStyles({
+    root: {
+        '& .MuiTableCell-head': {
+            color: 'white',
+            backgroundColor: '#223d79',
+            padding: '1rem'
+        }
+    }
+})
+
 function PartnerPortal() {
-    return <PartnerPortalTable />
+    const classes = useStyles()
+
+    return (
+        <Box className={classes.root}>
+            <PartnerPortalTable />
+        </Box>
+    )
 }
 
 // * table
@@ -58,6 +78,18 @@ function createData(
     }
 }
 
+const formatDate = (date: string) => {
+    return new Date(date)
+        .toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        })
+        .split(' ')
+        .join('-')
+        .toUpperCase()
+}
+
 const PartnerPortalTable = () => {
     const [partnerPortals, setPartnerPortals] = useState<any[]>([])
     const [page, setPage] = useState(0)
@@ -77,10 +109,14 @@ const PartnerPortalTable = () => {
         )
         setPartnerPortals(createdRows)
     }
+    const DEFAULT_ROWS_PAGE = 10
+    const [rowsPerPage, setRowsPerPage] = useState(DEFAULT_ROWS_PAGE)
 
     useEffect(() => {
         processRows(mockPartnerPortals)
     }, [])
+
+    console.log('partnerPortals', partnerPortals)
 
     return (
         <TableContainer component={Paper} style={{ marginTop: '2rem' }}>
@@ -109,7 +145,39 @@ const PartnerPortalTable = () => {
                         </StyledTableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody></TableBody>
+                <TableBody>
+                    {partnerPortals &&
+                        partnerPortals
+                            .slice(
+                                page * rowsPerPage,
+                                page * rowsPerPage + rowsPerPage
+                            )
+                            .map((row, index) => (
+                                <StyledTableRow key={row.id}>
+                                    <StyledTableCell>
+                                        <Link
+                                            to={'/'}
+                                            style={{
+                                                textDecoration: 'none',
+                                                color: 'blue'
+                                            }}
+                                        >
+                                            {row.franchiseName}
+                                        </Link>
+                                    </StyledTableCell>
+                                    <StyledTableCell align='center'>
+                                        {formatDate(row.createdAt)}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {row.cancelledAt &&
+                                            formatDate(row.cancelledAt)}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {row.recStatus}
+                                    </StyledTableCell>
+                                </StyledTableRow>
+                            ))}
+                </TableBody>
             </Table>
         </TableContainer>
     )
