@@ -21,6 +21,7 @@ import ChecklistTab from '../common/ChecklistTab'
 import Breadcrumbs from '../common/BreadcrumbsComponent'
 import BreadcrumbsComponent from '../common/BreadcrumbsComponent'
 import PartnerPortal from './PartnerPortal'
+import SiteWizard from './SiteWizard'
 
 const ChecklistHome = () => {
     const [response, setResponse] = useState()
@@ -116,6 +117,7 @@ const ChecklistHome = () => {
                         path='/partner-portals'
                         component={PartnerPortal}
                     />
+                    <Route exact path='/new/site' component={SiteWizard} />
                     <Route component={CheckLists} />
                 </Switch>
             </FeatureFlagProvider>
